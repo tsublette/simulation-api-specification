@@ -1,0 +1,113 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Simulation API
+  description: An API for managing simulations within 3DSIM.  
+  termsOfService: https://3dsim.com
+  contact:
+    name: 3DSIM API Team
+    email: support@3dsim.com
+    url: https://3dsim.github.io
+  license:
+    name: MIT
+    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+host: 3dsim.cloud.tyk.io
+basePath: /simulation-api
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /status:
+    get:
+      description: |
+        Use this endpoint to check server status.
+      operationId: status
+      responses:
+        200:
+          description: status response
+          schema:
+            $ref: '#/definitions/Status'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /parts:
+    get:
+      description: Get list of parts
+      operationId: getParts
+      responses:
+        200:
+          description: Successfully found the list of parts
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Part'
+        403: 
+          description: Not authorized 
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Status:
+    properties:
+      status: 
+        type: string
+        enum:
+          - okay
+          - problem
+          - slow
+      message:
+        type: string
+  Part:
+    type: object
+    properties:
+      id: 
+        type: integer
+      customerId: 
+        type: integer
+      name: 
+        type: string
+      partFileLocation: 
+        type: string
+      status: 
+        type: integer
+      locationX: 
+        type: number
+      locationY: 
+        type: number
+      sizeX: 
+        type: number
+      sizeY: 
+        type: number
+      sizeZ: 
+        type: number
+      numberOfTriangles: 
+        type: integer
+      volume: 
+        type: number
+      createdDate: 
+        type: string
+        format: dateTime
+      createdBy: 
+        type: integer  
+      lastModifiedDate:
+        type: string
+        format: dateTime
+      lastModifiedBy: 
+        type: integer
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
