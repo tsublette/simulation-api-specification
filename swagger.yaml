@@ -161,7 +161,7 @@ paths:
   /machines:
     get:
       description: Get list of machines
-      operationId: getMachines
+      operationId: getMachineList
       responses:
         200:
           description: Successfully retrieved list of machines
@@ -177,29 +177,13 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-    put:
-# Should put perform updates?
-      description: Add a machine if it doesn't already exist
-      operationId: putMachine
-      responses:
-        200:
-          description: Machine was successfully added or already exists
-          schema:
-            $ref: '#/definitions/Machine'
-        403:
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-   post:
-      description: Add a machine
+    post:
+      description: Add a machine. Not available for external consumers.
       operationId: postMachine
+      parameter: object
       responses:
         200:
-          description: Machine was successfully added
+          description: Machine was successfully added.
           schema:
             $ref: '#/definitions/Machine'
         403:
@@ -210,24 +194,85 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-   delete:
-      description: Delete a machine
-      operationId: deleteMachine
+  /machines/{id}
+    get:
+      description: Get a machine
+      operationId: getMachine
+      parameters:
+      - name: id
+        in: path
+        description: machine identifier
+        required: true
+        type: integer
       responses:
         200:
-          description: Machine was successfully removed or was not found
+          description: Successfully retrieved machines
           schema:
             $ref: '#/definitions/Machine'
         403:
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
+        404:
+          description: Machine not found (id invalid)
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  # /machines/[id]: Do we need this for updating machine parameters and/or retrieving a single machine?
-definitions:
+    put:
+      description: Update a machine. Not available for external consumers.
+      operationId: putMachine
+      parameters:
+      - name: id
+        in: path
+        description: machine identifier
+        required: true
+        type: integer
+      - name: machine
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Machine'
+     responses:
+        200:
+          description: Machine was successfully updated.
+          schema:
+            $ref: '#/definitions/Machine'
+        403:
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Archive a machine making it not available for use in a simulation (sets available property to false). Machine may be reactivated at later time using put with available equal to true. Not available for external consumers.
+      operationId: archiveMachine
+      parameters:
+      - name: id
+        in: path
+        description: machine identifier
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Machine was successfully archived.
+          schema:
+            $ref: '#/definitions/Machine'
+        403:
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+ definitions:
   Status:
     properties:
       status:
@@ -368,54 +413,72 @@ definitions:
     properties:
       id:
         type: integer
-      # customerId: - doesn't currently exist but needed for custom machine
-      #   type: integer
+        description: machine identifier
       name:
         type: string
+        description: machine name
       description:
         type: string
-      imageLarge: assets/images/machines/eos_list.jpg
-        type: string
-      imageSmall: assets/images/machines/eos_list.jpg
-        type: string
-      properties:
+        description: machine description
+      processProperties:
         type: object
-        hatchSpacing:
-          type: number
-          format: double
-        beamDiameter:
-          type: number
-          format: double
-        laserWattage:
-          type: integer
-        laserWaveLength:
-          type: number
-          format: double
-        scanSpeed:
-          type: integer
-        timeDiscretizationDuringScaning:
-          type: number
-          format: double
-        coolingToScanningTimeIncrementRatio:
-          type: integer
-        totalCoolingTime:
-          type: number
-          format: double
-        heaterTemperature:
-          type: integer
-        available:
-          type: boolean
-        key:
-          type: string
-        version:
-          type: string
-        createdDate:
-          type: string
-          format: date-time
-        createdBy:
-          type: integer
-        lastModifiedDate:
-          type: string
-          format: date-time
-        lastModifiedBy:
-          type: integer
+        description: parameters associated with machine operation
+        properties:
+          hatchSpacing:
+            type: number
+            format: double
+            description: distance between hatch lines in meters
+          beamDiameter:
+            type: number
+            format: double
+            description: diameter of laser beam in meters
+          laserWattage:
+            type: number
+            format: double
+            description: laser power in watts
+          laserWaveLength:
+            type: number
+            format: double
+            description: laser light wavelength in meters
+          scanSpeed:
+            type: number
+            format: double
+            description: speed at which laser travels in meters per second
+          timeDiscretizationDuringScaning:
+            type: number
+            format: double
+            description: in seconds
+          coolingToScanningTimeIncrementRatio:
+            type: integer
+            description:
+          totalCoolingTime:
+            type: number
+            format: double
+            description: cooling time between prior to deposition of next powder layer
+          heaterTemperature:
+            type: number
+            format: double
+            description: heater temperature
+      available:
+        type: boolean
+        description: true if machine can be used for simlation, false if machine has been archived
+      key:
+        type: string
+        description: key associated with this machine
+      version:
+        type: string
+        description: version number of this machine, read only
+      createdDate:
+        type: string
+        format: date-time
+        description: time machine was created, read only
+      createdBy:
+        type: string
+        description: user who created this machine, read only
+      lastModifiedDate:
+        type: string
+        format: date-time
+        description: time of last modification, read only
+      lastModifiedBy:
+        type: string
+        description: user who performed last modification, read only
