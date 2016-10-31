@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.0.1
+  version: 1.0.2
   title: Simulation API
   description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
@@ -135,25 +135,6 @@ paths:
           description: material that has been archived with active field cleared
         "404":
           description: Material not found
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /parts:
-    get:
-      description: Get list of parts
-      operationId: getParts
-      responses:
-        "200":
-          description: Successfully found the list of parts
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Part'
-        "403":
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
         default:
           description: unexpected error
           schema:
@@ -298,6 +279,192 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /parts:
+    get:
+      description: Get list of parts
+      operationId: getParts
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: search
+            in: query
+            description: free text search on name, description and tags.
+            required: false
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of parts
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Adds a Part
+      operationId: addParts
+      parameters:
+        name: Part
+        in: body
+        description: Part to add. First, upload the stl file to Amazon S3 bucket - 3dsim-<env>-library-svc in the path specified by the FileLocation property. Posting this object will then execute the part processing service.
+        required: true
+        schema:
+          $ref: '#/definitions/Part'
+      responses:
+        "200":
+          description: Successfully added a part
+          schema:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Updates a Part
+      operationId: UpdatePart
+      parameters:
+        name: Part
+        in: body
+        description: Part to update.
+        required: true
+        schema:
+          $ref: '#/definitions/Part'
+      responses:
+        "200":
+          description: Successfully updated a part
+          schema:
+          items:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /parts/geometryurl:
+    get:
+      description: Gets a time sensitive URL to upload a geometry file to AmazonS3.
+      operationId: getNewPartGeometry
+      responses:
+        "200":
+          description: Successfully returns a part geometry url for a new part upload
+          schema:
+            type: string
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /parts/{id}:
+    get:
+      description: Get a single part by Id
+      operationId: getPart
+      parameters:
+        name: id
+        in: path
+        description: ID of part to get
+        required: true
+        type: integer
+        format: int32
+      responses:
+        "200":
+          description: Successfully found a part
+          schema:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not authorized
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Archive a Part. Archiving a part will set the status to archived and will exclude the part from get list requests. To un-archive a part call /parts/{id}, change the status and then /parts (put) to update.
+      operationId: ArchivePart
+      parameters:
+        name: id
+        in: path
+        description: ID of part
+        required: true
+        type: integer
+        format: int32
+      responses:
+        "200":
+          description: Successfully archived a part
+          schema:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /parts/{id}/geometryurl:
+    get:
+      description: Gets a time sensitive URL to the geometry file stored in AmazonS3.
+      operationId: getPartGeometry
+      parameters:
+        name: id
+        in: path
+        description: ID of part
+        required: true
+        type: integer
+        format: int32
+      responses:
+        "200":
+          description: Successfully returns a part geometry url
+          schema:
+            type: string
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
  definitions:
   Status:
     properties:
@@ -392,28 +559,46 @@ paths:
     properties:
       id:
         type: integer
+        description: Id of the part
       customerId:
         type: integer
+        description: Id of the organization that owns this part record
       name:
+        type: string
+      description:
+        type: string
+      tags:
         type: string
       partFileLocation:
         type: string
+        description: location in a specfic AmazonS3 bucket for the part stl file
+      fileLocation:
+        type: string
+        description: location of an stl file for a newly posted Part. This field will be empty in Get requets and ignored in delete or put requets
       status:
         type: integer
+        description: Uploaded(0), Processing(1), Available(2), Error(3), Archived(4)
       locationX:
         type: number
+        description: default x location (in mm) where the lower left boudning box of the part will be placed on the bed
       locationY:
         type: number
+        description: default y location (in mm) where the lower left boudning box of the part will be placed on the bed
       sizeX:
         type: number
+        description: Width of the Part bounding box (in mm)
       sizeY:
         type: number
+        description: Length of the Part bounding box (in mm)
       sizeZ:
         type: number
+        description: Height of the Part bounding box (in mm)
       numberOfTriangles:
         type: integer
+        description: Number of triangles in the original STL file
       volume:
         type: number
+        description: Approximate volume of the Part (in mm^3)
       createdDate:
         type: string
         format: dateTime
