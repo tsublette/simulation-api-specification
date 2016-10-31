@@ -104,7 +104,7 @@ paths:
           description: ID of material to fetch
           required: true
           type: integer
-          format: int64
+          format: int32
       responses:
         "200":
           description: material response
@@ -162,6 +162,32 @@ paths:
     get:
       description: Get list of machines
       operationId: getMachineList
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: search
+          in: query
+          description: free text search on name and description
+          required: false
+          type: string
       responses:
         200:
           description: Successfully retrieved list of machines
@@ -177,10 +203,39 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-    post:
+    put:
+      description: Update a machine. Not available for external consumers.
+      operationId: putMachine
+      parameters:
+      - name: machine
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Machine'
+     responses:
+        200:
+          description: Machine was successfully updated.
+          schema:
+            $ref: '#/definitions/Machine'
+        403:
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+   post:
       description: Add a machine. Not available for external consumers.
       operationId: postMachine
-      parameter: object
+      parameters:
+      - name: machine
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Machine'
       responses:
         200:
           description: Machine was successfully added.
@@ -207,35 +262,6 @@ paths:
       responses:
         200:
           description: Successfully retrieved machines
-          schema:
-            $ref: '#/definitions/Machine'
-        403:
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-        404:
-          description: Machine not found (id invalid)
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    put:
-      description: Update a machine. Not available for external consumers.
-      operationId: putMachine
-      parameters:
-      - name: id
-        in: path
-        description: machine identifier
-        required: true
-        type: integer
-      - name: machine
-        in: body
-        required: true
-        schema:
-          $ref: '#/definitions/Machine'
-     responses:
-        200:
-          description: Machine was successfully updated.
           schema:
             $ref: '#/definitions/Machine'
         403:
