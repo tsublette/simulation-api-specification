@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   version: 1.0.0
   title: Simulation API
-  description: An API for managing simulations within 3DSIM.  
+  description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
   contact:
     name: 3DSIM API Team
@@ -34,6 +34,111 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /materials:
+    get:
+      description: Get list of materials
+      operationId: getMaterials
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: search
+      responses:
+        "200":
+          description: Successfully found a list of materials available to the requestor
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Material'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Creates a new material for the organizationId specified
+      operationId: addMaterial
+      parameters:
+        - name: material
+          in: body
+          description: Material to add
+          required: true
+          schema:
+            $ref: '#/definitions/Material'
+      responses:
+        "200":
+          description: material response
+          schema:
+            $ref: '#/definitions/Material'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /materials/{id}:
+    get:
+      description: Returns a material based on a single ID
+      operationId: findMaterialById
+      parameters:
+        - name: id
+          in: path
+          description: ID of material to fetch
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: material response
+          schema:
+            $ref: '#/definitions/Material'
+        "404":
+          description: Material not found
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: archives a single material based on the ID supplied
+      operationId: deleteMaterial
+      parameters:
+        - name: id
+          in: path
+          description: ID of material to archived
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: material that has been archived with active field cleared
+        "404":
+          description: Material not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /parts:
     get:
       description: Get list of parts
@@ -45,8 +150,8 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Part'
-        403: 
-          description: Not authorized 
+        403:
+          description: Not authorized
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -56,7 +161,7 @@ paths:
 definitions:
   Status:
     properties:
-      status: 
+      status:
         type: string
         enum:
           - okay
@@ -64,42 +169,120 @@ definitions:
           - slow
       message:
         type: string
+  Material:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      key:
+        type: string
+      description:
+        type: string
+      organizationId:
+        type: integer
+      active:
+        type: boolean
+      scientificProperties:
+        type: object
+        properties:
+          meanFreePathOfLaserInPowder:
+            type: double
+          meanFreePathOfLaserInBulk:
+            type: double
+          powderToSolidThermalConductivityRatio:
+            type: double
+          powderToSolidSpecificHeatRatio:
+            type: double
+          powderToSolidDensityRatio:
+            type: double
+          solidThermalConductivityAtRoomTemperature:
+            type: double
+          solidDensityAtRoomTemperature:
+            type: double
+          solidSpecificHeatAtRoomTemperature:
+            type: double
+          vaporizationLatentHeat:
+            type: double
+          fusionLatentHeat:
+            type: double
+          purgingGasConvectionCoefficient:
+            type: double
+          solidusTemperature:
+            type: double
+          liquidusTemperature:
+            type: double
+          vaporizationTemperature:
+            type: double
+          vaporizationStartTemperature:
+            type: double
+          solidStateTransitionTemperature:
+            type: double
+          energyAbsorbingRateByPowder:
+            type: double
+          energyAbsorbingRateBySolid:
+            type: double
+          thermalExpansionCoefficient:
+            type: double
+          elasticModulus:
+            type: double
+          elasticModulusOfBase:
+            type: double
+          poissonRatio:
+            type: double
+          materialStrengthYield:
+            type: double
+          supportYieldStrengthRatio:
+            type: double
+          materialStrainSensitivity:
+            type: double
+          surfaceTension:
+            type: double
+          atomicWeight:
+            type: double
+          assumedStrain:
+            type: double
+          strainPlasticityRelaxationFactor:
+            type: double
+          anisotropicStrainCoefficients:
+            type: double
   Part:
     type: object
     properties:
-      id: 
+      id:
         type: integer
-      customerId: 
+      customerId:
         type: integer
-      name: 
+      name:
         type: string
-      partFileLocation: 
+      partFileLocation:
         type: string
-      status: 
+      status:
         type: integer
-      locationX: 
+      locationX:
         type: number
-      locationY: 
+      locationY:
         type: number
-      sizeX: 
+      sizeX:
         type: number
-      sizeY: 
+      sizeY:
         type: number
-      sizeZ: 
+      sizeZ:
         type: number
-      numberOfTriangles: 
+      numberOfTriangles:
         type: integer
-      volume: 
+      volume:
         type: number
-      createdDate: 
+      createdDate:
         type: string
         format: dateTime
-      createdBy: 
-        type: integer  
+      createdBy:
+        type: integer
       lastModifiedDate:
         type: string
         format: dateTime
-      lastModifiedBy: 
+      lastModifiedBy:
         type: integer
   Error:
     required:
