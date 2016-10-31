@@ -26,7 +26,7 @@ paths:
         Use this endpoint to check server status.
       operationId: status
       responses:
-        200:
+        "200":
           description: status response
           schema:
             $ref: '#/definitions/Status'
@@ -129,7 +129,7 @@ paths:
           description: ID of material to archived
           required: true
           type: integer
-          format: int64
+          format: int32
       responses:
         "200":
           description: material that has been archived with active field cleared
@@ -144,13 +144,13 @@ paths:
       description: Get list of parts
       operationId: getParts
       responses:
-        200:
+        "200":
           description: Successfully found the list of parts
           schema:
             type: array
             items:
               $ref: '#/definitions/Part'
-        403:
+        "403":
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
@@ -189,13 +189,13 @@ paths:
           required: false
           type: string
       responses:
-        200:
+        "200":
           description: Successfully retrieved list of machines
           schema:
             type: array
             items:
               $ref: '#/definitions/Machine'
-        403:
+        "403":
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
@@ -213,15 +213,15 @@ paths:
         schema:
           $ref: '#/definitions/Machine'
      responses:
-        200:
+        "200":
           description: Machine was successfully updated.
           schema:
             $ref: '#/definitions/Machine'
-        403:
+        "403":
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
-        404:
+        "404":
           description: Machine not found (id invalid)
         default:
           description: unexpected error
@@ -237,11 +237,11 @@ paths:
         schema:
           $ref: '#/definitions/Machine'
       responses:
-        200:
+        "200":
           description: Machine was successfully added.
           schema:
             $ref: '#/definitions/Machine'
-        403:
+        "403":
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
@@ -260,15 +260,15 @@ paths:
         required: true
         type: integer
       responses:
-        200:
+        "200":
           description: Successfully retrieved machines
           schema:
             $ref: '#/definitions/Machine'
-        403:
+        "403":
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
-        404:
+        "404":
           description: Machine not found (id invalid)
         default:
           description: unexpected error
@@ -284,15 +284,15 @@ paths:
         required: true
         type: integer
       responses:
-        200:
+        "200":
           description: Machine was successfully archived.
           schema:
             $ref: '#/definitions/Machine'
-        403:
+        "403":
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
-        404:
+        "404":
           description: Machine not found (id invalid)
         default:
           description: unexpected error
