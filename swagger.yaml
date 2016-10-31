@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.0.0
+  version: 1.0.1
   title: Simulation API
   description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
@@ -26,7 +26,7 @@ paths:
         Use this endpoint to check server status.
       operationId: status
       responses:
-        200:
+        "200":
           description: status response
           schema:
             $ref: '#/definitions/Status'
@@ -104,7 +104,7 @@ paths:
           description: ID of material to fetch
           required: true
           type: integer
-          format: int64
+          format: int32
       responses:
         "200":
           description: material response
@@ -129,7 +129,7 @@ paths:
           description: ID of material to archived
           required: true
           type: integer
-          format: int64
+          format: int32
       responses:
         "200":
           description: material that has been archived with active field cleared
@@ -144,13 +144,13 @@ paths:
       description: Get list of parts
       operationId: getParts
       responses:
-        200:
+        "200":
           description: Successfully found the list of parts
           schema:
             type: array
             items:
               $ref: '#/definitions/Part'
-        403:
+        "403":
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
@@ -158,7 +158,147 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-definitions:
+  /machines:
+    get:
+      description: Get list of machines
+      operationId: getMachineList
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: search
+          in: query
+          description: free text search on name and description
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully retrieved list of machines
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Update a machine. Not available for external consumers.
+      operationId: putMachine
+      parameters:
+      - name: machine
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Machine'
+     responses:
+        "200":
+          description: Machine was successfully updated.
+          schema:
+            $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+   post:
+      description: Add a machine. Not available for external consumers.
+      operationId: postMachine
+      parameters:
+      - name: machine
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Machine'
+      responses:
+        "200":
+          description: Machine was successfully added.
+          schema:
+            $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /machines/{id}
+    get:
+      description: Get a machine
+      operationId: getMachine
+      parameters:
+      - name: id
+        in: path
+        description: machine identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved machines
+          schema:
+            $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Archive a machine making it not available for use in a simulation (sets available property to false). Machine may be reactivated at later time using put with available equal to true. Not available for external consumers.
+      operationId: archiveMachine
+      parameters:
+      - name: id
+        in: path
+        description: machine identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Machine was successfully archived.
+          schema:
+            $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+ definitions:
   Status:
     properties:
       status:
@@ -294,3 +434,77 @@ definitions:
         format: int32
       message:
         type: string
+  Machine:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: machine identifier
+      name:
+        type: string
+        description: machine name
+      description:
+        type: string
+        description: machine description
+      processProperties:
+        type: object
+        description: parameters associated with machine operation
+        properties:
+          hatchSpacing:
+            type: number
+            format: double
+            description: distance between hatch lines in meters
+          beamDiameter:
+            type: number
+            format: double
+            description: diameter of laser beam in meters
+          laserWattage:
+            type: number
+            format: double
+            description: laser power in watts
+          laserWaveLength:
+            type: number
+            format: double
+            description: laser light wavelength in meters
+          scanSpeed:
+            type: number
+            format: double
+            description: speed at which laser travels in meters per second
+          timeDiscretizationDuringScaning:
+            type: number
+            format: double
+            description: in seconds
+          coolingToScanningTimeIncrementRatio:
+            type: integer
+            description:
+          totalCoolingTime:
+            type: number
+            format: double
+            description: cooling time between prior to deposition of next powder layer
+          heaterTemperature:
+            type: number
+            format: double
+            description: heater temperature
+      available:
+        type: boolean
+        description: true if machine can be used for simlation, false if machine has been archived
+      key:
+        type: string
+        description: key associated with this machine
+      version:
+        type: string
+        description: version number of this machine, read only
+      createdDate:
+        type: string
+        format: date-time
+        description: time machine was created, read only
+      createdBy:
+        type: string
+        description: user who created this machine, read only
+      lastModifiedDate:
+        type: string
+        format: date-time
+        description: time of last modification, read only
+      lastModifiedBy:
+        type: string
+        description: user who performed last modification, read only
