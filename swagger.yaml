@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.0.0
+  version: 1.0.1
   title: Simulation API
   description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
@@ -158,6 +158,75 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /machines:
+    get:
+      description: Get list of machines
+      operationId: getMachines
+      responses:
+        200:
+          description: Successfully retrieved list of machines
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Machine'
+        403:
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+# Should put perform updates?
+      description: Add a machine if it doesn't already exist
+      operationId: putMachine
+      responses:
+        200:
+          description: Machine was successfully added or already exists
+          schema:
+            $ref: '#/definitions/Machine'
+        403:
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+   post:
+      description: Add a machine
+      operationId: postMachine
+      responses:
+        200:
+          description: Machine was successfully added
+          schema:
+            $ref: '#/definitions/Machine'
+        403:
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+   delete:
+      description: Delete a machine
+      operationId: deleteMachine
+      responses:
+        200:
+          description: Machine was successfully removed or was not found
+          schema:
+            $ref: '#/definitions/Machine'
+        403:
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  # /machines/[id]: Do we need this for updating machine parameters and/or retrieving a single machine?
 definitions:
   Status:
     properties:
@@ -294,3 +363,59 @@ definitions:
         format: int32
       message:
         type: string
+  Machine:
+    type: object
+    properties:
+      id:
+        type: integer
+      # customerId: - doesn't currently exist but needed for custom machine
+      #   type: integer
+      name:
+        type: string
+      description:
+        type: string
+      imageLarge: assets/images/machines/eos_list.jpg
+        type: string
+      imageSmall: assets/images/machines/eos_list.jpg
+        type: string
+      properties:
+        type: object
+        hatchSpacing:
+          type: number
+          format: double
+        beamDiameter:
+          type: number
+          format: double
+        laserWattage:
+          type: integer
+        laserWaveLength:
+          type: number
+          format: double
+        scanSpeed:
+          type: integer
+        timeDiscretizationDuringScaning:
+          type: number
+          format: double
+        coolingToScanningTimeIncrementRatio:
+          type: integer
+        totalCoolingTime:
+          type: number
+          format: double
+        heaterTemperature:
+          type: integer
+        available:
+          type: boolean
+        key:
+          type: string
+        version:
+          type: string
+        createdDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+        lastModifiedDate:
+          type: string
+          format: date-time
+        lastModifiedBy:
+          type: integer
