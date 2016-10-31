@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.0.1
+  version: 1.0.2
   title: Simulation API
   description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
@@ -60,6 +60,10 @@ paths:
           items:
             type: string
         - name: search
+            in: query
+            description: free text search on name, description and tags.
+            required: false
+            type: string
       responses:
         "200":
           description: Successfully found the list of parts
