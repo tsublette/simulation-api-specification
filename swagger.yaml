@@ -61,7 +61,7 @@ paths:
             type: string
         - name: search
           in: query
-          description: free text search on name and descrCiption
+          description: free text search on name and description
           required: false
           type: string
       responses:
