@@ -330,7 +330,7 @@ paths:
       parameters:
         name: Part
         in: body
-        description: Part to add. First, upload the stl file to Amazon S3 bucket - 3dsim-<env>-library-svc in the path specified by the FileLocation property. Posting this object will then execute the part processing service.
+        description: Part to add. First, call parts/geometryurl to get a PartUploadRequest object. PUT the STL file AmazonS3 with the signed URL. User the s3Key property as the value of fileLocation. a POST with this object will execute the part processing service.
         required: true
         schema:
           $ref: '#/definitions/Part'
