@@ -379,7 +379,7 @@ paths:
         "200":
           description: Successfully returns a part geometry url for a new part upload
           schema:
-            type: string
+            type: '#/definitions/PartUploadRequest'
         "403":
           description: Not authorized
           schema:
@@ -693,3 +693,9 @@ paths:
       lastModifiedBy:
         type: string
         description: user who performed last modification, read only
+  PartUploadRequest:
+    properties:
+      signedURL:
+        type: string
+      s3Key:
+        type: string
