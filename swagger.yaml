@@ -60,6 +60,10 @@ paths:
           items:
             type: string
         - name: search
+          in: query
+          description: free text search on name and descrCiption
+          required: false
+          type: string
       responses:
         "200":
           description: Successfully found a list of materials available to the requestor
@@ -188,12 +192,12 @@ paths:
       description: Update a machine. Not available for external consumers.
       operationId: putMachine
       parameters:
-      - name: machine
-        in: body
-        required: true
-        schema:
-          $ref: '#/definitions/Machine'
-     responses:
+        - name: machine
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Machine'
+      responses:
         "200":
           description: Machine was successfully updated.
           schema:
@@ -208,7 +212,7 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-   post:
+    post:
       description: Add a machine. Not available for external consumers.
       operationId: postMachine
       parameters:
@@ -230,7 +234,7 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /machines/{id}
+  /machines/{id}:
     get:
       description: Get a machine
       operationId: getMachine
@@ -305,10 +309,10 @@ paths:
           items:
             type: string
         - name: search
-            in: query
-            description: free text search on name, description and tags.
-            required: false
-            type: string
+          in: query
+          description: free text search on name, description and tags.
+          required: false
+          type: string
       responses:
         "200":
           description: Successfully found the list of parts
@@ -328,12 +332,12 @@ paths:
       description: Adds a Part
       operationId: addParts
       parameters:
-        name: Part
-        in: body
-        description: Part to add. First, call parts/geometryurl to get a PartUploadRequest object. PUT the STL file AmazonS3 with the signed URL. User the s3Key property as the value of fileLocation. a POST with this object will execute the part processing service.
-        required: true
-        schema:
-          $ref: '#/definitions/Part'
+        - name: Part
+          in: body
+          description: Part to add. First, call parts/geometryurl to get a PartUploadRequest object. PUT the STL file AmazonS3 with the signed URL. User the s3Key property as the value of fileLocation. a POST with this object will execute the part processing service.
+          required: true
+          schema:
+            $ref: '#/definitions/Part'
       responses:
         "200":
           description: Successfully added a part
@@ -351,17 +355,16 @@ paths:
       description: Updates a Part
       operationId: UpdatePart
       parameters:
-        name: Part
-        in: body
-        description: Part to update.
-        required: true
-        schema:
-          $ref: '#/definitions/Part'
+        - name: Part
+          in: body
+          description: Part to update.
+          required: true
+          schema:
+            $ref: '#/definitions/Part'
       responses:
         "200":
           description: Successfully updated a part
           schema:
-          items:
             $ref: '#/definitions/Part'
         "403":
           description: Not authorized
@@ -379,7 +382,7 @@ paths:
         "200":
           description: Successfully returns a part geometry url for a new part upload
           schema:
-            type: '#/definitions/PartUploadRequest'
+            $ref: '#/definitions/PartUploadRequest'
         "403":
           description: Not authorized
           schema:
@@ -393,12 +396,12 @@ paths:
       description: Get a single part by Id
       operationId: getPart
       parameters:
-        name: id
-        in: path
-        description: ID of part to get
-        required: true
-        type: integer
-        format: int32
+        - name: id
+          in: path
+          description: ID of part to get
+          required: true
+          type: integer
+          format: int32
       responses:
         "200":
           description: Successfully found a part
@@ -418,12 +421,12 @@ paths:
       description: Archive a Part. Archiving a part will set the status to archived and will exclude the part from get list requests. To un-archive a part call /parts/{id}, change the status and then /parts (put) to update.
       operationId: ArchivePart
       parameters:
-        name: id
-        in: path
-        description: ID of part
-        required: true
-        type: integer
-        format: int32
+        - name: id
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
       responses:
         "200":
           description: Successfully archived a part
@@ -444,12 +447,12 @@ paths:
       description: Gets a time sensitive URL to the geometry file stored in AmazonS3.
       operationId: getPartGeometry
       parameters:
-        name: id
-        in: path
-        description: ID of part
-        required: true
-        type: integer
-        format: int32
+        - name: id
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
       responses:
         "200":
           description: Successfully returns a part geometry url
@@ -465,7 +468,7 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
- definitions:
+definitions:
   Status:
     properties:
       status:
@@ -495,65 +498,95 @@ paths:
         type: object
         properties:
           meanFreePathOfLaserInPowder:
-            type: double
+            type: number
+            format: double
           meanFreePathOfLaserInBulk:
-            type: double
+            type: number
+            format: double
           powderToSolidThermalConductivityRatio:
-            type: double
+            type: number
+            format: double
           powderToSolidSpecificHeatRatio:
-            type: double
+            type: number
+            format: double
           powderToSolidDensityRatio:
-            type: double
+            type: number
+            format: double
           solidThermalConductivityAtRoomTemperature:
-            type: double
+            type: number
+            format: double
           solidDensityAtRoomTemperature:
-            type: double
+            type: number
+            format: double
           solidSpecificHeatAtRoomTemperature:
-            type: double
+            type: number
+            format: double
           vaporizationLatentHeat:
-            type: double
+            type: number
+            format: double
           fusionLatentHeat:
-            type: double
+            type: number
+            format: double
           purgingGasConvectionCoefficient:
-            type: double
+            type: number
+            format: double
           solidusTemperature:
-            type: double
+            type: number
+            format: double
           liquidusTemperature:
-            type: double
+            type: number
+            format: double
           vaporizationTemperature:
-            type: double
+            type: number
+            format: double
           vaporizationStartTemperature:
-            type: double
+            type: number
+            format: double
           solidStateTransitionTemperature:
-            type: double
+            type: number
+            format: double
           energyAbsorbingRateByPowder:
-            type: double
+            type: number
+            format: double
           energyAbsorbingRateBySolid:
-            type: double
+            type: number
+            format: double
           thermalExpansionCoefficient:
-            type: double
+            type: number
+            format: double
           elasticModulus:
-            type: double
+            type: number
+            format: double
           elasticModulusOfBase:
-            type: double
+            type: number
+            format: double
           poissonRatio:
-            type: double
+            type: number
+            format: double
           materialStrengthYield:
-            type: double
+            type: number
+            format: double
           supportYieldStrengthRatio:
-            type: double
+            type: number
+            format: double
           materialStrainSensitivity:
-            type: double
+            type: number
+            format: double
           surfaceTension:
-            type: double
+            type: number
+            format: double
           atomicWeight:
-            type: double
+            type: number
+            format: double
           assumedStrain:
-            type: double
+            type: number
+            format: double
           strainPlasticityRelaxationFactor:
-            type: double
+            type: number
+            format: double
           anisotropicStrainCoefficients:
-            type: double
+            type: number
+            format: double
   Part:
     type: object
     properties:
@@ -661,7 +694,7 @@ paths:
             description: in seconds
           coolingToScanningTimeIncrementRatio:
             type: integer
-            description:
+            description: ratio between cooling to scanning time
           totalCoolingTime:
             type: number
             format: double
