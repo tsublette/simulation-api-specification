@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  version: 1.0.0
+  version: 1.0.2
   title: Simulation API
-  description: An API for managing simulations within 3DSIM.  
+  description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
   contact:
     name: 3DSIM API Team
@@ -26,10 +26,255 @@ paths:
         Use this endpoint to check server status.
       operationId: status
       responses:
-        200:
+        "200":
           description: status response
           schema:
             $ref: '#/definitions/Status'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /materials:
+    get:
+      description: Get list of materials
+      operationId: getMaterials
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: search
+      responses:
+        "200":
+          description: Successfully found a list of materials available to the requestor
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Material'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Creates a new material for the organizationId specified
+      operationId: addMaterial
+      parameters:
+        - name: material
+          in: body
+          description: Material to add
+          required: true
+          schema:
+            $ref: '#/definitions/Material'
+      responses:
+        "200":
+          description: material response
+          schema:
+            $ref: '#/definitions/Material'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /materials/{id}:
+    get:
+      description: Returns a material based on a single ID
+      operationId: findMaterialById
+      parameters:
+        - name: id
+          in: path
+          description: ID of material to fetch
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: material response
+          schema:
+            $ref: '#/definitions/Material'
+        "404":
+          description: Material not found
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: archives a single material based on the ID supplied
+      operationId: deleteMaterial
+      parameters:
+        - name: id
+          in: path
+          description: ID of material to archived
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: material that has been archived with active field cleared
+        "404":
+          description: Material not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /machines:
+    get:
+      description: Get list of machines
+      operationId: getMachineList
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: search
+          in: query
+          description: free text search on name and description
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully retrieved list of machines
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Update a machine. Not available for external consumers.
+      operationId: putMachine
+      parameters:
+      - name: machine
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Machine'
+     responses:
+        "200":
+          description: Machine was successfully updated.
+          schema:
+            $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+   post:
+      description: Add a machine. Not available for external consumers.
+      operationId: postMachine
+      parameters:
+      - name: machine
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Machine'
+      responses:
+        "200":
+          description: Machine was successfully added.
+          schema:
+            $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /machines/{id}
+    get:
+      description: Get a machine
+      operationId: getMachine
+      parameters:
+      - name: id
+        in: path
+        description: machine identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved machines
+          schema:
+            $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Archive a machine making it not available for use in a simulation (sets available property to false). Machine may be reactivated at later time using put with available equal to true. Not available for external consumers.
+      operationId: archiveMachine
+      parameters:
+      - name: id
+        in: path
+        description: machine identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Machine was successfully archived.
+          schema:
+            $ref: '#/definitions/Machine'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Machine not found (id invalid)
         default:
           description: unexpected error
           schema:
@@ -38,25 +283,192 @@ paths:
     get:
       description: Get list of parts
       operationId: getParts
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: search
+            in: query
+            description: free text search on name, description and tags.
+            required: false
+            type: string
       responses:
-        200:
+        "200":
           description: Successfully found the list of parts
           schema:
             type: array
             items:
               $ref: '#/definitions/Part'
-        403: 
-          description: Not authorized 
+        "403":
+          description: Not authorized
           schema:
             $ref: '#/definitions/Error'
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-definitions:
+    post:
+      description: Adds a Part
+      operationId: addParts
+      parameters:
+        name: Part
+        in: body
+        description: Part to add. First, upload the stl file to Amazon S3 bucket - 3dsim-<env>-library-svc in the path specified by the FileLocation property. Posting this object will then execute the part processing service.
+        required: true
+        schema:
+          $ref: '#/definitions/Part'
+      responses:
+        "200":
+          description: Successfully added a part
+          schema:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Updates a Part
+      operationId: UpdatePart
+      parameters:
+        name: Part
+        in: body
+        description: Part to update.
+        required: true
+        schema:
+          $ref: '#/definitions/Part'
+      responses:
+        "200":
+          description: Successfully updated a part
+          schema:
+          items:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /parts/geometryurl:
+    get:
+      description: Gets a time sensitive URL to upload a geometry file to AmazonS3.
+      operationId: getNewPartGeometry
+      responses:
+        "200":
+          description: Successfully returns a part geometry url for a new part upload
+          schema:
+            type: '#/definitions/PartUploadRequest'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /parts/{id}:
+    get:
+      description: Get a single part by Id
+      operationId: getPart
+      parameters:
+        name: id
+        in: path
+        description: ID of part to get
+        required: true
+        type: integer
+        format: int32
+      responses:
+        "200":
+          description: Successfully found a part
+          schema:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not authorized
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Archive a Part. Archiving a part will set the status to archived and will exclude the part from get list requests. To un-archive a part call /parts/{id}, change the status and then /parts (put) to update.
+      operationId: ArchivePart
+      parameters:
+        name: id
+        in: path
+        description: ID of part
+        required: true
+        type: integer
+        format: int32
+      responses:
+        "200":
+          description: Successfully archived a part
+          schema:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /parts/{id}/geometryurl:
+    get:
+      description: Gets a time sensitive URL to the geometry file stored in AmazonS3.
+      operationId: getPartGeometry
+      parameters:
+        name: id
+        in: path
+        description: ID of part
+        required: true
+        type: integer
+        format: int32
+      responses:
+        "200":
+          description: Successfully returns a part geometry url
+          schema:
+            type: string
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+ definitions:
   Status:
     properties:
-      status: 
+      status:
         type: string
         enum:
           - okay
@@ -64,42 +476,138 @@ definitions:
           - slow
       message:
         type: string
+  Material:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      key:
+        type: string
+      description:
+        type: string
+      organizationId:
+        type: integer
+      active:
+        type: boolean
+      scientificProperties:
+        type: object
+        properties:
+          meanFreePathOfLaserInPowder:
+            type: double
+          meanFreePathOfLaserInBulk:
+            type: double
+          powderToSolidThermalConductivityRatio:
+            type: double
+          powderToSolidSpecificHeatRatio:
+            type: double
+          powderToSolidDensityRatio:
+            type: double
+          solidThermalConductivityAtRoomTemperature:
+            type: double
+          solidDensityAtRoomTemperature:
+            type: double
+          solidSpecificHeatAtRoomTemperature:
+            type: double
+          vaporizationLatentHeat:
+            type: double
+          fusionLatentHeat:
+            type: double
+          purgingGasConvectionCoefficient:
+            type: double
+          solidusTemperature:
+            type: double
+          liquidusTemperature:
+            type: double
+          vaporizationTemperature:
+            type: double
+          vaporizationStartTemperature:
+            type: double
+          solidStateTransitionTemperature:
+            type: double
+          energyAbsorbingRateByPowder:
+            type: double
+          energyAbsorbingRateBySolid:
+            type: double
+          thermalExpansionCoefficient:
+            type: double
+          elasticModulus:
+            type: double
+          elasticModulusOfBase:
+            type: double
+          poissonRatio:
+            type: double
+          materialStrengthYield:
+            type: double
+          supportYieldStrengthRatio:
+            type: double
+          materialStrainSensitivity:
+            type: double
+          surfaceTension:
+            type: double
+          atomicWeight:
+            type: double
+          assumedStrain:
+            type: double
+          strainPlasticityRelaxationFactor:
+            type: double
+          anisotropicStrainCoefficients:
+            type: double
   Part:
     type: object
     properties:
-      id: 
+      id:
         type: integer
-      customerId: 
+        description: Id of the part
+      customerId:
         type: integer
-      name: 
+        description: Id of the organization that owns this part record
+      name:
         type: string
-      partFileLocation: 
+      description:
         type: string
-      status: 
+      tags:
+        type: string
+      partFileLocation:
+        type: string
+        description: location in a specfic AmazonS3 bucket for the part stl file
+      fileLocation:
+        type: string
+        description: location of an stl file for a newly posted Part. This field will be empty in Get requets and ignored in delete or put requets
+      status:
         type: integer
-      locationX: 
+        description: Uploaded(0), Processing(1), Available(2), Error(3), Archived(4)
+      locationX:
         type: number
-      locationY: 
+        description: default x location (in mm) where the lower left boudning box of the part will be placed on the bed
+      locationY:
         type: number
-      sizeX: 
+        description: default y location (in mm) where the lower left boudning box of the part will be placed on the bed
+      sizeX:
         type: number
-      sizeY: 
+        description: Width of the Part bounding box (in mm)
+      sizeY:
         type: number
-      sizeZ: 
+        description: Length of the Part bounding box (in mm)
+      sizeZ:
         type: number
-      numberOfTriangles: 
+        description: Height of the Part bounding box (in mm)
+      numberOfTriangles:
         type: integer
-      volume: 
+        description: Number of triangles in the original STL file
+      volume:
         type: number
-      createdDate: 
+        description: Approximate volume of the Part (in mm^3)
+      createdDate:
         type: string
         format: dateTime
-      createdBy: 
-        type: integer  
+      createdBy:
+        type: integer
       lastModifiedDate:
         type: string
         format: dateTime
-      lastModifiedBy: 
+      lastModifiedBy:
         type: integer
   Error:
     required:
@@ -110,4 +618,84 @@ definitions:
         type: integer
         format: int32
       message:
+        type: string
+  Machine:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: machine identifier
+      name:
+        type: string
+        description: machine name
+      description:
+        type: string
+        description: machine description
+      processProperties:
+        type: object
+        description: parameters associated with machine operation
+        properties:
+          hatchSpacing:
+            type: number
+            format: double
+            description: distance between hatch lines in meters
+          beamDiameter:
+            type: number
+            format: double
+            description: diameter of laser beam in meters
+          laserWattage:
+            type: number
+            format: double
+            description: laser power in watts
+          laserWaveLength:
+            type: number
+            format: double
+            description: laser light wavelength in meters
+          scanSpeed:
+            type: number
+            format: double
+            description: speed at which laser travels in meters per second
+          timeDiscretizationDuringScaning:
+            type: number
+            format: double
+            description: in seconds
+          coolingToScanningTimeIncrementRatio:
+            type: integer
+            description:
+          totalCoolingTime:
+            type: number
+            format: double
+            description: cooling time between prior to deposition of next powder layer
+          heaterTemperature:
+            type: number
+            format: double
+            description: heater temperature
+      available:
+        type: boolean
+        description: true if machine can be used for simlation, false if machine has been archived
+      key:
+        type: string
+        description: key associated with this machine
+      version:
+        type: string
+        description: version number of this machine, read only
+      createdDate:
+        type: string
+        format: date-time
+        description: time machine was created, read only
+      createdBy:
+        type: string
+        description: user who created this machine, read only
+      lastModifiedDate:
+        type: string
+        format: date-time
+        description: time of last modification, read only
+      lastModifiedBy:
+        type: string
+        description: user who performed last modification, read only
+  PartUploadRequest:
+    properties:
+      signedURL:
+        type: string
+      s3Key:
         type: string
