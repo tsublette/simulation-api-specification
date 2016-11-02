@@ -470,6 +470,9 @@ paths:
             $ref: '#/definitions/Error'
 definitions:
   Status:
+    type: object
+    required:
+      - status
     properties:
       status:
         type: string
