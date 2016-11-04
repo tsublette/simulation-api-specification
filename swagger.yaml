@@ -59,7 +59,7 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: search
+        - name: filter
           in: query
           description: free text search on name and description
           required: false
@@ -168,7 +168,7 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: search
+        - name: filter
           in: query
           description: free text search on name and description
           required: false
@@ -308,7 +308,7 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: search
+        - name: filter
           in: query
           description: free text search on name, description and tags.
           required: false
@@ -468,7 +468,57 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /simulationtemplates:
+    get:
+      description: Gets list of simulation templates
+      operationId: getSimulationTemplates
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: Filter objects based on fields in the object.  E.g. filter=name:my-simulation,state:running
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of simulation templates
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SimulationTemplate'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
+  SimulationTemplate:
+    type: object
+    properties:
+      title:
+        type: string
   Status:
     type: object
     required:
