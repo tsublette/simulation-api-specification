@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.0.2
+  version: 1.0.0
   title: Simulation API
   description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
@@ -59,7 +59,7 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: search
+        - name: filter
           in: query
           description: free text search on name and description
           required: false
@@ -71,8 +71,12 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Material'
-        "403":
+        "401":
           description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -94,6 +98,14 @@ paths:
           description: material response
           schema:
             $ref: '#/definitions/Material'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
         default:
           description: unexpected error
           schema:
@@ -114,19 +126,24 @@ paths:
           description: material response
           schema:
             $ref: '#/definitions/Material'
-        "404":
-          description: Material not found
-        "403":
+        "401":
           description: Not authorized
           schema:
             $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Material not found
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-    delete:
+  /materials/{id}/archive:
+    put:
       description: archives a single material based on the ID supplied
-      operationId: deleteMaterial
+      operationId: archiveMaterial
       parameters:
         - name: id
           in: path
@@ -137,6 +154,14 @@ paths:
       responses:
         "200":
           description: material that has been archived with active field cleared
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
         "404":
           description: Material not found
         default:
@@ -168,7 +193,7 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: search
+        - name: filter
           in: query
           description: free text search on name and description
           required: false
@@ -180,8 +205,12 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Machine'
-        "403":
+        "401":
           description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -202,8 +231,12 @@ paths:
           description: Machine was successfully updated.
           schema:
             $ref: '#/definitions/Machine'
-        "403":
+        "401":
           description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         "404":
@@ -226,8 +259,12 @@ paths:
           description: Machine was successfully added.
           schema:
             $ref: '#/definitions/Machine'
-        "403":
+        "401":
           description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -249,8 +286,12 @@ paths:
           description: Successfully retrieved machines
           schema:
             $ref: '#/definitions/Machine'
-        "403":
+        "401":
           description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         "404":
@@ -259,8 +300,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-    delete:
-      description: Archive a machine making it not available for use in a simulation (sets available property to false). Machine may be reactivated at later time using put with available equal to true. Not available for external consumers.
+  /machines/{id}/archive:
+    put:
+      description: Archive a machine making it not available for use in a simulation (sets active property to false). Machine may be reactivated at later time using put with active equal to true.
       operationId: archiveMachine
       parameters:
       - name: id
@@ -273,8 +315,12 @@ paths:
           description: Machine was successfully archived.
           schema:
             $ref: '#/definitions/Machine'
-        "403":
+        "401":
           description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         "404":
@@ -308,7 +354,7 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: search
+        - name: filter
           in: query
           description: free text search on name, description and tags.
           required: false
@@ -374,10 +420,10 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /parts/geometryurl:
+  /parts/geometryuploadurl:
     get:
       description: Gets a time sensitive URL to upload a geometry file to AmazonS3.
-      operationId: getNewPartGeometry
+      operationId: getNewPartGeometryUploadUrl
       responses:
         "200":
           description: Successfully returns a part geometry url for a new part upload
@@ -412,13 +458,14 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         "404":
-          description: Not authorized
+          description: Not found
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-    delete:
-      description: Archive a Part. Archiving a part will set the status to archived and will exclude the part from get list requests. To un-archive a part call /parts/{id}, change the status and then /parts (put) to update.
+  /parts/{id}/archive:
+    put:
+      description: Archive a Part. Archiving a part will set the status to archived and will exclude the part from get list requests. To unarchive a part call /parts/{id}, change the status and then /parts (put) to update.
       operationId: ArchivePart
       parameters:
         - name: id
@@ -432,8 +479,12 @@ paths:
           description: Successfully archived a part
           schema:
             $ref: '#/definitions/Part'
-        "403":
+        "401":
           description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         "404":
@@ -458,8 +509,12 @@ paths:
           description: Successfully returns a part geometry url
           schema:
             type: string
-        "403":
+        "401":
           description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         "404":
@@ -468,8 +523,1194 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /porositysimulationtemplates:
+    get:
+      description: Gets a list of all porosity simulation templates for the active user
+      operationId: getPorositySimulationTemplates
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: filter against available fields for the model
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PorositySimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Posts a new porosity simulation template
+      operationId: postPorositySimulationTemplate
+      parameters:
+        - name: PorositySimulationTemplate
+          in: body
+          description: PorositySimulationTemplate to add
+          required: true
+          schema:
+            $ref: '#/definitions/PorositySimulationTemplate'
+      responses:
+        "200":
+          description: Successfully added a template
+          schema:
+            $ref: '#/definitions/PorositySimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Updates a PorositySimulationTemplate
+      operationId: updatePorositySimulationTemplate
+      parameters:
+        - name: PorositySimulationTemplate
+          in: body
+          description: PorositySimulationTemplate to update.
+          required: true
+          schema:
+            $ref: '#/definitions/PorositySimulationTemplate'
+      responses:
+        "200":
+          description: Successfully updated the template
+          schema:
+            $ref: '#/definitions/PorositySimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /porositysimulationtemplates/{id}:
+    get:
+      description: Get a porosity simulation template
+      operationId: getPorositySimulationTemplate
+      parameters:
+      - name: id
+        in: path
+        description: simulation template identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation template
+          schema:
+            $ref: '#/definitions/PorositySimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Deletes a porosity simulation template
+      operationId: deletePorositySimulationTemplate
+      parameters:
+      - name: id
+        in: path
+        description: simulation template identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation template was successfully deleted.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation template not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /singlebeadsimulationtemplates:
+    get:
+      description: Gets a list of all single bead simulation templates for the active user
+      operationId: getSingleBeadSimulationTemplates
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: filter against available fields for the model
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SingleBeadSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Posts a new single bead simulation template
+      operationId: postSingleBeadSimulationTemplate
+      parameters:
+        - name: SingleBeadSimulationTemplate
+          in: body
+          description: SingleBeadSimulationTemplate to add
+          required: true
+          schema:
+            $ref: '#/definitions/SingleBeadSimulationTemplate'
+      responses:
+        "200":
+          description: Successfully added a template
+          schema:
+            $ref: '#/definitions/SingleBeadSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Updates a SingleBeadSimulationTemplate
+      operationId: updateSingleBeadSimulationTemplate
+      parameters:
+        - name: SingleBeadSimulationTemplate
+          in: body
+          description: SingleBeadSimulationTemplate to update.
+          required: true
+          schema:
+            $ref: '#/definitions/SingleBeadSimulationTemplate'
+      responses:
+        "200":
+          description: Successfully updated the template
+          schema:
+            $ref: '#/definitions/SingleBeadSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /singlebeadsimulationtemplates/{id}:
+    get:
+      description: Get a single bead simulation template
+      operationId: getSingleBeadSimulationTemplate
+      parameters:
+      - name: id
+        in: path
+        description: simulation template identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation template
+          schema:
+            $ref: '#/definitions/SingleBeadSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Deletes a single bead simulation template
+      operationId: deleteSingleBeadSimulationTemplate
+      parameters:
+      - name: id
+        in: path
+        description: simulation template identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation template was successfully deleted.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation template not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /thermalsimulationtemplates:
+    get:
+      description: Gets a list of all thermal simulation templates for the active user
+      operationId: getThermalSimulationTemplates
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: filter against available fields for the model
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ThermalSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Posts a new thermal simulation template
+      operationId: postThermalSimulationTemplate
+      parameters:
+        - name: ThermalSimulationTemplate
+          in: body
+          description: ThermalSimulationTemplate to add
+          required: true
+          schema:
+            $ref: '#/definitions/ThermalSimulationTemplate'
+      responses:
+        "200":
+          description: Successfully added a template
+          schema:
+            $ref: '#/definitions/ThermalSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Updates a ThermalSimulationTemplate
+      operationId: updateThermalSimulationTemplate
+      parameters:
+        - name: ThermalSimulationTemplate
+          in: body
+          description: ThermalSimulationTemplate to update.
+          required: true
+          schema:
+            $ref: '#/definitions/ThermalSimulationTemplate'
+      responses:
+        "200":
+          description: Successfully updated the template
+          schema:
+            $ref: '#/definitions/ThermalSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /thermalsimulationtemplates/{id}:
+    get:
+      description: Get a thermal simulation template
+      operationId: getThermalSimulationTemplate
+      parameters:
+      - name: id
+        in: path
+        description: simulation template identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation template
+          schema:
+            $ref: '#/definitions/ThermalSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Deletes a thermal simulation template
+      operationId: deleteThermalSimulationTemplate
+      parameters:
+      - name: id
+        in: path
+        description: simulation template identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation template was successfully deleted.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation template not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /assumedstrainsimulationtemplates:
+    get:
+      description: Gets a list of all assumed strain simulation templates for the active user
+      operationId: getAssumedStrainSimulationTemplates
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: filter against available fields for the model
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AssumedStrainSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Posts a new assumed strain simulation template
+      operationId: postAssumedStrainSimulationTemplate
+      parameters:
+        - name: AssumedStrainSimulationTemplate
+          in: body
+          description: AssumedStrainSimulationTemplate to add
+          required: true
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulationTemplate'
+      responses:
+        "200":
+          description: Successfully added a template
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Updates a AssumedStrainSimulationTemplate
+      operationId: updateAssumedStrainSimulationTemplate
+      parameters:
+        - name: AssumedStrainSimulationTemplate
+          in: body
+          description: AssumedStrainSimulationTemplate to update.
+          required: true
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulationTemplate'
+      responses:
+        "200":
+          description: Successfully updated the template
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /assumedstrainsimulationtemplates/{id}:
+    get:
+      description: Get a assumed strain simulation template
+      operationId: getAssumedStrainSimulationTemplate
+      parameters:
+      - name: id
+        in: path
+        description: simulation template identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation template
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulationTemplate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Deletes a assumed strain simulation template
+      operationId: deleteAssumedStrainSimulationTemplate
+      parameters:
+      - name: id
+        in: path
+        description: simulation template identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation template was successfully deleted.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation template not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /porositysimulations:
+    get:
+      description: Gets a list of all porosity simulation
+      operationId: getPorositySimulations
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: filter against available fields for the model
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PorositySimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Posts a new porosity simulation
+      operationId: postPorositySimulation
+      parameters:
+        - name: PorositySimulation
+          in: body
+          description: PorositySimulation to add
+          required: true
+          schema:
+            $ref: '#/definitions/PorositySimulation'
+      responses:
+        "200":
+          description: Successfully added a simulation
+          schema:
+            $ref: '#/definitions/PorositySimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /porositysimulations/{id}:
+    get:
+      description: Get a porosity simulation
+      operationId: getPorositySimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation
+          schema:
+            $ref: '#/definitions/PorositySimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /porositysimulations/{id}/cancel:
+    put:
+      description: Cancels a porosity simulation
+      operationId: cancelPorositySimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully cancelled.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /singlebeadsimulations:
+    get:
+      description: Gets a list of all single bead simulations for the active user
+      operationId: getSingleBeadSimulations
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: filter against available fields for the model
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SingleBeadSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Posts a new single bead simulation
+      operationId: postSingleBeadSimulation
+      parameters:
+        - name: SingleBeadSimulation
+          in: body
+          description: SingleBeadSimulation to add
+          required: true
+          schema:
+            $ref: '#/definitions/SingleBeadSimulation'
+      responses:
+        "200":
+          description: Successfully added a simulation
+          schema:
+            $ref: '#/definitions/SingleBeadSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /singlebeadsimulations/{id}:
+    get:
+      description: Get a single bead simulation
+      operationId: getSingleBeadSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation
+          schema:
+            $ref: '#/definitions/SingleBeadSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /singlebeadsimulations/{id}/cancel:
+    put:
+      description: Cancels a single bead simulation
+      operationId: cancelSingleBeadSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully cancelled.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /thermalsimulations:
+    get:
+      description: Gets a list of all thermal simulations for the active user
+      operationId: getThermalSimulations
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: filter against available fields for the model
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ThermalSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Posts a new thermal simulation
+      operationId: postThermalSimulation
+      parameters:
+        - name: ThermalSimulation
+          in: body
+          description: ThermalSimulation to add
+          required: true
+          schema:
+            $ref: '#/definitions/ThermalSimulation'
+      responses:
+        "200":
+          description: Successfully added a simulation
+          schema:
+            $ref: '#/definitions/ThermalSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /thermalsimulations/{id}:
+    get:
+      description: Get a thermal simulation
+      operationId: getThermalSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation
+          schema:
+            $ref: '#/definitions/ThermalSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /thermalsimulations/{id}/cancel:
+    put:
+      description: Cancels a thermal simulation
+      operationId: cancelThermalSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully cancelled.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /assumedstrainsimulations:
+    get:
+      description: Gets a list of all assumed strain simulations for the active user
+      operationId: getAssumedStrainSimulations
+      parameters:
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: filter
+          in: query
+          description: filter against available fields for the model
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AssumedStrainSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Posts a new assumed strain simulation
+      operationId: postAssumedStrainSimulation
+      parameters:
+        - name: AssumedStrainSimulation
+          in: body
+          description: AssumedStrainSimulation to add
+          required: true
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulation'
+      responses:
+        "200":
+          description: Successfully added a simulation
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /assumedstrainsimulations/{id}:
+    get:
+      description: Get a assumed strain simulation
+      operationId: getAssumedStrainSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /assumedstrainsimulations/{id}/cancel:
+    put:
+      description: Cancels a assumed strain simulation
+      operationId: cancelAssumedStrainSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully cancelled.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Status:
+    required:
+      - status
     properties:
       status:
         type: string
@@ -479,8 +1720,1088 @@ definitions:
           - slow
       message:
         type: string
+  SimulationTemplate:
+    discriminator: simulationTemplateType
+    required:
+      - simulationTemplateType
+    properties:
+      simulationTemplateType:
+        type: string
+        enum:
+          - SingleBeadSimulationTemplate
+          - PorositySimulationTemplate
+          - ThermalSimulationTemplate
+          - AssumedStrainSimulationTemplate
+      id:
+        type: integer
+      organizationId:
+        type: integer
+      title:
+        type: string
+      description:
+        type: string
+      created:
+        type: string
+        format: dateTime
+      lastModified:
+        type: string
+        format: dateTime
+
+  PorositySimulationTemplate:
+    allOf:
+      - $ref: "#/definitions/SimulationTemplate"
+      - required:
+        - geometryWidth
+        - geometryLength
+        - geometryHeight
+        - startingLayerAngle
+        - layerRotationAngle
+        - layerThicknessValues
+        - laserPowerValues
+        - scanSpeedValues
+        - hatchSpacingValues
+        - slicingStripeWidthValues
+        - originXValues
+        - originYValues
+        - usePeriodicAnalysis
+        properties:
+          geometryWidth:
+            description: Must be between 1 to 10 millimeters
+            type: number
+            minimum: 1
+            maximum: 10
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          geometryLength:
+            description: Must be between 1 to 10 millimeters
+            type: number
+            minimum: 1
+            maximum: 10
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          geometryHeight:
+            description: Must be between 1 to 10 millimeters
+            type: number
+            minimum: 1
+            maximum: 10
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          startingLayerAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          layerRotationAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          layerThicknessValues:
+            description: Array of layer thickness values to simulate across, Each value must be between 10 to 100 microns
+            type: array
+            items:
+              type: number
+              minimum: 0.00001
+              maximum: 0.0001
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          laserPowerValues:
+            description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
+            type: array
+            items:
+              type: number
+              minimum: 10
+              maximum: 1000
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          scanSpeedValues:
+            description: Array of scan speed values to simulate across, Each value must be between 10 to 10000 mm/s
+            type: array
+            items:
+              type: number
+              minimum: 0.01
+              maximum: 10
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          hatchSpacingValues:
+            description: Array of hatch spacing values to simulate across, Each value must be between 0.01 to 1.0 millimeters
+            type: array
+            items:
+              type: number
+              minimum: 0.00001
+              maximum: 0.001
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          slicingStripeWidthValues:
+            description: Array of slicing strip width values to simulate across, Each value must be between 1 to 100 millimeters
+            type: array
+            items:
+              type: number
+              minimum: 1
+              maximum: 100
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          originXValues:
+            description: Array of origin x values to simulate across, Each value must be between 0 to 200 millimeters
+            type: array
+            items:
+              type: number
+              minimum: 0
+              maximum: 200
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          originYValues:
+            description: Array of origin y values to simulate across, Each value must be between 0 to 200 millimeters
+            type: array
+            items:
+              type: number
+              minimum: 0
+              maximum: 200
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          usePeriodicAnalysis:
+            type: boolean
+
+  SingleBeadSimulationTemplate:
+    allOf:
+      - $ref: '#/definitions/SimulationTemplate'
+      - required:
+        - beadLength
+        - layerThickness
+        - laserPowerValues
+        - scanSpeedValues
+        - powderThermalConductivityValues
+        - powderPackingDensityValues
+        - meanFreePathInPowderValues
+        - meanFreePathInSolidValues
+        - laserAbsorptivityInPowderValues
+        - laserAbsorptivityInSolidValues
+        - solidusTemperatureValues
+        - liquidusTemperatureValues
+        properties:
+          beadLength:
+            description: Must be between 1 to 10 mm
+            type: number
+            minimum: 0.001
+            maximum: 0.01
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          layerThickness:
+            description: Must be between 10 to 100 microns
+            type: number
+            minimum: 0.00001
+            maximum: 0.0001
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          laserPowerValues:
+            description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
+            type: array
+            items:
+              type: number
+              minimum: 10
+              maximum: 1000
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          scanSpeedValues:
+            description: Array of scan speed values to simulate across, Each value must be between 10 to 10000 mm/s
+            type: array
+            items:
+              type: number
+              minimum: 0.01
+              maximum: 10
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          powderThermalConductivityValues:
+            description: Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0.1% and 10%
+            type: array
+            items:
+              type: number
+              minimum: 0.001
+              maximum: 0.1
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          powderPackingDensityValues:
+            description: Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 40% and 70%
+            type: array
+            items:
+              type: number
+              minimum: 0.4
+              maximum: 0.7
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          meanFreePathInPowderValues:
+            description: Array of Mean Free Path of Laser in Powder Values to simulate across, Each value must be between 0 and 1.25e5
+            type: array
+            items:
+              type: number
+              minimum: 0
+              maximum: 125000
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          meanFreePathInSolidValues:
+            description: Array of Mean Free Path of Laser in Solid Values to simulate across, Each value must be between 0 and 1.25e5
+            type: array
+            items:
+              type: number
+              minimum: 0
+              maximum: 125000
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          laserAbsorptivityInPowderValues:
+            description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 50% and 80%
+            type: array
+            items:
+              type: number
+              minimum: 0.5
+              maximum: 0.8
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          laserAbsorptivityInSolidValues:
+            description: Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 30% and 60%
+            type: array
+            items:
+              type: number
+              minimum: 0.3
+              maximum: 0.6
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          solidusTemperatureValues:
+            description: Array of Solidus Temperature Values Values to simulate across
+            type: array
+            items:
+              type: number
+          liquidusTemperatureValues:
+            description: Array of Liquidus Temperature Values Values to simulate across
+            type: array
+            items:
+              type: number
+
+  AssumedStrainSimulationTemplate:
+    allOf:
+      - $ref: '#/definitions/SimulationTemplate'
+      - required:
+        - layerThickness
+        - hatchSpacing
+        - laserWattage
+        - scanSpeed
+        - supportAngle
+        - supportFactorOfSafety
+        - minimumWallThickness
+        - maximumWallThickness
+        - minimumWallLength
+        - maximumWallLength
+        - minimumSupportHeight
+        - slicingStripeWidth
+        - voxelSize
+        - startingLayerAngle
+        - layerRotationAngle
+        - usePeriodicAnalysis
+        - supportOptimization
+        - outputStateMap
+        - outputShrinkage
+        - assumedStrain
+        - anisotropicStrainCoefficientsParallel
+        - anisotropicStrainCoefficientsPerpendicular
+        - anisotropicStrainCoefficientsZ
+        - supportYieldStrength
+        - supportYieldStrengthRatio
+        - elasticModulus
+        - poissonRatio
+        - relaxationFactor
+        properties:
+          layerThickness:
+            description: Must be between 10 to 100 microns
+            type: number
+            minimum: 0.00001
+            maximum: 0.0001
+          hatchSpacing:
+            description: Must be between 0.01 to 1.0 millimeters
+            type: number
+            minimum: 0.00001
+            maximum: 0.001
+          laserWattage:
+            description: Must be between 10 to 1000 watts
+            type: number
+            minimum: 10
+            maximum: 1000
+          scanSpeed:
+            description: Must be between 10 to 10000 mm/s
+            type: number
+            minimum: 0.01
+            maximum: 10
+          supportAngle:
+            description: Must be between 1 to 89 degrees
+            type: number
+            minimum: 1
+            maximum: 89
+          supportFactorOfSafety:
+            description: Multiplier for support calculations, Must be between 0.1 to 10
+            type: number
+            minimum: 0.1
+            maximum: 10
+          minimumWallThickness:
+            description: Must be between 50 to 300 microns, Must be less than maximumWallThickness
+            type: number
+            minimum: 0.00005
+            maximum: 0.0003
+          maximumWallThickness:
+            description: Must be between 150 to 2000 microns, Must be greater than minimumWallThickness
+            type: number
+            minimum: 0.00015
+            maximum: 0.002
+          minimumWallLength:
+            description: Must be between 25 to 1000 microns, Must be less than maximumWallLength
+            type: number
+            minimum: 0.000025
+            maximum: 0.001
+          maximumWallLength:
+            description: Must be between 25 to 3000 microns, Must be greater than minimumWallLength
+            type: number
+            minimum: 0.000025
+            maximum: 0.003
+          minimumSupportHeight:
+            description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
+            type: number
+            minimum: 0
+            maximum: 5
+          slicingStripeWidth:
+            description: Must be between 1 to 100 millimeters
+            type: number
+            minimum: 1
+            maximum: 100
+          voxelSize:
+            description: Must be between 0.02 to 2 millimeters
+            type: number
+            minimum: 0.02
+            maximum: 2
+          startingLayerAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+          layerRotationAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+          usePeriodicAnalysis:
+            type: boolean
+          supportOptimization:
+            type: boolean
+          outputStateMap:
+            type: boolean
+          outputShrinkage:
+            type: boolean
+          assumedStrain:
+            type: number
+          anisotropicStrainCoefficientsParallel:
+            type: number
+          anisotropicStrainCoefficientsPerpendicular:
+            type: number
+          anisotropicStrainCoefficientsZ:
+            type: number
+          supportYieldStrength:
+            type: number
+          supportYieldStrengthRatio:
+            type: number
+          elasticModulus:
+            type: number
+          poissonRatio:
+            type: number
+          relaxationFactor:
+            type: number
+
+  ThermalSimulationTemplate:
+    allOf:
+      - $ref: '#/definitions/SimulationTemplate'
+      - required:
+        - layerThickness
+        - hatchSpacing
+        - laserWattage
+        - scanSpeed
+        - supportAngle
+        - supportFactorOfSafety
+        - minimumWallThickness
+        - maximumWallThickness
+        - minimumWallLength
+        - maximumWallLength
+        - minimumSupportHeight
+        - slicingStripeWidth
+        - voxelSize
+        - startingLayerAngle
+        - layerRotationAngle
+        - usePeriodicAnalysis
+        - supportOptimization
+        - outputStateMap
+        - outputShrinkage
+        - assumedStrain
+        - anisotropicStrainCoefficientsParallel
+        - anisotropicStrainCoefficientsPerpendicular
+        - anisotropicStrainCoefficientsZ
+        - supportYieldStrength
+        - supportYieldStrengthRatio
+        - elasticModulus
+        - poissonRatio
+        - relaxationFactor
+        properties:
+          layerThickness:
+            description: Must be between 10 to 100 microns
+            type: number
+            minimum: 0.00001
+            maximum: 0.0001
+          hatchSpacing:
+            description: Must be between 0.01 to 1.0 millimeters
+            type: number
+            minimum: 0.00001
+            maximum: 0.001
+          laserWattage:
+            description: Must be between 10 to 1000 watts
+            type: number
+            minimum: 10
+            maximum: 1000
+          scanSpeed:
+            description: Must be between 10 to 10000 mm/s
+            type: number
+            minimum: 0.01
+            maximum: 10
+          supportAngle:
+            description: Must be between 1 to 89 degrees
+            type: number
+            minimum: 1
+            maximum: 89
+          supportFactorOfSafety:
+            description: Multiplier for support calculations, Must be between 0.1 to 10
+            type: number
+            minimum: 0.1
+            maximum: 10
+          minimumWallThickness:
+            description: Must be between 50 to 300 microns, Must be less than maximumWallThickness
+            type: number
+            minimum: 0.00005
+            maximum: 0.0003
+          maximumWallThickness:
+            description: Must be between 150 to 2000 microns, Must be greater than minimumWallThickness
+            type: number
+            minimum: 0.00015
+            maximum: 0.002
+          minimumWallLength:
+            description: Must be between 25 to 1000 microns, Must be less than maximumWallLength
+            type: number
+            minimum: 0.000025
+            maximum: 0.001
+          maximumWallLength:
+            description: Must be between 25 to 3000 microns, Must be greater than minimumWallLength
+            type: number
+            minimum: 0.000025
+            maximum: 0.003
+          minimumSupportHeight:
+            description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
+            type: number
+            minimum: 0
+            maximum: 5
+          slicingStripeWidth:
+            description: Must be between 1 to 100 millimeters
+            type: number
+            minimum: 1
+            maximum: 100
+          voxelSize:
+            description: Must be between 0.02 to 2 millimeters
+            type: number
+            minimum: 0.02
+            maximum: 2
+          startingLayerAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+          layerRotationAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+          usePeriodicAnalysis:
+            type: boolean
+          supportOptimization:
+            type: boolean
+          outputStateMap:
+            type: boolean
+          outputShrinkage:
+            type: boolean
+          assumedStrain:
+            type: number
+          anisotropicStrainCoefficientsParallel:
+            type: number
+          anisotropicStrainCoefficientsPerpendicular:
+            type: number
+          anisotropicStrainCoefficientsZ:
+            type: number
+          supportYieldStrength:
+            type: number
+          supportYieldStrengthRatio:
+            type: number
+          elasticModulus:
+            type: number
+          poissonRatio:
+            type: number
+          relaxationFactor:
+            type: number
+
+  Simulation:
+    discriminator: simulationType
+    required:
+      - simulationType
+    properties:
+      simulationType:
+        type: string
+        enum:
+          - SingleBeadSimulation
+          - PorositySimulation
+          - ThermalSimulation
+          - AssumedStrainSimulation
+      id:
+        type: integer
+      organizationId:
+        type: integer
+      title:
+        type: string
+      description:
+        type: string
+      status:
+        type: string
+        enum:
+          - requested
+          - simulating
+          - completed
+          - error
+          - cancelled
+      started:
+        type: string
+        format: dateTime
+      completed:
+        type: string
+        format: dateTime
+      percentComplete:
+        type: number
+      created:
+        type: string
+        format: dateTime
+      lastModified:
+        type: string
+        format: dateTime
+
+  PorositySimulation:
+    allOf:
+      - $ref: "#/definitions/Simulation"
+      - required:
+        - geometryWidth
+        - geometryLength
+        - geometryHeight
+        - startingLayerAngle
+        - layerRotationAngle
+        - layerThicknessValues
+        - laserPowerValues
+        - scanSpeedValues
+        - hatchSpacingValues
+        - slicingStripeWidthValues
+        - originXValues
+        - originYValues
+        - usePeriodicAnalysis
+        properties:
+          geometryWidth:
+            description: Must be between 1 to 10 millimeters
+            type: number
+            minimum: 1
+            maximum: 10
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          geometryLength:
+            description: Must be between 1 to 10 millimeters
+            type: number
+            minimum: 1
+            maximum: 10
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          geometryHeight:
+            description: Must be between 1 to 10 millimeters
+            type: number
+            minimum: 1
+            maximum: 10
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          startingLayerAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          layerRotationAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          layerThicknessValues:
+            description: Array of layer thickness values to simulate across, Each value must be between 10 to 100 microns
+            type: array
+            items:
+              type: number
+              minimum: 0.00001
+              maximum: 0.0001
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          laserPowerValues:
+            description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
+            type: array
+            items:
+              type: number
+              minimum: 10
+              maximum: 1000
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          scanSpeedValues:
+            description: Array of scan speed values to simulate across, Each value must be between 10 to 10000 mm/s
+            type: array
+            items:
+              type: number
+              minimum: 0.01
+              maximum: 10
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          hatchSpacingValues:
+            description: Array of hatch spacing values to simulate across, Each value must be between 0.01 to 1.0 millimeters
+            type: array
+            items:
+              type: number
+              minimum: 0.00001
+              maximum: 0.001
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          slicingStripeWidthValues:
+            description: Array of slicing strip width values to simulate across, Each value must be between 1 to 100 millimeters
+            type: array
+            items:
+              type: number
+              minimum: 1
+              maximum: 100
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          originXValues:
+            description: Array of origin x values to simulate across, Each value must be between 0 to 200 millimeters
+            type: array
+            items:
+              type: number
+              minimum: 0
+              maximum: 200
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          originYValues:
+            description: Array of origin y values to simulate across, Each value must be between 0 to 200 millimeters
+            type: array
+            items:
+              type: number
+              minimum: 0
+              maximum: 200
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          usePeriodicAnalysis:
+            type: boolean
+
+  SingleBeadSimulation:
+    allOf:
+      - $ref: '#/definitions/Simulation'
+      - required:
+        - beadLength
+        - layerThickness
+        - laserPowerValues
+        - scanSpeedValues
+        - powderThermalConductivityValues
+        - powderPackingDensityValues
+        - meanFreePathInPowderValues
+        - meanFreePathInSolidValues
+        - laserAbsorptivityInPowderValues
+        - laserAbsorptivityInSolidValues
+        - solidusTemperatureValues
+        - liquidusTemperatureValues
+        properties:
+          beadLength:
+            description: Must be between 1 to 10 mm
+            type: number
+            minimum: 0.001
+            maximum: 0.01
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          layerThickness:
+            description: Must be between 10 to 100 microns
+            type: number
+            minimum: 0.00001
+            maximum: 0.0001
+            exclusiveMinimum: false
+            exclusiveMaximum: false
+          laserPowerValues:
+            description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
+            type: array
+            items:
+              type: number
+              minimum: 10
+              maximum: 1000
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          scanSpeedValues:
+            description: Array of scan speed values to simulate across, Each value must be between 10 to 10000 mm/s
+            type: array
+            items:
+              type: number
+              minimum: 0.01
+              maximum: 10
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          powderThermalConductivityValues:
+            description: Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0.1% and 10%
+            type: array
+            items:
+              type: number
+              minimum: 0.001
+              maximum: 0.1
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          powderPackingDensityValues:
+            description: Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 40% and 70%
+            type: array
+            items:
+              type: number
+              minimum: 0.4
+              maximum: 0.7
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          meanFreePathInPowderValues:
+            description: Array of Mean Free Path of Laser in Powder Values to simulate across, Each value must be between 0 and 1.25e5
+            type: array
+            items:
+              type: number
+              minimum: 0
+              maximum: 125000
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          meanFreePathInSolidValues:
+            description: Array of Mean Free Path of Laser in Solid Values to simulate across, Each value must be between 0 and 1.25e5
+            type: array
+            items:
+              type: number
+              minimum: 0
+              maximum: 125000
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          laserAbsorptivityInPowderValues:
+            description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 50% and 80%
+            type: array
+            items:
+              type: number
+              minimum: 0.5
+              maximum: 0.8
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          laserAbsorptivityInSolidValues:
+            description: Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 30% and 60%
+            type: array
+            items:
+              type: number
+              minimum: 0.3
+              maximum: 0.6
+              exclusiveMinimum: false
+              exclusiveMaximum: false
+          solidusTemperatureValues:
+            description: Array of Solidus Temperature Values Values to simulate across
+            type: array
+            items:
+              type: number
+          liquidusTemperatureValues:
+            description: Array of Liquidus Temperature Values Values to simulate across
+            type: array
+            items:
+              type: number
+  AssumedStrainSimulation:
+    allOf:
+      - $ref: '#/definitions/Simulation'
+      - required:
+        - layerThickness
+        - hatchSpacing
+        - laserWattage
+        - scanSpeed
+        - supportAngle
+        - supportFactorOfSafety
+        - minimumWallThickness
+        - maximumWallThickness
+        - minimumWallLength
+        - maximumWallLength
+        - minimumSupportHeight
+        - slicingStripeWidth
+        - voxelSize
+        - startingLayerAngle
+        - layerRotationAngle
+        - usePeriodicAnalysis
+        - supportOptimization
+        - outputStateMap
+        - outputShrinkage
+        - assumedStrain
+        - anisotropicStrainCoefficientsParallel
+        - anisotropicStrainCoefficientsPerpendicular
+        - anisotropicStrainCoefficientsZ
+        - supportYieldStrength
+        - supportYieldStrengthRatio
+        - elasticModulus
+        - poissonRatio
+        - relaxationFactor
+        properties:
+          layerThickness:
+            description: Must be between 10 to 100 microns
+            type: number
+            minimum: 0.00001
+            maximum: 0.0001
+          hatchSpacing:
+            description: Must be between 0.01 to 1.0 millimeters
+            type: number
+            minimum: 0.00001
+            maximum: 0.001
+          laserWattage:
+            description: Must be between 10 to 1000 watts
+            type: number
+            minimum: 10
+            maximum: 1000
+          scanSpeed:
+            description: Must be between 10 to 10000 mm/s
+            type: number
+            minimum: 0.01
+            maximum: 10
+          supportAngle:
+            description: Must be between 1 to 89 degrees
+            type: number
+            minimum: 1
+            maximum: 89
+          supportFactorOfSafety:
+            description: Multiplier for support calculations, Must be between 0.1 to 10
+            type: number
+            minimum: 0.1
+            maximum: 10
+          minimumWallThickness:
+            description: Must be between 50 to 300 microns, Must be less than maximumWallThickness
+            type: number
+            minimum: 0.00005
+            maximum: 0.0003
+          maximumWallThickness:
+            description: Must be between 150 to 2000 microns, Must be greater than minimumWallThickness
+            type: number
+            minimum: 0.00015
+            maximum: 0.002
+          minimumWallLength:
+            description: Must be between 25 to 1000 microns, Must be less than maximumWallLength
+            type: number
+            minimum: 0.000025
+            maximum: 0.001
+          maximumWallLength:
+            description: Must be between 25 to 3000 microns, Must be greater than minimumWallLength
+            type: number
+            minimum: 0.000025
+            maximum: 0.003
+          minimumSupportHeight:
+            description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
+            type: number
+            minimum: 0
+            maximum: 5
+          slicingStripeWidth:
+            description: Must be between 1 to 100 millimeters
+            type: number
+            minimum: 1
+            maximum: 100
+          voxelSize:
+            description: Must be between 0.02 to 2 millimeters
+            type: number
+            minimum: 0.02
+            maximum: 2
+          startingLayerAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+          layerRotationAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+          usePeriodicAnalysis:
+            type: boolean
+          supportOptimization:
+            type: boolean
+          outputStateMap:
+            type: boolean
+          outputShrinkage:
+            type: boolean
+          assumedStrain:
+            type: number
+          anisotropicStrainCoefficientsParallel:
+            type: number
+          anisotropicStrainCoefficientsPerpendicular:
+            type: number
+          anisotropicStrainCoefficientsZ:
+            type: number
+          supportYieldStrength:
+            type: number
+          supportYieldStrengthRatio:
+            type: number
+          elasticModulus:
+            type: number
+          poissonRatio:
+            type: number
+          relaxationFactor:
+            type: number
+
+  ThermalSimulation:
+     allOf:
+      - $ref: '#/definitions/Simulation'
+      - required:
+        - layerThickness
+        - hatchSpacing
+        - laserWattage
+        - scanSpeed
+        - supportAngle
+        - supportFactorOfSafety
+        - minimumWallThickness
+        - maximumWallThickness
+        - minimumWallLength
+        - maximumWallLength
+        - minimumSupportHeight
+        - slicingStripeWidth
+        - voxelSize
+        - startingLayerAngle
+        - layerRotationAngle
+        - usePeriodicAnalysis
+        - supportOptimization
+        - outputStateMap
+        - outputShrinkage
+        - assumedStrain
+        - anisotropicStrainCoefficientsParallel
+        - anisotropicStrainCoefficientsPerpendicular
+        - anisotropicStrainCoefficientsZ
+        - supportYieldStrength
+        - supportYieldStrengthRatio
+        - elasticModulus
+        - poissonRatio
+        - relaxationFactor
+        properties:
+          layerThickness:
+            description: Must be between 10 to 100 microns
+            type: number
+            minimum: 0.00001
+            maximum: 0.0001
+          hatchSpacing:
+            description: Must be between 0.01 to 1.0 millimeters
+            type: number
+            minimum: 0.00001
+            maximum: 0.001
+          laserWattage:
+            description: Must be between 10 to 1000 watts
+            type: number
+            minimum: 10
+            maximum: 1000
+          scanSpeed:
+            description: Must be between 10 to 10000 mm/s
+            type: number
+            minimum: 0.01
+            maximum: 10
+          supportAngle:
+            description: Must be between 1 to 89 degrees
+            type: number
+            minimum: 1
+            maximum: 89
+          supportFactorOfSafety:
+            description: Multiplier for support calculations, Must be between 0.1 to 10
+            type: number
+            minimum: 0.1
+            maximum: 10
+          minimumWallThickness:
+            description: Must be between 50 to 300 microns, Must be less than maximumWallThickness
+            type: number
+            minimum: 0.00005
+            maximum: 0.0003
+          maximumWallThickness:
+            description: Must be between 150 to 2000 microns, Must be greater than minimumWallThickness
+            type: number
+            minimum: 0.00015
+            maximum: 0.002
+          minimumWallLength:
+            description: Must be between 25 to 1000 microns, Must be less than maximumWallLength
+            type: number
+            minimum: 0.000025
+            maximum: 0.001
+          maximumWallLength:
+            description: Must be between 25 to 3000 microns, Must be greater than minimumWallLength
+            type: number
+            minimum: 0.000025
+            maximum: 0.003
+          minimumSupportHeight:
+            description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
+            type: number
+            minimum: 0
+            maximum: 5
+          slicingStripeWidth:
+            description: Must be between 1 to 100 millimeters
+            type: number
+            minimum: 1
+            maximum: 100
+          voxelSize:
+            description: Must be between 0.02 to 2 millimeters
+            type: number
+            minimum: 0.02
+            maximum: 2
+          startingLayerAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+          layerRotationAngle:
+            description: Must be between 0 to 180 degrees
+            type: number
+            minimum: 0
+            maximum: 180
+          usePeriodicAnalysis:
+            type: boolean
+          supportOptimization:
+            type: boolean
+          outputStateMap:
+            type: boolean
+          outputShrinkage:
+            type: boolean
+          assumedStrain:
+            type: number
+          anisotropicStrainCoefficientsParallel:
+            type: number
+          anisotropicStrainCoefficientsPerpendicular:
+            type: number
+          anisotropicStrainCoefficientsZ:
+            type: number
+          supportYieldStrength:
+            type: number
+          supportYieldStrengthRatio:
+            type: number
+          elasticModulus:
+            type: number
+          poissonRatio:
+            type: number
+          relaxationFactor:
+            type: number
+
   Material:
     type: object
+    required:
+      - id
+      - name
+      - organizationId
+      - active
     properties:
       id:
         type: integer
@@ -496,6 +2817,37 @@ definitions:
         type: boolean
       scientificProperties:
         type: object
+        required:
+          - meanFreePathOfLaserInPowder
+          - meanFreePathOfLaserInBulk
+          - powderToSolidThermalConductivityRatio
+          - powderToSolidSpecificHeatRatio
+          - powderToSolidDensityRatio
+          - solidThermalConductivityAtRoomTemperature
+          - solidDensityAtRoomTemperature
+          - solidSpecificHeatAtRoomTemperature
+          - vaporizationLatentHeat
+          - fusionLatentHeat
+          - purgingGasConvectionCoefficient
+          - solidusTemperature
+          - liquidusTemperature
+          - vaporizationTemperature
+          - vaporizationStartTemperature
+          - solidStateTransitionTemperature
+          - energyAbsorbingRateByPowder
+          - energyAbsorbingRateBySolid
+          - thermalExpansionCoefficient
+          - elasticModulus
+          - elasticModulusOfBase
+          - poissonRatio
+          - materialStrengthYield
+          - supportYieldStrengthRatio
+          - materialStrainSensitivity
+          - surfaceTension
+          - atomicWeight
+          - assumedStrain
+          - strainPlasticityRelaxationFactor
+          - anisotropicStrainCoefficients
         properties:
           meanFreePathOfLaserInPowder:
             type: number
@@ -609,8 +2961,13 @@ definitions:
         type: string
         description: location of an stl file for a newly posted Part. This field will be empty in Get requets and ignored in delete or put requets
       status:
-        type: integer
-        description: Uploaded(0), Processing(1), Available(2), Error(3), Archived(4)
+        type: string
+        enum:
+          - uploaded
+          - processing
+          - available
+          - error
+          - archived
       locationX:
         type: number
         description: default x location (in mm) where the lower left boudning box of the part will be placed on the bed
@@ -642,18 +2999,12 @@ definitions:
         format: dateTime
       lastModifiedBy:
         type: integer
-  Error:
-    required:
-      - code
-      - message
-    properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
   Machine:
     type: object
+    required:
+      - name
+      - description
+      - available
     properties:
       id:
         type: integer
@@ -667,6 +3018,16 @@ definitions:
       processProperties:
         type: object
         description: parameters associated with machine operation
+        required:
+          - hatchSpacing
+          - beamDiameter
+          - laserWattage
+          - laserWaveLength
+          - scanSpeed
+          - timeDiscretizationDuringScaning
+          - coolingToScanningTimeIncrementRatio
+          - totalCoolingTime
+          - heaterTemperature
         properties:
           hatchSpacing:
             type: number
@@ -716,19 +3077,23 @@ definitions:
         type: string
         format: date-time
         description: time machine was created, read only
-      createdBy:
-        type: string
-        description: user who created this machine, read only
       lastModifiedDate:
         type: string
         format: date-time
         description: time of last modification, read only
-      lastModifiedBy:
-        type: string
-        description: user who performed last modification, read only
   PartUploadRequest:
     properties:
       signedURL:
         type: string
       s3Key:
+        type: string
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
         type: string
