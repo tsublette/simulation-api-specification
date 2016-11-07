@@ -1916,21 +1916,21 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           powderThermalConductivityValues:
-            description: Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0.1% and 10%
+            description: Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
             type: array
             items:
               type: number
-              minimum: 0.001
-              maximum: 0.1
+              minimum: 0
+              maximum: 1
               exclusiveMinimum: false
               exclusiveMaximum: false
           powderPackingDensityValues:
-            description: Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 40% and 70%
+            description: Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
             type: array
             items:
               type: number
-              minimum: 0.4
-              maximum: 0.7
+              minimum: 0
+              maximum: 1
               exclusiveMinimum: false
               exclusiveMaximum: false
           meanFreePathInPowderValues:
@@ -1952,21 +1952,21 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           laserAbsorptivityInPowderValues:
-            description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 50% and 80%
+            description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
             type: array
             items:
               type: number
-              minimum: 0.5
-              maximum: 0.8
+              minimum: 0
+              maximum: 1
               exclusiveMinimum: false
               exclusiveMaximum: false
           laserAbsorptivityInSolidValues:
-            description: Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 30% and 60%
+            description: Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
             type: array
             items:
               type: number
-              minimum: 0.3
-              maximum: 0.6
+              minimum: 0
+              maximum: 1
               exclusiveMinimum: false
               exclusiveMaximum: false
           solidusTemperatureValues:
@@ -2462,21 +2462,21 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           powderThermalConductivityValues:
-            description: Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0.1% and 10%
+            description: Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
             type: array
             items:
               type: number
-              minimum: 0.001
-              maximum: 0.1
+              minimum: 0
+              maximum: 1
               exclusiveMinimum: false
               exclusiveMaximum: false
           powderPackingDensityValues:
-            description: Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 40% and 70%
+            description: Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
             type: array
             items:
               type: number
-              minimum: 0.4
-              maximum: 0.7
+              minimum: 0
+              maximum: 1
               exclusiveMinimum: false
               exclusiveMaximum: false
           meanFreePathInPowderValues:
@@ -2498,21 +2498,21 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           laserAbsorptivityInPowderValues:
-            description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 50% and 80%
+            description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
             type: array
             items:
               type: number
-              minimum: 0.5
-              maximum: 0.8
+              minimum: 0
+              maximum: 1
               exclusiveMinimum: false
               exclusiveMaximum: false
           laserAbsorptivityInSolidValues:
-            description: Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 30% and 60%
+            description: Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
             type: array
             items:
               type: number
-              minimum: 0.3
-              maximum: 0.6
+              minimum: 0
+              maximum: 1
               exclusiveMinimum: false
               exclusiveMaximum: false
           solidusTemperatureValues:
