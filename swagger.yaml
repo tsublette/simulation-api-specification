@@ -1992,8 +1992,8 @@ definitions:
         - supportFactorOfSafety
         - minimumWallThickness
         - maximumWallThickness
-        - minimumWallLength
-        - maximumWallLength
+        - minimumWallDistance
+        - maximumWallDistance
         - minimumSupportHeight
         - slicingStripeWidth
         - voxelSize
@@ -2053,16 +2053,16 @@ definitions:
             type: number
             minimum: 0.00015
             maximum: 0.002
-          minimumWallLength:
-            description: Must be between 25 to 1000 microns, Must be less than maximumWallLength
+          minimumWallDistance:
+            description: Must be between 0 to 300 microns, Must be less than maximumWallDistance
             type: number
-            minimum: 0.000025
-            maximum: 0.001
-          maximumWallLength:
-            description: Must be between 25 to 3000 microns, Must be greater than minimumWallLength
+            minimum: 0
+            maximum: 0.0003
+          maximumWallDistance:
+            description: Must be between 0 to 5000 microns, Must be greater than minimumWallDistance
             type: number
-            minimum: 0.000025
-            maximum: 0.003
+            minimum: 0
+            maximum: 0.005
           minimumSupportHeight:
             description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
             type: number
@@ -2127,8 +2127,8 @@ definitions:
         - supportFactorOfSafety
         - minimumWallThickness
         - maximumWallThickness
-        - minimumWallLength
-        - maximumWallLength
+        - minimumWallDistance
+        - maximumWallDistance
         - minimumSupportHeight
         - slicingStripeWidth
         - voxelSize
@@ -2188,16 +2188,16 @@ definitions:
             type: number
             minimum: 0.00015
             maximum: 0.002
-          minimumWallLength:
-            description: Must be between 25 to 1000 microns, Must be less than maximumWallLength
+          minimumWallDistance:
+            description: Must be between 0 to 300 microns, Must be less than maximumWallDistance
             type: number
-            minimum: 0.000025
-            maximum: 0.001
-          maximumWallLength:
-            description: Must be between 25 to 3000 microns, Must be greater than minimumWallLength
+            minimum: 0
+            maximum: 0.0003
+          maximumWallDistance:
+            description: Must be between 0 to 5000 microns, Must be greater than minimumWallDistance
             type: number
-            minimum: 0.000025
-            maximum: 0.003
+            minimum: 0
+            maximum: 0.005
           minimumSupportHeight:
             description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
             type: number
@@ -2537,8 +2537,8 @@ definitions:
         - supportFactorOfSafety
         - minimumWallThickness
         - maximumWallThickness
-        - minimumWallLength
-        - maximumWallLength
+        - minimumWallDistance
+        - maximumWallDistance
         - minimumSupportHeight
         - slicingStripeWidth
         - voxelSize
@@ -2598,16 +2598,16 @@ definitions:
             type: number
             minimum: 0.00015
             maximum: 0.002
-          minimumWallLength:
-            description: Must be between 25 to 1000 microns, Must be less than maximumWallLength
+          minimumWallDistance:
+            description: Must be between 0 to 300 microns, Must be less than maximumWallDistance
             type: number
-            minimum: 0.000025
-            maximum: 0.001
-          maximumWallLength:
-            description: Must be between 25 to 3000 microns, Must be greater than minimumWallLength
+            minimum: 0
+            maximum: 0.0003
+          maximumWallDistance:
+            description: Must be between 0 to 5000 microns, Must be greater than minimumWallDistance
             type: number
-            minimum: 0.000025
-            maximum: 0.003
+            minimum: 0
+            maximum: 0.005
           minimumSupportHeight:
             description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
             type: number
@@ -2672,8 +2672,8 @@ definitions:
         - supportFactorOfSafety
         - minimumWallThickness
         - maximumWallThickness
-        - minimumWallLength
-        - maximumWallLength
+        - minimumWallDistance
+        - maximumWallDistance
         - minimumSupportHeight
         - slicingStripeWidth
         - voxelSize
@@ -2733,16 +2733,16 @@ definitions:
             type: number
             minimum: 0.00015
             maximum: 0.002
-          minimumWallLength:
-            description: Must be between 25 to 1000 microns, Must be less than maximumWallLength
+          minimumWallDistance:
+            description: Must be between 0 to 300 microns, Must be less than maximumWallDistance
             type: number
-            minimum: 0.000025
-            maximum: 0.001
-          maximumWallLength:
-            description: Must be between 25 to 3000 microns, Must be greater than minimumWallLength
+            minimum: 0
+            maximum: 0.0003
+          maximumWallDistance:
+            description: Must be between 0 to 5000 microns, Must be greater than minimumWallDistance
             type: number
-            minimum: 0.000025
-            maximum: 0.003
+            minimum: 0
+            maximum: 0.005
           minimumSupportHeight:
             description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
             type: number
