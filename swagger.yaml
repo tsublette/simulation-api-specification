@@ -1766,24 +1766,24 @@ definitions:
         - usePeriodicAnalysis
         properties:
           geometryWidth:
-            description: Must be between 1 to 10 millimeters
+            description: Must be between 0.001 to 0.01 millimeters
             type: number
-            minimum: 1
-            maximum: 10
+            minimum: 0.001
+            maximum: 0.01
             exclusiveMinimum: false
             exclusiveMaximum: false
           geometryLength:
-            description: Must be between 1 to 10 millimeters
+            description: Must be between 0.001 to 0.01 millimeters
             type: number
-            minimum: 1
-            maximum: 10
+            minimum: 0.001
+            maximum: 0.01
             exclusiveMinimum: false
             exclusiveMaximum: false
           geometryHeight:
-            description: Must be between 1 to 10 millimeters
+            description: Must be between 0.001 to 0.01 millimeters
             type: number
-            minimum: 1
-            maximum: 10
+            minimum: 0.001
+            maximum: 0.01
             exclusiveMinimum: false
             exclusiveMaximum: false
           startingLayerAngle:
@@ -1801,7 +1801,7 @@ definitions:
             exclusiveMinimum: false
             exclusiveMaximum: false
           layerThicknessValues:
-            description: Array of layer thickness values to simulate across, Each value must be between 10 to 100 microns
+            description: Array of layer thickness values to simulate across, Each value must be between 0.00001 to 0.0001 meters
             type: array
             items:
               type: number
@@ -1819,7 +1819,7 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           scanSpeedValues:
-            description: Array of scan speed values to simulate across, Each value must be between 10 to 10000 mm/s
+            description: Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
             type: array
             items:
               type: number
@@ -1828,7 +1828,7 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           hatchSpacingValues:
-            description: Array of hatch spacing values to simulate across, Each value must be between 0.01 to 1.0 millimeters
+            description: Array of hatch spacing values to simulate across, Each value must be between 0.00001 to 0.001 meters
             type: array
             items:
               type: number
@@ -1837,30 +1837,30 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           slicingStripeWidthValues:
-            description: Array of slicing strip width values to simulate across, Each value must be between 1 to 100 millimeters
+            description: Array of slicing strip width values to simulate across, Each value must be between 0.001 to 0.1 meters
             type: array
             items:
               type: number
-              minimum: 1
-              maximum: 100
+              minimum: 0.001
+              maximum: 0.1
               exclusiveMinimum: false
               exclusiveMaximum: false
           originXValues:
-            description: Array of origin x values to simulate across, Each value must be between 0 to 200 millimeters
+            description: Array of origin x values to simulate across, Each value must be between 0 to 0.2 meters
             type: array
             items:
               type: number
               minimum: 0
-              maximum: 200
+              maximum: 0.2
               exclusiveMinimum: false
               exclusiveMaximum: false
           originYValues:
-            description: Array of origin y values to simulate across, Each value must be between 0 to 200 millimeters
+            description: Array of origin y values to simulate across, Each value must be between 0 to 0.2 meters
             type: array
             items:
               type: number
               minimum: 0
-              maximum: 200
+              maximum: 0.2
               exclusiveMinimum: false
               exclusiveMaximum: false
           usePeriodicAnalysis:
@@ -1884,14 +1884,14 @@ definitions:
         - liquidusTemperatureValues
         properties:
           beadLength:
-            description: Must be between 1 to 10 mm
+            description: Must be between 0.001 to 0.01 meters
             type: number
             minimum: 0.001
             maximum: 0.01
             exclusiveMinimum: false
             exclusiveMaximum: false
           layerThickness:
-            description: Must be between 10 to 100 microns
+            description: Must be between 0.00001 to 0.0001 meters
             type: number
             minimum: 0.00001
             maximum: 0.0001
@@ -1907,7 +1907,7 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           scanSpeedValues:
-            description: Array of scan speed values to simulate across, Each value must be between 10 to 10000 mm/s
+            description: Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
             type: array
             items:
               type: number
@@ -2014,12 +2014,12 @@ definitions:
         - relaxationFactor
         properties:
           layerThickness:
-            description: Must be between 10 to 100 microns
+            description: Must be between 0.00001 to 0.0001 meters
             type: number
             minimum: 0.00001
             maximum: 0.0001
           hatchSpacing:
-            description: Must be between 0.01 to 1.0 millimeters
+            description: Must be between 0.00001 to 0.001 meters
             type: number
             minimum: 0.00001
             maximum: 0.001
@@ -2029,7 +2029,7 @@ definitions:
             minimum: 10
             maximum: 1000
           scanSpeed:
-            description: Must be between 10 to 10000 mm/s
+            description: Must be between 0.01 to 10 meters/second
             type: number
             minimum: 0.01
             maximum: 10
@@ -2044,40 +2044,40 @@ definitions:
             minimum: 0.1
             maximum: 10
           minimumWallThickness:
-            description: Must be between 50 to 300 microns, Must be less than maximumWallThickness
+            description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
             type: number
             minimum: 0.00005
             maximum: 0.0003
           maximumWallThickness:
-            description: Must be between 150 to 2000 microns, Must be greater than minimumWallThickness
+            description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
             type: number
             minimum: 0.00015
             maximum: 0.002
           minimumWallDistance:
-            description: Must be between 0 to 300 microns, Must be less than maximumWallDistance
+            description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
             type: number
             minimum: 0
             maximum: 0.0003
           maximumWallDistance:
-            description: Must be between 0 to 5000 microns, Must be greater than minimumWallDistance
+            description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
             type: number
             minimum: 0
             maximum: 0.005
           minimumSupportHeight:
-            description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
+            description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
             type: number
             minimum: 0
-            maximum: 5
+            maximum: 0.005
           slicingStripeWidth:
-            description: Must be between 1 to 100 millimeters
+            description: Must be between 0.001 to 0.1 meters
             type: number
-            minimum: 1
-            maximum: 100
+            minimum: 0.001
+            maximum: 0.1
           voxelSize:
-            description: Must be between 0.02 to 2 millimeters
+            description: Must be between 0.00002 to 0.002 meters
             type: number
-            minimum: 0.02
-            maximum: 2
+            minimum: 0.00002
+            maximum: 0.002
           startingLayerAngle:
             description: Must be between 0 to 180 degrees
             type: number
@@ -2149,12 +2149,12 @@ definitions:
         - relaxationFactor
         properties:
           layerThickness:
-            description: Must be between 10 to 100 microns
+            description: Must be between 0.00001 to 0.0001 meters
             type: number
             minimum: 0.00001
             maximum: 0.0001
           hatchSpacing:
-            description: Must be between 0.01 to 1.0 millimeters
+            description: Must be between 0.00001 to 0.001 meters
             type: number
             minimum: 0.00001
             maximum: 0.001
@@ -2164,7 +2164,7 @@ definitions:
             minimum: 10
             maximum: 1000
           scanSpeed:
-            description: Must be between 10 to 10000 mm/s
+            description: Must be between 0.01 to 10 meters/second
             type: number
             minimum: 0.01
             maximum: 10
@@ -2179,40 +2179,40 @@ definitions:
             minimum: 0.1
             maximum: 10
           minimumWallThickness:
-            description: Must be between 50 to 300 microns, Must be less than maximumWallThickness
+            description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
             type: number
             minimum: 0.00005
             maximum: 0.0003
           maximumWallThickness:
-            description: Must be between 150 to 2000 microns, Must be greater than minimumWallThickness
+            description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
             type: number
             minimum: 0.00015
             maximum: 0.002
           minimumWallDistance:
-            description: Must be between 0 to 300 microns, Must be less than maximumWallDistance
+            description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
             type: number
             minimum: 0
             maximum: 0.0003
           maximumWallDistance:
-            description: Must be between 0 to 5000 microns, Must be greater than minimumWallDistance
+            description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
             type: number
             minimum: 0
             maximum: 0.005
           minimumSupportHeight:
-            description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
+            description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
             type: number
             minimum: 0
-            maximum: 5
+            maximum: 0.005
           slicingStripeWidth:
-            description: Must be between 1 to 100 millimeters
+            description: Must be between 0.001 to 0.1 meters
             type: number
-            minimum: 1
-            maximum: 100
+            minimum: 0.001
+            maximum: 0.1
           voxelSize:
-            description: Must be between 0.02 to 2 millimeters
+            description: Must be between 0.00002 to 0.002 meters
             type: number
-            minimum: 0.02
-            maximum: 2
+            minimum: 0.00002
+            maximum: 0.002
           startingLayerAngle:
             description: Must be between 0 to 180 degrees
             type: number
@@ -2312,24 +2312,24 @@ definitions:
         - usePeriodicAnalysis
         properties:
           geometryWidth:
-            description: Must be between 1 to 10 millimeters
+            description: Must be between 0.001 to 0.01 meters
             type: number
-            minimum: 1
-            maximum: 10
+            minimum: 0.001
+            maximum: 0.01
             exclusiveMinimum: false
             exclusiveMaximum: false
           geometryLength:
-            description: Must be between 1 to 10 millimeters
+            description: Must be between 0.001 to 0.01 meters
             type: number
-            minimum: 1
-            maximum: 10
+            minimum: 0.001
+            maximum: 0.01
             exclusiveMinimum: false
             exclusiveMaximum: false
           geometryHeight:
-            description: Must be between 1 to 10 millimeters
+            description: Must be between 0.001 to 0.01 meters
             type: number
-            minimum: 1
-            maximum: 10
+            minimum: 0.001
+            maximum: 0.01
             exclusiveMinimum: false
             exclusiveMaximum: false
           startingLayerAngle:
@@ -2347,7 +2347,7 @@ definitions:
             exclusiveMinimum: false
             exclusiveMaximum: false
           layerThicknessValues:
-            description: Array of layer thickness values to simulate across, Each value must be between 10 to 100 microns
+            description: Array of layer thickness values to simulate across, Each value must be between 0.00001 to 0.0001 meters
             type: array
             items:
               type: number
@@ -2365,7 +2365,7 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           scanSpeedValues:
-            description: Array of scan speed values to simulate across, Each value must be between 10 to 10000 mm/s
+            description: Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
             type: array
             items:
               type: number
@@ -2374,7 +2374,7 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           hatchSpacingValues:
-            description: Array of hatch spacing values to simulate across, Each value must be between 0.01 to 1.0 millimeters
+            description: Array of hatch spacing values to simulate across, Each value must be between 0.00001 to 0.001 meters
             type: array
             items:
               type: number
@@ -2383,30 +2383,30 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           slicingStripeWidthValues:
-            description: Array of slicing strip width values to simulate across, Each value must be between 1 to 100 millimeters
+            description: Array of slicing strip width values to simulate across, Each value must be between 0.001 to 0.1 meters
             type: array
             items:
               type: number
-              minimum: 1
-              maximum: 100
+              minimum: 0.001
+              maximum: 0.1
               exclusiveMinimum: false
               exclusiveMaximum: false
           originXValues:
-            description: Array of origin x values to simulate across, Each value must be between 0 to 200 millimeters
+            description: Array of origin x values to simulate across, Each value must be between 0 to 0.2 meters
             type: array
             items:
               type: number
               minimum: 0
-              maximum: 200
+              maximum: 0.2
               exclusiveMinimum: false
               exclusiveMaximum: false
           originYValues:
-            description: Array of origin y values to simulate across, Each value must be between 0 to 200 millimeters
+            description: Array of origin y values to simulate across, Each value must be between 0 to 0.2 meters
             type: array
             items:
               type: number
               minimum: 0
-              maximum: 200
+              maximum: 0.2
               exclusiveMinimum: false
               exclusiveMaximum: false
           usePeriodicAnalysis:
@@ -2430,14 +2430,14 @@ definitions:
         - liquidusTemperatureValues
         properties:
           beadLength:
-            description: Must be between 1 to 10 mm
+            description: Must be between 0.001 to 0.01 meters
             type: number
             minimum: 0.001
             maximum: 0.01
             exclusiveMinimum: false
             exclusiveMaximum: false
           layerThickness:
-            description: Must be between 10 to 100 microns
+            description: Must be between 0.00001 to 0.0001 meters
             type: number
             minimum: 0.00001
             maximum: 0.0001
@@ -2453,7 +2453,7 @@ definitions:
               exclusiveMinimum: false
               exclusiveMaximum: false
           scanSpeedValues:
-            description: Array of scan speed values to simulate across, Each value must be between 10 to 10000 mm/s
+            description: Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
             type: array
             items:
               type: number
@@ -2559,12 +2559,12 @@ definitions:
         - relaxationFactor
         properties:
           layerThickness:
-            description: Must be between 10 to 100 microns
+            description: Must be between 0.00001 to 0.0001 meters
             type: number
             minimum: 0.00001
             maximum: 0.0001
           hatchSpacing:
-            description: Must be between 0.01 to 1.0 millimeters
+            description: Must be between 0.00001 to 0.001 meters
             type: number
             minimum: 0.00001
             maximum: 0.001
@@ -2574,7 +2574,7 @@ definitions:
             minimum: 10
             maximum: 1000
           scanSpeed:
-            description: Must be between 10 to 10000 mm/s
+            description: Must be between 0.01 to 10 meters/second
             type: number
             minimum: 0.01
             maximum: 10
@@ -2589,40 +2589,40 @@ definitions:
             minimum: 0.1
             maximum: 10
           minimumWallThickness:
-            description: Must be between 50 to 300 microns, Must be less than maximumWallThickness
+            description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
             type: number
             minimum: 0.00005
             maximum: 0.0003
           maximumWallThickness:
-            description: Must be between 150 to 2000 microns, Must be greater than minimumWallThickness
+            description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
             type: number
             minimum: 0.00015
             maximum: 0.002
           minimumWallDistance:
-            description: Must be between 0 to 300 microns, Must be less than maximumWallDistance
+            description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
             type: number
             minimum: 0
             maximum: 0.0003
           maximumWallDistance:
-            description: Must be between 0 to 5000 microns, Must be greater than minimumWallDistance
+            description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
             type: number
             minimum: 0
             maximum: 0.005
           minimumSupportHeight:
-            description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
+            description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
             type: number
             minimum: 0
-            maximum: 5
+            maximum: 0.005
           slicingStripeWidth:
-            description: Must be between 1 to 100 millimeters
+            description: Must be between 0.001 to 0.1 meters
             type: number
-            minimum: 1
-            maximum: 100
+            minimum: 0.001
+            maximum: 0.1
           voxelSize:
-            description: Must be between 0.02 to 2 millimeters
+            description: Must be between 0.00002 to 0.002 meters
             type: number
-            minimum: 0.02
-            maximum: 2
+            minimum: 0.00002
+            maximum: 0.002
           startingLayerAngle:
             description: Must be between 0 to 180 degrees
             type: number
@@ -2694,12 +2694,12 @@ definitions:
         - relaxationFactor
         properties:
           layerThickness:
-            description: Must be between 10 to 100 microns
+            description: Must be between 0.00001 to 0.0001 meters
             type: number
             minimum: 0.00001
             maximum: 0.0001
           hatchSpacing:
-            description: Must be between 0.01 to 1.0 millimeters
+            description: Must be between 0.00001 to 0.001 meters
             type: number
             minimum: 0.00001
             maximum: 0.001
@@ -2709,7 +2709,7 @@ definitions:
             minimum: 10
             maximum: 1000
           scanSpeed:
-            description: Must be between 10 to 10000 mm/s
+            description: Must be between 0.01 to 10 meters/second
             type: number
             minimum: 0.01
             maximum: 10
@@ -2724,40 +2724,40 @@ definitions:
             minimum: 0.1
             maximum: 10
           minimumWallThickness:
-            description: Must be between 50 to 300 microns, Must be less than maximumWallThickness
+            description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
             type: number
             minimum: 0.00005
             maximum: 0.0003
           maximumWallThickness:
-            description: Must be between 150 to 2000 microns, Must be greater than minimumWallThickness
+            description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
             type: number
             minimum: 0.00015
             maximum: 0.002
           minimumWallDistance:
-            description: Must be between 0 to 300 microns, Must be less than maximumWallDistance
+            description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
             type: number
             minimum: 0
             maximum: 0.0003
           maximumWallDistance:
-            description: Must be between 0 to 5000 microns, Must be greater than minimumWallDistance
+            description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
             type: number
             minimum: 0
             maximum: 0.005
           minimumSupportHeight:
-            description: Distance to move the part off the base plate for supports, Must be between 0 to 5 mm
+            description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
             type: number
             minimum: 0
-            maximum: 5
+            maximum: 0.005
           slicingStripeWidth:
-            description: Must be between 1 to 100 millimeters
+            description: Must be between 0.001 to 0.1 meters
             type: number
-            minimum: 1
-            maximum: 100
+            minimum: 0.001
+            maximum: 0.1
           voxelSize:
-            description: Must be between 0.02 to 2 millimeters
+            description: Must be between 0.00002 to 0.002 meters
             type: number
-            minimum: 0.02
-            maximum: 2
+            minimum: 0.00002
+            maximum: 0.002
           startingLayerAngle:
             description: Must be between 0 to 180 degrees
             type: number
