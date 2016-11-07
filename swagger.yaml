@@ -588,12 +588,12 @@ paths:
       description: Posts a new porosity simulation
       operationId: postPorositySimulation
       parameters:
-        - name: PorositySimulation
+        - name: PorositySimulationRequest
           in: body
-          description: PorositySimulation to add
+          description: PorositySimulation fields required to add the simulation
           required: true
           schema:
-            $ref: '#/definitions/PorositySimulation'
+            $ref: '#/definitions/PorositySimulationRequest'
       responses:
         "200":
           description: Successfully added a simulation
@@ -727,12 +727,12 @@ paths:
       description: Posts a new single bead simulation
       operationId: postSingleBeadSimulation
       parameters:
-        - name: SingleBeadSimulation
+        - name: SingleBeadSimulationRequest
           in: body
-          description: SingleBeadSimulation to add
+          description: SingleBeadSimulationRequest fields required to add the simulation
           required: true
           schema:
-            $ref: '#/definitions/SingleBeadSimulation'
+            $ref: '#/definitions/SingleBeadSimulationRequest'
       responses:
         "200":
           description: Successfully added a simulation
@@ -866,12 +866,12 @@ paths:
       description: Posts a new thermal simulation
       operationId: postThermalSimulation
       parameters:
-        - name: ThermalSimulation
+        - name: ThermalSimulationRequest
           in: body
-          description: ThermalSimulation to add
+          description: ThermalSimulationRequest fields required to add a simulation
           required: true
           schema:
-            $ref: '#/definitions/ThermalSimulation'
+            $ref: '#/definitions/ThermalSimulationRequest'
       responses:
         "200":
           description: Successfully added a simulation
@@ -1005,12 +1005,12 @@ paths:
       description: Posts a new assumed strain simulation
       operationId: postAssumedStrainSimulation
       parameters:
-        - name: AssumedStrainSimulation
+        - name: AssumedStrainSimulationRequest
           in: body
-          description: AssumedStrainSimulation to add
+          description: AssumedStrainSimulationRequest fields required to add a simulation
           required: true
           schema:
-            $ref: '#/definitions/AssumedStrainSimulation'
+            $ref: '#/definitions/AssumedStrainSimulationRequest'
       responses:
         "200":
           description: Successfully added a simulation
@@ -1104,22 +1104,10 @@ definitions:
       message:
         type: string
 
-  Simulation:
-    discriminator: simulationType
+  SimulationCoreFields:
     required:
-      - simulationType
+      - title
     properties:
-      simulationType:
-        type: string
-        enum:
-          - SingleBeadSimulation
-          - PorositySimulation
-          - ThermalSimulation
-          - AssumedStrainSimulation
-      id:
-        type: integer
-      organizationId:
-        type: integer
       title:
         type: string
       description:
@@ -1128,538 +1116,593 @@ definitions:
         type: array
         items:
           type: string
-      status:
-        type: string
-        enum:
-          - draft
-          - requested
-          - simulating
-          - completed
-          - error
-          - cancelled
-      started:
-        type: string
-        format: dateTime
-      startedBy:
-        type: string
-      completed:
-        type: string
-        format: dateTime
-      percentComplete:
+
+  Simulation:
+    discriminator: simulationType
+    allOf:
+      - $ref: "#/definitions/SimulationCoreFields"
+      - required:
+        - simulationType
+        properties:
+          simulationType:
+            type: string
+            enum:
+              - SingleBeadSimulation
+              - PorositySimulation
+              - ThermalSimulation
+              - AssumedStrainSimulation
+          id:
+            type: integer
+          organizationId:
+            type: integer
+          status:
+            type: string
+            enum:
+              - draft
+              - requested
+              - simulating
+              - completed
+              - error
+              - cancelled
+          started:
+            type: string
+            format: dateTime
+          startedBy:
+            type: string
+          completed:
+            type: string
+            format: dateTime
+          percentComplete:
+            type: number
+          created:
+            type: string
+            format: dateTime
+            description: created time stamp, set server-side, read only
+          createdBy:
+            type: string
+            description: assigned user, set server-side, read only
+          lastModified:
+            type: string
+            format: dateTime
+            description: last modified time stamp, set server-side, read only
+          lastModifiedBy:
+            type: string
+            description: assigned user, set server-side, read only
+
+  PorositySimulationParameters:
+    required:
+      - geometryWidth
+      - geometryLength
+      - geometryHeight
+      - startingLayerAngle
+      - layerRotationAngle
+      - layerThicknessValues
+      - laserPowerValues
+      - scanSpeedValues
+      - hatchSpacingValues
+      - slicingStripeWidthValues
+      - originXValues
+      - originYValues
+      - usePeriodicAnalysis
+    properties:
+      geometryWidth:
+        description: Must be between 0.001 to 0.01 meters
         type: number
-      created:
-        type: string
-        format: dateTime
-      createdBy:
-        type: string
-      lastModified:
-        type: string
-        format: dateTime
-      lastModifiedBy:
-        type: string
+        minimum: 0.001
+        maximum: 0.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      geometryLength:
+        description: Must be between 0.001 to 0.01 meters
+        type: number
+        minimum: 0.001
+        maximum: 0.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      geometryHeight:
+        description: Must be between 0.001 to 0.01 meters
+        type: number
+        minimum: 0.001
+        maximum: 0.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      startingLayerAngle:
+        description: Must be between 0 to 180 degrees
+        type: number
+        minimum: 0
+        maximum: 180
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      layerRotationAngle:
+        description: Must be between 0 to 180 degrees
+        type: number
+        minimum: 0
+        maximum: 180
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      layerThicknessValues:
+        description: Array of layer thickness values to simulate across, Each value must be between 0.00001 to 0.0001 meters
+        type: array
+        items:
+          type: number
+          minimum: 0.00001
+          maximum: 0.0001
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      laserPowerValues:
+        description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
+        type: array
+        items:
+          type: number
+          minimum: 10
+          maximum: 1000
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      scanSpeedValues:
+        description: Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
+        type: array
+        items:
+          type: number
+          minimum: 0.01
+          maximum: 10
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      hatchSpacingValues:
+        description: Array of hatch spacing values to simulate across, Each value must be between 0.00001 to 0.001 meters
+        type: array
+        items:
+          type: number
+          minimum: 0.00001
+          maximum: 0.001
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      slicingStripeWidthValues:
+        description: Array of slicing strip width values to simulate across, Each value must be between 0.001 to 0.1 meters
+        type: array
+        items:
+          type: number
+          minimum: 0.001
+          maximum: 0.1
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      originXValues:
+        description: Array of origin x values to simulate across, Each value must be between 0 to 0.2 meters
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 0.2
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      originYValues:
+        description: Array of origin y values to simulate across, Each value must be between 0 to 0.2 meters
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 0.2
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      usePeriodicAnalysis:
+        type: boolean
+
+  PorositySimulationRequest:
+    allOf:
+      - $ref: "#/definitions/SimulationCoreFields"
+      - $ref: "#/definitions/PorositySimulationParameters"
 
   PorositySimulation:
     allOf:
       - $ref: "#/definitions/Simulation"
-      - required:
-        - geometryWidth
-        - geometryLength
-        - geometryHeight
-        - startingLayerAngle
-        - layerRotationAngle
-        - layerThicknessValues
-        - laserPowerValues
-        - scanSpeedValues
-        - hatchSpacingValues
-        - slicingStripeWidthValues
-        - originXValues
-        - originYValues
-        - usePeriodicAnalysis
-        properties:
-          geometryWidth:
-            description: Must be between 0.001 to 0.01 meters
-            type: number
-            minimum: 0.001
-            maximum: 0.01
-            exclusiveMinimum: false
-            exclusiveMaximum: false
-          geometryLength:
-            description: Must be between 0.001 to 0.01 meters
-            type: number
-            minimum: 0.001
-            maximum: 0.01
-            exclusiveMinimum: false
-            exclusiveMaximum: false
-          geometryHeight:
-            description: Must be between 0.001 to 0.01 meters
-            type: number
-            minimum: 0.001
-            maximum: 0.01
-            exclusiveMinimum: false
-            exclusiveMaximum: false
-          startingLayerAngle:
-            description: Must be between 0 to 180 degrees
-            type: number
-            minimum: 0
-            maximum: 180
-            exclusiveMinimum: false
-            exclusiveMaximum: false
-          layerRotationAngle:
-            description: Must be between 0 to 180 degrees
-            type: number
-            minimum: 0
-            maximum: 180
-            exclusiveMinimum: false
-            exclusiveMaximum: false
-          layerThicknessValues:
-            description: Array of layer thickness values to simulate across, Each value must be between 0.00001 to 0.0001 meters
-            type: array
-            items:
-              type: number
-              minimum: 0.00001
-              maximum: 0.0001
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          laserPowerValues:
-            description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
-            type: array
-            items:
-              type: number
-              minimum: 10
-              maximum: 1000
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          scanSpeedValues:
-            description: Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
-            type: array
-            items:
-              type: number
-              minimum: 0.01
-              maximum: 10
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          hatchSpacingValues:
-            description: Array of hatch spacing values to simulate across, Each value must be between 0.00001 to 0.001 meters
-            type: array
-            items:
-              type: number
-              minimum: 0.00001
-              maximum: 0.001
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          slicingStripeWidthValues:
-            description: Array of slicing strip width values to simulate across, Each value must be between 0.001 to 0.1 meters
-            type: array
-            items:
-              type: number
-              minimum: 0.001
-              maximum: 0.1
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          originXValues:
-            description: Array of origin x values to simulate across, Each value must be between 0 to 0.2 meters
-            type: array
-            items:
-              type: number
-              minimum: 0
-              maximum: 0.2
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          originYValues:
-            description: Array of origin y values to simulate across, Each value must be between 0 to 0.2 meters
-            type: array
-            items:
-              type: number
-              minimum: 0
-              maximum: 0.2
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          usePeriodicAnalysis:
-            type: boolean
+      - $ref: "#/definitions/PorositySimulationParameters"
+
+  SingleBeadSimulationParameters:
+    required:
+      - beadLength
+      - layerThickness
+      - laserPowerValues
+      - scanSpeedValues
+      - powderThermalConductivityValues
+      - powderPackingDensityValues
+      - meanFreePathInPowderValues
+      - meanFreePathInSolidValues
+      - laserAbsorptivityInPowderValues
+      - laserAbsorptivityInSolidValues
+      - solidusTemperatureValues
+      - liquidusTemperatureValues
+    properties:
+      beadLength:
+        description: Must be between 0.001 to 0.01 meters
+        type: number
+        minimum: 0.001
+        maximum: 0.01
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      layerThickness:
+        description: Must be between 0.00001 to 0.0001 meters
+        type: number
+        minimum: 0.00001
+        maximum: 0.0001
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      laserPowerValues:
+        description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
+        type: array
+        items:
+          type: number
+          minimum: 10
+          maximum: 1000
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      scanSpeedValues:
+        description: Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
+        type: array
+        items:
+          type: number
+          minimum: 0.01
+          maximum: 10
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      powderThermalConductivityValues:
+        description: Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 1
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      powderPackingDensityValues:
+        description: Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 1
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      meanFreePathInPowderValues:
+        description: Array of Mean Free Path of Laser in Powder Values to simulate across, Each value must be between 0 and 1.25e5
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 125000
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      meanFreePathInSolidValues:
+        description: Array of Mean Free Path of Laser in Solid Values to simulate across, Each value must be between 0 and 1.25e5
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 125000
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      laserAbsorptivityInPowderValues:
+        description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 1
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      laserAbsorptivityInSolidValues:
+        description: Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 1
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+      solidusTemperatureValues:
+        description: Array of Solidus Temperature Values Values to simulate across
+        type: array
+        items:
+          type: number
+      liquidusTemperatureValues:
+        description: Array of Liquidus Temperature Values Values to simulate across
+        type: array
+        items:
+          type: number
+
+  SingleBeadSimulationRequest:
+    allOf:
+      - $ref: "#/definitions/SimulationCoreFields"
+      - $ref: "#/definitions/SingleBeadSimulationParameters"
 
   SingleBeadSimulation:
     allOf:
-      - $ref: '#/definitions/Simulation'
-      - required:
-        - beadLength
-        - layerThickness
-        - laserPowerValues
-        - scanSpeedValues
-        - powderThermalConductivityValues
-        - powderPackingDensityValues
-        - meanFreePathInPowderValues
-        - meanFreePathInSolidValues
-        - laserAbsorptivityInPowderValues
-        - laserAbsorptivityInSolidValues
-        - solidusTemperatureValues
-        - liquidusTemperatureValues
-        properties:
-          beadLength:
-            description: Must be between 0.001 to 0.01 meters
-            type: number
-            minimum: 0.001
-            maximum: 0.01
-            exclusiveMinimum: false
-            exclusiveMaximum: false
-          layerThickness:
-            description: Must be between 0.00001 to 0.0001 meters
-            type: number
-            minimum: 0.00001
-            maximum: 0.0001
-            exclusiveMinimum: false
-            exclusiveMaximum: false
-          laserPowerValues:
-            description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
-            type: array
-            items:
-              type: number
-              minimum: 10
-              maximum: 1000
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          scanSpeedValues:
-            description: Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
-            type: array
-            items:
-              type: number
-              minimum: 0.01
-              maximum: 10
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          powderThermalConductivityValues:
-            description: Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
-            type: array
-            items:
-              type: number
-              minimum: 0
-              maximum: 1
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          powderPackingDensityValues:
-            description: Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
-            type: array
-            items:
-              type: number
-              minimum: 0
-              maximum: 1
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          meanFreePathInPowderValues:
-            description: Array of Mean Free Path of Laser in Powder Values to simulate across, Each value must be between 0 and 1.25e5
-            type: array
-            items:
-              type: number
-              minimum: 0
-              maximum: 125000
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          meanFreePathInSolidValues:
-            description: Array of Mean Free Path of Laser in Solid Values to simulate across, Each value must be between 0 and 1.25e5
-            type: array
-            items:
-              type: number
-              minimum: 0
-              maximum: 125000
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          laserAbsorptivityInPowderValues:
-            description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
-            type: array
-            items:
-              type: number
-              minimum: 0
-              maximum: 1
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          laserAbsorptivityInSolidValues:
-            description: Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
-            type: array
-            items:
-              type: number
-              minimum: 0
-              maximum: 1
-              exclusiveMinimum: false
-              exclusiveMaximum: false
-          solidusTemperatureValues:
-            description: Array of Solidus Temperature Values Values to simulate across
-            type: array
-            items:
-              type: number
-          liquidusTemperatureValues:
-            description: Array of Liquidus Temperature Values Values to simulate across
-            type: array
-            items:
-              type: number
+      - $ref: "#/definitions/Simulation"
+      - $ref: "#/definitions/SingleBeadSimulationParameters"
+
+  AssumedStrainSimulationParameters:
+    required:
+      - layerThickness
+      - hatchSpacing
+      - laserWattage
+      - scanSpeed
+      - supportAngle
+      - supportFactorOfSafety
+      - minimumWallThickness
+      - maximumWallThickness
+      - minimumWallDistance
+      - maximumWallDistance
+      - minimumSupportHeight
+      - slicingStripeWidth
+      - voxelSize
+      - startingLayerAngle
+      - layerRotationAngle
+      - usePeriodicAnalysis
+      - supportOptimization
+      - outputStateMap
+      - outputShrinkage
+      - assumedStrain
+      - anisotropicStrainCoefficientsParallel
+      - anisotropicStrainCoefficientsPerpendicular
+      - anisotropicStrainCoefficientsZ
+      - supportYieldStrength
+      - supportYieldStrengthRatio
+      - elasticModulus
+      - poissonRatio
+      - relaxationFactor
+    properties:
+      layerThickness:
+        description: Must be between 0.00001 to 0.0001 meters
+        type: number
+        minimum: 0.00001
+        maximum: 0.0001
+      hatchSpacing:
+        description: Must be between 0.00001 to 0.001 meters
+        type: number
+        minimum: 0.00001
+        maximum: 0.001
+      laserWattage:
+        description: Must be between 10 to 1000 watts
+        type: number
+        minimum: 10
+        maximum: 1000
+      scanSpeed:
+        description: Must be between 0.01 to 10 meters/second
+        type: number
+        minimum: 0.01
+        maximum: 10
+      supportAngle:
+        description: Must be between 1 to 89 degrees
+        type: number
+        minimum: 1
+        maximum: 89
+      supportFactorOfSafety:
+        description: Multiplier for support calculations, Must be between 0.1 to 10
+        type: number
+        minimum: 0.1
+        maximum: 10
+      minimumWallThickness:
+        description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
+        type: number
+        minimum: 0.00005
+        maximum: 0.0003
+      maximumWallThickness:
+        description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
+        type: number
+        minimum: 0.00015
+        maximum: 0.002
+      minimumWallDistance:
+        description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
+        type: number
+        minimum: 0
+        maximum: 0.0003
+      maximumWallDistance:
+        description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
+        type: number
+        minimum: 0
+        maximum: 0.005
+      minimumSupportHeight:
+        description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
+        type: number
+        minimum: 0
+        maximum: 0.005
+      slicingStripeWidth:
+        description: Must be between 0.001 to 0.1 meters
+        type: number
+        minimum: 0.001
+        maximum: 0.1
+      voxelSize:
+        description: Must be between 0.00002 to 0.002 meters
+        type: number
+        minimum: 0.00002
+        maximum: 0.002
+      startingLayerAngle:
+        description: Must be between 0 to 180 degrees
+        type: number
+        minimum: 0
+        maximum: 180
+      layerRotationAngle:
+        description: Must be between 0 to 180 degrees
+        type: number
+        minimum: 0
+        maximum: 180
+      usePeriodicAnalysis:
+        type: boolean
+      supportOptimization:
+        type: boolean
+      outputStateMap:
+        type: boolean
+      outputShrinkage:
+        type: boolean
+      assumedStrain:
+        type: number
+      anisotropicStrainCoefficientsParallel:
+        type: number
+      anisotropicStrainCoefficientsPerpendicular:
+        type: number
+      anisotropicStrainCoefficientsZ:
+        type: number
+      supportYieldStrength:
+        type: number
+      supportYieldStrengthRatio:
+        type: number
+      elasticModulus:
+        type: number
+      poissonRatio:
+        type: number
+      relaxationFactor:
+        type: number
+
+  AssumedStrainSimulationRequest:
+    allOf:
+      - $ref: "#/definitions/SimulationCoreFields"
+      - $ref: "#/definitions/AssumedStrainSimulationParameters"
 
   AssumedStrainSimulation:
     allOf:
-      - $ref: '#/definitions/Simulation'
-      - required:
-        - layerThickness
-        - hatchSpacing
-        - laserWattage
-        - scanSpeed
-        - supportAngle
-        - supportFactorOfSafety
-        - minimumWallThickness
-        - maximumWallThickness
-        - minimumWallDistance
-        - maximumWallDistance
-        - minimumSupportHeight
-        - slicingStripeWidth
-        - voxelSize
-        - startingLayerAngle
-        - layerRotationAngle
-        - usePeriodicAnalysis
-        - supportOptimization
-        - outputStateMap
-        - outputShrinkage
-        - assumedStrain
-        - anisotropicStrainCoefficientsParallel
-        - anisotropicStrainCoefficientsPerpendicular
-        - anisotropicStrainCoefficientsZ
-        - supportYieldStrength
-        - supportYieldStrengthRatio
-        - elasticModulus
-        - poissonRatio
-        - relaxationFactor
-        properties:
-          layerThickness:
-            description: Must be between 0.00001 to 0.0001 meters
-            type: number
-            minimum: 0.00001
-            maximum: 0.0001
-          hatchSpacing:
-            description: Must be between 0.00001 to 0.001 meters
-            type: number
-            minimum: 0.00001
-            maximum: 0.001
-          laserWattage:
-            description: Must be between 10 to 1000 watts
-            type: number
-            minimum: 10
-            maximum: 1000
-          scanSpeed:
-            description: Must be between 0.01 to 10 meters/second
-            type: number
-            minimum: 0.01
-            maximum: 10
-          supportAngle:
-            description: Must be between 1 to 89 degrees
-            type: number
-            minimum: 1
-            maximum: 89
-          supportFactorOfSafety:
-            description: Multiplier for support calculations, Must be between 0.1 to 10
-            type: number
-            minimum: 0.1
-            maximum: 10
-          minimumWallThickness:
-            description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
-            type: number
-            minimum: 0.00005
-            maximum: 0.0003
-          maximumWallThickness:
-            description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
-            type: number
-            minimum: 0.00015
-            maximum: 0.002
-          minimumWallDistance:
-            description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
-            type: number
-            minimum: 0
-            maximum: 0.0003
-          maximumWallDistance:
-            description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
-            type: number
-            minimum: 0
-            maximum: 0.005
-          minimumSupportHeight:
-            description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
-            type: number
-            minimum: 0
-            maximum: 0.005
-          slicingStripeWidth:
-            description: Must be between 0.001 to 0.1 meters
-            type: number
-            minimum: 0.001
-            maximum: 0.1
-          voxelSize:
-            description: Must be between 0.00002 to 0.002 meters
-            type: number
-            minimum: 0.00002
-            maximum: 0.002
-          startingLayerAngle:
-            description: Must be between 0 to 180 degrees
-            type: number
-            minimum: 0
-            maximum: 180
-          layerRotationAngle:
-            description: Must be between 0 to 180 degrees
-            type: number
-            minimum: 0
-            maximum: 180
-          usePeriodicAnalysis:
-            type: boolean
-          supportOptimization:
-            type: boolean
-          outputStateMap:
-            type: boolean
-          outputShrinkage:
-            type: boolean
-          assumedStrain:
-            type: number
-          anisotropicStrainCoefficientsParallel:
-            type: number
-          anisotropicStrainCoefficientsPerpendicular:
-            type: number
-          anisotropicStrainCoefficientsZ:
-            type: number
-          supportYieldStrength:
-            type: number
-          supportYieldStrengthRatio:
-            type: number
-          elasticModulus:
-            type: number
-          poissonRatio:
-            type: number
-          relaxationFactor:
-            type: number
+      - $ref: "#/definitions/Simulation"
+      - $ref: "#/definitions/AssumedStrainSimulationParameters"
+
+  ThermalSimulationParameters:
+    required:
+      - layerThickness
+      - hatchSpacing
+      - laserWattage
+      - scanSpeed
+      - supportAngle
+      - supportFactorOfSafety
+      - minimumWallThickness
+      - maximumWallThickness
+      - minimumWallDistance
+      - maximumWallDistance
+      - minimumSupportHeight
+      - slicingStripeWidth
+      - voxelSize
+      - startingLayerAngle
+      - layerRotationAngle
+      - usePeriodicAnalysis
+      - supportOptimization
+      - outputStateMap
+      - outputShrinkage
+      - assumedStrain
+      - anisotropicStrainCoefficientsParallel
+      - anisotropicStrainCoefficientsPerpendicular
+      - anisotropicStrainCoefficientsZ
+      - supportYieldStrength
+      - supportYieldStrengthRatio
+      - elasticModulus
+      - poissonRatio
+      - relaxationFactor
+    properties:
+      layerThickness:
+        description: Must be between 0.00001 to 0.0001 meters
+        type: number
+        minimum: 0.00001
+        maximum: 0.0001
+      hatchSpacing:
+        description: Must be between 0.00001 to 0.001 meters
+        type: number
+        minimum: 0.00001
+        maximum: 0.001
+      laserWattage:
+        description: Must be between 10 to 1000 watts
+        type: number
+        minimum: 10
+        maximum: 1000
+      scanSpeed:
+        description: Must be between 0.01 to 10 meters/second
+        type: number
+        minimum: 0.01
+        maximum: 10
+      supportAngle:
+        description: Must be between 1 to 89 degrees
+        type: number
+        minimum: 1
+        maximum: 89
+      supportFactorOfSafety:
+        description: Multiplier for support calculations, Must be between 0.1 to 10
+        type: number
+        minimum: 0.1
+        maximum: 10
+      minimumWallThickness:
+        description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
+        type: number
+        minimum: 0.00005
+        maximum: 0.0003
+      maximumWallThickness:
+        description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
+        type: number
+        minimum: 0.00015
+        maximum: 0.002
+      minimumWallDistance:
+        description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
+        type: number
+        minimum: 0
+        maximum: 0.0003
+      maximumWallDistance:
+        description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
+        type: number
+        minimum: 0
+        maximum: 0.005
+      minimumSupportHeight:
+        description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
+        type: number
+        minimum: 0
+        maximum: 0.005
+      slicingStripeWidth:
+        description: Must be between 0.001 to 0.1 meters
+        type: number
+        minimum: 0.001
+        maximum: 0.1
+      voxelSize:
+        description: Must be between 0.00002 to 0.002 meters
+        type: number
+        minimum: 0.00002
+        maximum: 0.002
+      startingLayerAngle:
+        description: Must be between 0 to 180 degrees
+        type: number
+        minimum: 0
+        maximum: 180
+      layerRotationAngle:
+        description: Must be between 0 to 180 degrees
+        type: number
+        minimum: 0
+        maximum: 180
+      usePeriodicAnalysis:
+        type: boolean
+      supportOptimization:
+        type: boolean
+      outputStateMap:
+        type: boolean
+      outputShrinkage:
+        type: boolean
+      assumedStrain:
+        type: number
+      anisotropicStrainCoefficientsParallel:
+        type: number
+      anisotropicStrainCoefficientsPerpendicular:
+        type: number
+      anisotropicStrainCoefficientsZ:
+        type: number
+      supportYieldStrength:
+        type: number
+      supportYieldStrengthRatio:
+        type: number
+      elasticModulus:
+        type: number
+      poissonRatio:
+        type: number
+      relaxationFactor:
+        type: number
+
+  ThermalSimulationRequest:
+    allOf:
+      - $ref: "#/definitions/SimulationCoreFields"
+      - $ref: "#/definitions/ThermalSimulationParameters"
 
   ThermalSimulation:
-     allOf:
-      - $ref: '#/definitions/Simulation'
-      - required:
-        - layerThickness
-        - hatchSpacing
-        - laserWattage
-        - scanSpeed
-        - supportAngle
-        - supportFactorOfSafety
-        - minimumWallThickness
-        - maximumWallThickness
-        - minimumWallDistance
-        - maximumWallDistance
-        - minimumSupportHeight
-        - slicingStripeWidth
-        - voxelSize
-        - startingLayerAngle
-        - layerRotationAngle
-        - usePeriodicAnalysis
-        - supportOptimization
-        - outputStateMap
-        - outputShrinkage
-        - assumedStrain
-        - anisotropicStrainCoefficientsParallel
-        - anisotropicStrainCoefficientsPerpendicular
-        - anisotropicStrainCoefficientsZ
-        - supportYieldStrength
-        - supportYieldStrengthRatio
-        - elasticModulus
-        - poissonRatio
-        - relaxationFactor
-        properties:
-          layerThickness:
-            description: Must be between 0.00001 to 0.0001 meters
-            type: number
-            minimum: 0.00001
-            maximum: 0.0001
-          hatchSpacing:
-            description: Must be between 0.00001 to 0.001 meters
-            type: number
-            minimum: 0.00001
-            maximum: 0.001
-          laserWattage:
-            description: Must be between 10 to 1000 watts
-            type: number
-            minimum: 10
-            maximum: 1000
-          scanSpeed:
-            description: Must be between 0.01 to 10 meters/second
-            type: number
-            minimum: 0.01
-            maximum: 10
-          supportAngle:
-            description: Must be between 1 to 89 degrees
-            type: number
-            minimum: 1
-            maximum: 89
-          supportFactorOfSafety:
-            description: Multiplier for support calculations, Must be between 0.1 to 10
-            type: number
-            minimum: 0.1
-            maximum: 10
-          minimumWallThickness:
-            description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
-            type: number
-            minimum: 0.00005
-            maximum: 0.0003
-          maximumWallThickness:
-            description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
-            type: number
-            minimum: 0.00015
-            maximum: 0.002
-          minimumWallDistance:
-            description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
-            type: number
-            minimum: 0
-            maximum: 0.0003
-          maximumWallDistance:
-            description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
-            type: number
-            minimum: 0
-            maximum: 0.005
-          minimumSupportHeight:
-            description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
-            type: number
-            minimum: 0
-            maximum: 0.005
-          slicingStripeWidth:
-            description: Must be between 0.001 to 0.1 meters
-            type: number
-            minimum: 0.001
-            maximum: 0.1
-          voxelSize:
-            description: Must be between 0.00002 to 0.002 meters
-            type: number
-            minimum: 0.00002
-            maximum: 0.002
-          startingLayerAngle:
-            description: Must be between 0 to 180 degrees
-            type: number
-            minimum: 0
-            maximum: 180
-          layerRotationAngle:
-            description: Must be between 0 to 180 degrees
-            type: number
-            minimum: 0
-            maximum: 180
-          usePeriodicAnalysis:
-            type: boolean
-          supportOptimization:
-            type: boolean
-          outputStateMap:
-            type: boolean
-          outputShrinkage:
-            type: boolean
-          assumedStrain:
-            type: number
-          anisotropicStrainCoefficientsParallel:
-            type: number
-          anisotropicStrainCoefficientsPerpendicular:
-            type: number
-          anisotropicStrainCoefficientsZ:
-            type: number
-          supportYieldStrength:
-            type: number
-          supportYieldStrengthRatio:
-            type: number
-          elasticModulus:
-            type: number
-          poissonRatio:
-            type: number
-          relaxationFactor:
-            type: number
+    allOf:
+      - $ref: "#/definitions/Simulation"
+      - $ref: "#/definitions/ThermalSimulationParameters"
 
   Material:
     type: object
@@ -1806,6 +1849,20 @@ definitions:
           anisotropicStrainCoefficients:
             type: number
             format: double
+      created:
+        type: string
+        format: dateTime
+        description: created time stamp, set server-side, read only
+      createdBy:
+        type: string
+        description: assigned user, set server-side, read only
+      lastModified:
+        type: string
+        format: dateTime
+        description: last modified time stamp, set server-side, read only
+      lastModifiedBy:
+        type: string
+        description: assigned user, set server-side, read only
 
   Part:
     type: object
@@ -1872,13 +1929,19 @@ definitions:
         type: number
         description: Approximate volume of the Part (in meters^3), calculated when the part is processed, use 0 for initial post
       created:
-        description: overridden server side
         type: string
         format: dateTime
+        description: created time stamp, set server-side, read only
+      createdBy:
+        type: string
+        description: assigned user, set server-side, read only
       lastModified:
-        description: overridden server side
         type: string
         format: dateTime
+        description: last modified time stamp, set server-side, read only
+      lastModifiedBy:
+        type: string
+        description: assigned user, set server-side, read only
 
   Machine:
     type: object
@@ -1956,12 +2019,18 @@ definitions:
         description: version number of this machine, read only
       created:
         type: string
-        format: date-time
-        description: time machine was created, read only
+        format: dateTime
+        description: created time stamp, set server-side, read only
+      createdBy:
+        type: string
+        description: assigned user, set server-side, read only
       lastModified:
         type: string
-        format: date-time
-        description: time of last modification, read only
+        format: dateTime
+        description: last modified time stamp, set server-side, read only
+      lastModifiedBy:
+        type: string
+        description: assigned user, set server-side, read only
 
   PartUploadRequest:
     properties:
