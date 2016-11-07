@@ -1740,6 +1740,10 @@ definitions:
         type: string
       description:
         type: string
+      tags:
+        type: array
+        items:
+          type: string
       created:
         type: string
         format: dateTime
@@ -2270,6 +2274,10 @@ definitions:
         type: string
       description:
         type: string
+      tags:
+        type: array
+        items:
+          type: string
       status:
         type: string
         enum:
@@ -2802,6 +2810,7 @@ definitions:
       - name
       - organizationId
       - active
+      - scientificProperties
     properties:
       id:
         type: integer
@@ -2840,7 +2849,7 @@ definitions:
           - elasticModulus
           - elasticModulusOfBase
           - poissonRatio
-          - materialStrengthYield
+          - materialYieldStrength
           - supportYieldStrengthRatio
           - materialStrainSensitivity
           - surfaceTension
@@ -2915,7 +2924,7 @@ definitions:
           poissonRatio:
             type: number
             format: double
-          materialStrengthYield:
+          materialYieldStrength:
             type: number
             format: double
           supportYieldStrengthRatio:
@@ -2941,11 +2950,26 @@ definitions:
             format: double
   Part:
     type: object
+    required:
+      - id
+      - organizationId
+      - name
+      - filePath
+      - status
+      - locationX
+      - locationY
+      - sizeX
+      - sizeY
+      - sizeZ
+      - numberOfTriangles
+      - volume
+      - created
+      - lastModified
     properties:
       id:
         type: integer
         description: Id of the part
-      customerId:
+      organizationId:
         type: integer
         description: Id of the organization that owns this part record
       name:
@@ -2953,13 +2977,12 @@ definitions:
       description:
         type: string
       tags:
+        type: array
+        items:
+          type: string
+      filePath:
         type: string
-      partFileLocation:
-        type: string
-        description: location in a specfic AmazonS3 bucket for the part stl file
-      fileLocation:
-        type: string
-        description: location of an stl file for a newly posted Part. This field will be empty in Get requets and ignored in delete or put requets
+        description: remote path of a newly uploaded stl file. Field will be updated to final remote path after part processing. Field is ignored put requests.
       status:
         type: string
         enum:
@@ -2970,41 +2993,39 @@ definitions:
           - archived
       locationX:
         type: number
-        description: default x location (in mm) where the lower left boudning box of the part will be placed on the bed
+        description: x location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
       locationY:
         type: number
-        description: default y location (in mm) where the lower left boudning box of the part will be placed on the bed
+        description: y location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
       sizeX:
         type: number
-        description: Width of the Part bounding box (in mm)
+        description: Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
       sizeY:
         type: number
-        description: Length of the Part bounding box (in mm)
+        description: Length of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
       sizeZ:
         type: number
-        description: Height of the Part bounding box (in mm)
+        description: Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
       numberOfTriangles:
         type: integer
-        description: Number of triangles in the original STL file
+        description: Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
       volume:
         type: number
-        description: Approximate volume of the Part (in mm^3)
-      createdDate:
+        description: Approximate volume of the Part (in meters^3), calculated when the part is processed, use 0 for initial post
+      created:
+        description: overridden server side
         type: string
         format: dateTime
-      createdBy:
-        type: integer
-      lastModifiedDate:
+      lastModified:
+        description: overridden server side
         type: string
         format: dateTime
-      lastModifiedBy:
-        type: integer
   Machine:
     type: object
     required:
       - name
       - description
-      - available
+      - active
     properties:
       id:
         type: integer
@@ -3024,7 +3045,7 @@ definitions:
           - laserWattage
           - laserWaveLength
           - scanSpeed
-          - timeDiscretizationDuringScaning
+          - timeDiscretizationDuringScanning
           - coolingToScanningTimeIncrementRatio
           - totalCoolingTime
           - heaterTemperature
@@ -3049,7 +3070,7 @@ definitions:
             type: number
             format: double
             description: speed at which laser travels in meters per second
-          timeDiscretizationDuringScaning:
+          timeDiscretizationDuringScanning:
             type: number
             format: double
             description: in seconds
@@ -3059,12 +3080,12 @@ definitions:
           totalCoolingTime:
             type: number
             format: double
-            description: cooling time between prior to deposition of next powder layer
+            description: cooling time prior to deposition of next powder layer
           heaterTemperature:
             type: number
             format: double
-            description: heater temperature
-      available:
+            description: heater temperature in degrees kelvin
+      active:
         type: boolean
         description: true if machine can be used for simlation, false if machine has been archived
       key:
@@ -3073,11 +3094,11 @@ definitions:
       version:
         type: string
         description: version number of this machine, read only
-      createdDate:
+      created:
         type: string
         format: date-time
         description: time machine was created, read only
-      lastModifiedDate:
+      lastModified:
         type: string
         format: date-time
         description: time of last modification, read only
