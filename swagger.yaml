@@ -673,6 +673,35 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /porositysimulations/{id}/start:
+    post:
+      description: Starts a porosity simulation, not idempotent, so we use a POST for this operation.
+      operationId: startPorositySimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'          
 
   /singlebeadsimulations:
     get:
@@ -813,6 +842,36 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /singlebeadsimulations/{id}/start:
+    post:
+      description: Starts a single bead simulation, not idempotent, so we use a POST for this operation.
+      operationId: startSingleBeadSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'   
+
   /thermalsimulations:
     get:
       description: Gets a list of all thermal simulations for the active user
@@ -952,6 +1011,36 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /thermalsimulations/{id}/start:
+    post:
+      description: Starts a thermal simulation, not idempotent, so we use a POST for this operation.
+      operationId: startThermalSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'   
+
   /assumedstrainsimulations:
     get:
       description: Gets a list of all assumed strain simulations for the active user
@@ -1090,6 +1179,37 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+
+  /assumedstrainsimulations/{id}/start:
+    post:
+      description: Starts an assumed strain simulation, not idempotent, so we use a POST for this operation.
+      operationId: startAssumedStrainSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'   
+
 definitions:
   Status:
     required:
