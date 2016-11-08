@@ -548,7 +548,7 @@ paths:
           format: int32
         - name: limit
           in: query
-          description: number of items to return within the query
+          description: number of materials to return within the query
           required: false
           type: integer
           format: int32
@@ -562,7 +562,7 @@ paths:
             type: string
         - name: filter
           in: query
-          description: filter against available fields for the model
+          description: Filter objects based on fields in the object.  E.g. filter=name:my-simulation,state:running
           required: false
           type: string
       responses:
@@ -673,6 +673,35 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /porositysimulations/{id}/start:
+    put:
+      description: Starts a porosity simulation.  If the simulation has been started before, start requests have no effect.
+      operationId: startPorositySimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'          
 
   /singlebeadsimulations:
     get:
@@ -813,6 +842,36 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /singlebeadsimulations/{id}/start:
+    put:
+      description: Starts a single bead simulation.  If the simulation has been started before, start requests have no effect.
+      operationId: startSingleBeadSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'   
+
   /thermalsimulations:
     get:
       description: Gets a list of all thermal simulations for the active user
@@ -952,6 +1011,36 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /thermalsimulations/{id}/start:
+    put:
+      description: Starts a thermal simulation.  If the simulation has been started before, start requests have no effect.  
+      operationId: startThermalSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'   
+
   /assumedstrainsimulations:
     get:
       description: Gets a list of all assumed strain simulations for the active user
@@ -1090,6 +1179,37 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+
+  /assumedstrainsimulations/{id}/start:
+    put:
+      description: Starts an assumed strain simulation.  If the simulation has been started before, start requests have no effect.
+      operationId: startAssumedStrainSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'   
+
 definitions:
   Status:
     required:
