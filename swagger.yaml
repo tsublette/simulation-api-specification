@@ -534,16 +534,6 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-<<<<<<< HEAD
-  /simulationtemplates:
-    get:
-      description: Gets list of simulation templates
-      operationId: getSimulationTemplates
-      parameters:
-        - name: offset
-          in: query
-          description: starting paging count; ex. 60 will skip the first 60 materials in the list
-=======
 
   /porositysimulations:
     get:
@@ -553,17 +543,12 @@ paths:
         - name: offset
           in: query
           description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
->>>>>>> partrequirements
           required: false
           type: integer
           format: int32
         - name: limit
           in: query
-<<<<<<< HEAD
           description: number of materials to return within the query
-=======
-          description: number of items to return within the query
->>>>>>> partrequirements
           required: false
           type: integer
           format: int32
@@ -577,26 +562,11 @@ paths:
             type: string
         - name: filter
           in: query
-<<<<<<< HEAD
           description: Filter objects based on fields in the object.  E.g. filter=name:my-simulation,state:running
-=======
-          description: filter against available fields for the model
->>>>>>> partrequirements
           required: false
           type: string
       responses:
         "200":
-<<<<<<< HEAD
-          description: Successfully found the list of simulation templates
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SimulationTemplate'
-        "403":
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-=======
           description: Successfully found the list of items
           schema:
             type: array
@@ -637,36 +607,10 @@ paths:
           description: Forbidden
           schema:
             $ref: '#/definitions/Error'
->>>>>>> partrequirements
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-<<<<<<< HEAD
-definitions:
-  SimulationTemplate:
-    type: object
-    properties:
-      title:
-        type: string
-  Status:
-    type: object
-    required:
-      - status
-    properties:
-      status:
-        type: string
-        enum:
-          - okay
-          - problem
-          - slow
-      message:
-        type: string
-  Material:
-    type: object
-    properties:
-      id:
-=======
 
   /porositysimulations/{id}:
     get:
@@ -677,7 +621,6 @@ definitions:
         in: path
         description: simulation identifier
         required: true
->>>>>>> partrequirements
         type: integer
       responses:
         "200":
