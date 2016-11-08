@@ -674,8 +674,8 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   /porositysimulations/{id}/start:
-    post:
-      description: Starts a porosity simulation, not idempotent, so we use a POST for this operation.
+    put:
+      description: Starts a porosity simulation.  If the simulation has been started before, start requests have no effect.
       operationId: startPorositySimulation
       parameters:
       - name: id
@@ -843,8 +843,8 @@ paths:
             $ref: '#/definitions/Error'
 
   /singlebeadsimulations/{id}/start:
-    post:
-      description: Starts a single bead simulation, not idempotent, so we use a POST for this operation.
+    put:
+      description: Starts a single bead simulation.  If the simulation has been started before, start requests have no effect.
       operationId: startSingleBeadSimulation
       parameters:
       - name: id
@@ -1012,8 +1012,8 @@ paths:
             $ref: '#/definitions/Error'
 
   /thermalsimulations/{id}/start:
-    post:
-      description: Starts a thermal simulation, not idempotent, so we use a POST for this operation.
+    put:
+      description: Starts a thermal simulation.  If the simulation has been started before, start requests have no effect.  
       operationId: startThermalSimulation
       parameters:
       - name: id
@@ -1181,8 +1181,8 @@ paths:
             $ref: '#/definitions/Error'
 
   /assumedstrainsimulations/{id}/start:
-    post:
-      description: Starts an assumed strain simulation, not idempotent, so we use a POST for this operation.
+    put:
+      description: Starts an assumed strain simulation.  If the simulation has been started before, start requests have no effect.
       operationId: startAssumedStrainSimulation
       parameters:
       - name: id
