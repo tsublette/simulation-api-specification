@@ -507,7 +507,7 @@ paths:
   /parts/{id}/geometryurl:
     get:
       description: Gets a time sensitive URL to the geometry file stored in AmazonS3.
-      operationId: getPartGeometry
+      operationId: getPartGeometryUrl
       parameters:
         - name: id
           in: path
@@ -519,7 +519,40 @@ paths:
         "200":
           description: Successfully returns a part geometry url
           schema:
-            type: string
+            $ref: '#/definitions/PartGeometryUrl'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /parts/{id}/geometry:
+    get:
+      description: Gets a list of triangles for the geometry file stored in AmazonS3.
+      operationId: getPartGeometry
+      parameters:
+        - name: id
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully returns a part geometry triangles
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Triangle'
         "401":
           description: Not authorized
           schema:
@@ -701,7 +734,7 @@ paths:
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'          
+            $ref: '#/definitions/Error'
 
   /singlebeadsimulations:
     get:
@@ -870,7 +903,7 @@ paths:
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'   
+            $ref: '#/definitions/Error'
 
   /thermalsimulations:
     get:
@@ -1013,7 +1046,7 @@ paths:
 
   /thermalsimulations/{id}/start:
     put:
-      description: Starts a thermal simulation.  If the simulation has been started before, start requests have no effect.  
+      description: Starts a thermal simulation.  If the simulation has been started before, start requests have no effect.
       operationId: startThermalSimulation
       parameters:
       - name: id
@@ -1039,7 +1072,7 @@ paths:
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'   
+            $ref: '#/definitions/Error'
 
   /assumedstrainsimulations:
     get:
@@ -1208,7 +1241,7 @@ paths:
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'   
+            $ref: '#/definitions/Error'
 
 definitions:
   Status:
@@ -2158,6 +2191,45 @@ definitions:
         type: string
       s3Key:
         type: string
+
+  PartGeometryUrl:
+    properties:
+      signedURL:
+        type: string
+
+  Triangle:
+    properties:
+      normal:
+        type: object
+        properties:
+          angle:
+            type: number
+            format: double
+          x:
+            type: number
+            format: double
+          y:
+            type: number
+            format: double
+          z:
+            type: number
+            format: double
+      vertices:
+        type: array
+        items:
+          $ref: '#/definitions/Vertice'
+
+  Vertice:
+    properties:
+      x:
+        type: number
+        format: double
+      y:
+        type: number
+        format: double
+      z:
+        type: number
+        format: double
 
   Error:
     required:
