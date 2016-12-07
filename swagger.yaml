@@ -341,15 +341,21 @@ paths:
       description: Get list of parts
       operationId: getParts
       parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get parts for.  Must be provided as API callers only have access to parts
+            belonging to their organization.
+          required: true
+          type: string
         - name: offset
           in: query
-          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          description: starting paging count; ex. 60 will skip the first 60 items in the list
           required: false
           type: integer
           format: int32
         - name: limit
           in: query
-          description: number of materials to return within the query
+          description: number of items to return within the query
           required: false
           type: integer
           format: int32
@@ -361,11 +367,24 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: filter
+        - name: availability
           in: query
-          description: free text search on name, description and tags.
+          description: If specified, will filter to only include parts with the given availability.  Uploaded - the part has been uploaded.  Processing - the part
+            is being processed.  Available - the part was processed successfully and can be used in simulations.  Error -
+            an error occurred, contact support@3dsim.com.
           required: false
           type: string
+          enum:
+            - Uploaded
+            - Processing
+            - Available
+            - Error
+        - name: archived
+          in: query
+          description: If true, will only return archived parts.  If false, will only return unarchived parts.  If not
+            provided, will return both archived and unarchived parts.
+          required: false
+          type: boolean
       responses:
         "200":
           description: Successfully found the list of parts
@@ -374,7 +393,7 @@ paths:
             items:
               $ref: '#/definitions/Part'
         "403":
-          description: Not authorized
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -382,22 +401,25 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     post:
-      description: Adds a Part
+      description: Adds a part and starts processing the part.  When processing is finished, the "availability" field
+        for the part will change to "Available".  See GET /parts.
       operationId: addParts
       parameters:
         - name: Part
           in: body
-          description: Part to add. First, call parts/geometryurl to get a PartUploadRequest object. PUT the STL file AmazonS3 with the signed URL. User the s3Key property as the value of fileLocation. a POST with this object will execute the part processing service.
+          description: Part to add. First, call parts/geometryurl to get a PartUploadRequest object.
+            PUT the STL file AmazonS3 with the signed URL. Use the s3Key property as the value of fileLocation.
+            A POST with this object will execute the part processing service.
           required: true
           schema:
-            $ref: '#/definitions/Part'
+            $ref: '#/definitions/PartPost'
       responses:
         "200":
           description: Successfully added a part
           schema:
             $ref: '#/definitions/Part'
         "403":
-          description: Not authorized
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -420,7 +442,7 @@ paths:
           schema:
             $ref: '#/definitions/Part'
         "403":
-          description: Not authorized
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -463,7 +485,7 @@ paths:
           schema:
             $ref: '#/definitions/Part'
         "403":
-          description: Not authorized
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         "404":
@@ -701,7 +723,7 @@ paths:
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'          
+            $ref: '#/definitions/Error'
 
   /singlebeadsimulations:
     get:
@@ -870,7 +892,7 @@ paths:
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'   
+            $ref: '#/definitions/Error'
 
   /thermalsimulations:
     get:
@@ -1013,7 +1035,7 @@ paths:
 
   /thermalsimulations/{id}/start:
     put:
-      description: Starts a thermal simulation.  If the simulation has been started before, start requests have no effect.  
+      description: Starts a thermal simulation.  If the simulation has been started before, start requests have no effect.
       operationId: startThermalSimulation
       parameters:
       - name: id
@@ -1039,7 +1061,7 @@ paths:
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'   
+            $ref: '#/definitions/Error'
 
   /assumedstrainsimulations:
     get:
@@ -1208,7 +1230,7 @@ paths:
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'   
+            $ref: '#/definitions/Error'
 
 definitions:
   Status:
@@ -1990,17 +2012,6 @@ definitions:
       - id
       - organizationId
       - name
-      - filePath
-      - status
-      - locationX
-      - locationY
-      - sizeX
-      - sizeY
-      - sizeZ
-      - numberOfTriangles
-      - volume
-      - created
-      - lastModified
     properties:
       id:
         type: integer
@@ -2016,17 +2027,22 @@ definitions:
         type: array
         items:
           type: string
-      filePath:
+      fileLocation:
         type: string
-        description: remote path of a newly uploaded stl file. Field will be updated to final remote path after part processing. Field is ignored put requests.
-      status:
+        description:  Remote path (s3 key) of part. (read only).
+      availability:
+        description: Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part
+          is being processed.  Available - the part was processed successfully and can be used in simulations.  Error -
+          an error occurred, contact support@3dsim.com.
         type: string
         enum:
-          - uploaded
-          - processing
-          - available
-          - error
-          - archived
+          - Uploaded
+          - Processing
+          - Available
+          - Error
+      archived:
+        description: Designates whether this entity has been archived.
+        type: boolean
       locationX:
         type: number
         description: x location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
@@ -2062,6 +2078,31 @@ definitions:
       lastModifiedBy:
         type: string
         description: assigned user, set server-side, read only
+
+  PartPost:
+    type: object
+    required:
+      - organizationId
+      - name
+      - fileLocation
+    properties:
+      organizationId:
+        type: integer
+        description: Id of the organization that owns this part record
+      name:
+        description: Name of the part, max 50 characters
+        type: string
+      description:
+        description: Free form description of the part, max 2048 characters
+        type: string
+      tags:
+        type: array
+        description: Tags can be used for any purpose. Max length of serialized json is 256 characters.
+        items:
+          type: string
+      fileLocation:
+        type: string
+        description: Remote s3 key of a newly uploaded stl file.  Use parts/geometryurl endpoint to upload the part before calling POST.  Max length 256 characters.
 
   Machine:
     type: object
