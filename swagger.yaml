@@ -2217,9 +2217,9 @@ definitions:
       vertices:
         type: array
         items:
-          $ref: '#/definitions/Vertice'
+          $ref: '#/definitions/Vertex'
 
-  Vertice:
+  Vertex:
     properties:
       x:
         type: number
