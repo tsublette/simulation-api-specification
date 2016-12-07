@@ -177,15 +177,21 @@ paths:
       description: Get list of machines
       operationId: getMachineList
       parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get parts for.  Must be provided as API callers only have access to parts
+            belonging to their organization.
+          required: true
+          type: string
         - name: offset
           in: query
-          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          description: starting paging count; ex. 60 will skip the first 60 items in the list
           required: false
           type: integer
           format: int32
         - name: limit
           in: query
-          description: number of materials to return within the query
+          description: number of items to return within the query
           required: false
           type: integer
           format: int32
@@ -197,11 +203,12 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: filter
+        - name: archived
           in: query
-          description: free text search on name and description
+          description: If true, will only return archived parts.  If false, will only return unarchived parts.  If not
+            provided, will return both archived and unarchived parts.
           required: false
-          type: string
+          type: boolean
       responses:
         "200":
           description: Successfully retrieved list of machines
@@ -221,43 +228,16 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-    put:
-      description: Update a machine. Not available for external consumers.
-      operationId: putMachine
-      parameters:
-        - name: machine
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Machine'
-      responses:
-        "200":
-          description: Machine was successfully updated.
-          schema:
-            $ref: '#/definitions/Machine'
-        "401":
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-        "404":
-          description: Machine not found (id invalid)
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
+
     post:
-      description: Add a machine. Not available for external consumers.
+      description: Add a machine
       operationId: postMachine
       parameters:
       - name: machine
         in: body
         required: true
         schema:
-          $ref: '#/definitions/Machine'
+          $ref: '#/definitions/MachinePost'
       responses:
         "200":
           description: Machine was successfully added.
@@ -288,7 +268,41 @@ paths:
         type: integer
       responses:
         "200":
-          description: Successfully retrieved machines
+          description: Successfully retrieved the requested machine
+          schema:
+            $ref: '#/definitions/Machine'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+    put:
+      description: Update a machine
+      operationId: putMachine
+      parameters:
+        - name: id
+          in: path
+          description: machine identifier
+          required: true
+          type: integer
+        - name: machine
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Machine'
+      responses:
+        "200":
+          description: Machine was successfully updated.
           schema:
             $ref: '#/definitions/Machine'
         "401":
@@ -308,7 +322,7 @@ paths:
 
   /machines/{id}/archive:
     put:
-      description: Archive a machine making it not available for use in a simulation (sets active property to false). Machine may be reactivated at later time using put with active equal to true.
+      description: Archive a machine, making it not available for use in a simulation (sets archived property to true)
       operationId: archiveMachine
       parameters:
       - name: id
@@ -336,6 +350,35 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /machines/{id}/unarchive:
+    put:
+      description: Unarchive a machine, making it available for use in a simulation (sets archived property to false)
+      operationId: unarchiveMachine
+      parameters:
+      - name: id
+        in: path
+        description: machine identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Machine was successfully unarchived.
+          schema:
+            $ref: '#/definitions/Machine'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Machine not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /parts:
     get:
       description: Get list of parts
@@ -2137,94 +2180,196 @@ definitions:
         type: string
         description: Remote s3 key of a newly uploaded stl file.  Use parts/geometryurl endpoint to upload the part before calling POST.  Max length 256 characters.
 
+  MachineConfiguration:
+    type: object
+    required:
+      - machineId
+      - version
+      - created
+      - createdBy
+      - hatchSpacing
+      - beamDiameter
+      - laserWattage
+      - laserWaveLength
+      - scanSpeed
+      - timeDiscretizationDuringScanning
+      - coolingToScanningTimeIncrementRatio
+      - totalCoolingTime
+      - heaterTemperature
+    properties:
+      id:
+        type: integer
+        description: machine configuration identifier
+      machineId:
+        type: integer
+        description: machine identifier for this machine configuration
+      version:
+        type: string
+        description: version label for the machine configuration
+        maxLength: 16
+      created:
+        type: string
+        format: dateTime
+        description: created time stamp, set server-side, read only field
+      createdBy:
+        type: string
+        description: creating user, set server-side, read only field
+      hatchSpacing:
+        description: distance between hatch lines in meters
+        type: number
+        minimum: 0.00001
+        maximum: 0.002
+        format: double
+      beamDiameter:
+        description: diameter of laser beam in meters
+        type: number
+        minimum: 0
+        maximum: 0.0001
+        format: double
+      laserWattage:
+        description: laser power in watts
+        type: number
+        minimum: 0
+        maximum: 1000
+        format: double
+      laserWaveLength:
+        description: laser light wavelength in meters
+        type: number
+        minimum: 0
+        maximum: 0.00001
+        format: double
+      scanSpeed:
+        description: speed at which laser travels in meters per second
+        type: number
+        minimum: 0.01
+        maximum: 10
+        format: double
+      timeDiscretizationDuringScanning:
+        description: calculation time interval in seconds
+        type: number
+        minimum: 0
+        maximum: 10
+        format: double
+      coolingToScanningTimeIncrementRatio:
+        description: ratio between cooling to scanning time
+        type: number
+        minimum: 0
+        maximum: 100
+        format: double
+      totalCoolingTime:
+        description: cooling time prior to deposition of next powder layer in seconds
+        type: number
+        minimum: 0
+        maximum: 10
+        format: double
+      heaterTemperature:
+        description: heater temperature in degrees kelvin
+        type: number
+        minimum: 0
+        maximum: 1000
+        format: double
+
+  MachinePost:
+    type: object
+    required:
+      - isCore
+      - organizationId
+      - name
+      - key
+      - version
+      - machineConfiguration
+    properties:
+      isCore:
+        type: boolean
+        description: flag whether it is a core machine or a custom machine
+      organizationId:
+        type: integer
+        description: organization identifier
+      name:
+        type: string
+        description: machine name
+        maxLength: 128
+      description:
+        type: string
+        description: machine description
+        maxLength: 2048
+      archived:
+        type: boolean
+        description: false if machine can be used for simlation, true if machine has been archived
+      key:
+        type: string
+        description: key associated with this machine
+        maxLength: 16
+      version:
+        type: string
+        description: version label number of this machine
+        maxLength: 16
+      machineConfiguration:
+        $ref: "#/definitions/MachineConfiguration"
+
   Machine:
     type: object
     required:
+      - id
+      - isCore
+      - organizationId
       - name
-      - description
-      - active
+      - archived
+      - key
+      - version
+      - machineConfigurationId
+      - created
+      - createdBy
+      - lastModified
+      - lastModifiedBy
     properties:
       id:
         type: integer
         description: machine identifier
+      isCore:
+        type: boolean
+        description: flag whether it is a core machine or a custom machine
+      organizationId:
+        type: integer
+        description: organization identifier
       name:
         type: string
         description: machine name
+        maxLength: 128
       description:
         type: string
         description: machine description
-      processProperties:
-        type: object
-        description: parameters associated with machine operation
-        required:
-          - hatchSpacing
-          - beamDiameter
-          - laserWattage
-          - laserWaveLength
-          - scanSpeed
-          - timeDiscretizationDuringScanning
-          - coolingToScanningTimeIncrementRatio
-          - totalCoolingTime
-          - heaterTemperature
-        properties:
-          hatchSpacing:
-            type: number
-            format: double
-            description: distance between hatch lines in meters
-          beamDiameter:
-            type: number
-            format: double
-            description: diameter of laser beam in meters
-          laserWattage:
-            type: number
-            format: double
-            description: laser power in watts
-          laserWaveLength:
-            type: number
-            format: double
-            description: laser light wavelength in meters
-          scanSpeed:
-            type: number
-            format: double
-            description: speed at which laser travels in meters per second
-          timeDiscretizationDuringScanning:
-            type: number
-            format: double
-            description: in seconds
-          coolingToScanningTimeIncrementRatio:
-            type: integer
-            description: ratio between cooling to scanning time
-          totalCoolingTime:
-            type: number
-            format: double
-            description: cooling time prior to deposition of next powder layer
-          heaterTemperature:
-            type: number
-            format: double
-            description: heater temperature in degrees kelvin
-      active:
+        maxLength: 2048
+      archived:
         type: boolean
-        description: true if machine can be used for simlation, false if machine has been archived
+        description: false if machine can be used for simlation, true if machine has been archived
       key:
         type: string
         description: key associated with this machine
+        maxLength: 16
       version:
         type: string
-        description: version number of this machine, read only
+        description: version label number of this machine
+        maxLength: 16
+      machineConfigurationId:
+        type: integer
+        description: identifier for the active MachineConfiguration for the machine
+      machineConfiguration:
+        $ref: "#/definitions/MachineConfiguration"
       created:
         type: string
         format: dateTime
-        description: created time stamp, set server-side, read only
+        description: created time stamp, set server-side, read only field
       createdBy:
         type: string
-        description: assigned user, set server-side, read only
+        description: creating user, set server-side, read only field
       lastModified:
         type: string
         format: dateTime
-        description: last modified time stamp, set server-side, read only
+        description: last modified time stamp, set server-side, read only field
       lastModifiedBy:
         type: string
-        description: assigned user, set server-side, read only
+        description: modifying user, set server-side, read only field
 
   PartUploadRequest:
     properties:
