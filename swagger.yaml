@@ -237,7 +237,7 @@ paths:
         in: body
         required: true
         schema:
-          $ref: '#/definitions/Machine'
+          $ref: '#/definitions/MachinePost'
       responses:
         "200":
           description: Machine was successfully added.
@@ -315,107 +315,6 @@ paths:
             $ref: '#/definitions/Error'
         "404":
           description: Machine not found (id invalid)
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-  /machines/{machineId}/machineconfigurations:
-    get:
-      description: Get a machine configurations history for specific machine
-      operationId: getMachineConfigurations
-      parameters:
-      - name: machineId
-        in: path
-        description: machine identifier
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: Successfully retrieved machine configurations
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/MachineConfiguration'
-        "401":
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-        "404":
-          description: MachineConfiguration not found (id invalid)
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-    post:
-      description: Add a machine configuration to specified machine
-      operationId: postMachineConfiguration
-      parameters:
-        - name: machineId
-          in: path
-          description: machine identifier
-          required: true
-          type: integer
-        - name: machineConfiguration
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/MachineConfiguration'
-      responses:
-        "200":
-          description: MachineConfiguration was successfully added
-          schema:
-            $ref: '#/definitions/MachineConfiguration'
-        "401":
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-        "404":
-          description: referenced Machine not found (machineId invalid)
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-  /machines/{machineId}/machineconfigurations/{configurationId}:
-    get:
-      description: Get a machine configuration
-      operationId: getMachineConfiguration
-      parameters:
-      - name: machineId
-        in: path
-        description: machine identifier
-        required: true
-        type: integer
-      - name: configurationId
-        in: path
-        description: machine configuration identifier
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: Successfully retrieved machine configuration
-          schema:
-            $ref: '#/definitions/MachineConfiguration'
-        "401":
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-        "404":
-          description: MachineConfiguration not found (id invalid)
         default:
           description: unexpected error
           schema:
@@ -2370,15 +2269,59 @@ definitions:
         maximum: 1000
         format: double
 
+  MachinePost:
+    type: object
+    required:
+      - isCore
+      - organizationId
+      - name
+      - key
+      - version
+      - machineConfiguration
+    properties:
+      isCore:
+        type: boolean
+        description: flag whether it is a core machine or a custom machine
+      organizationId:
+        type: integer
+        description: organization identifier
+      name:
+        type: string
+        description: machine name
+        maxLength: 128
+      description:
+        type: string
+        description: machine description
+        maxLength: 2048
+      archived:
+        type: boolean
+        description: false if machine can be used for simlation, true if machine has been archived
+      key:
+        type: string
+        description: key associated with this machine
+        maxLength: 16
+      version:
+        type: string
+        description: version label number of this machine
+        maxLength: 16
+      machineConfiguration:
+        $ref: "#/definitions/MachineConfiguration"
+
   Machine:
     type: object
     required:
+      - id
       - isCore
       - organizationId
       - name
       - archived
       - key
       - version
+      - machineConfigurationId
+      - created
+      - createdBy
+      - lastModified
+      - lastModifiedBy
     properties:
       id:
         type: integer
