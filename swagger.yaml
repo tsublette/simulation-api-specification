@@ -1371,24 +1371,24 @@ definitions:
               - cancelled
           started:
             type: string
-            format: dateTime
+            format: date-time
           startedBy:
             type: string
           completed:
             type: string
-            format: dateTime
+            format: date-time
           percentComplete:
             type: number
           created:
             type: string
-            format: dateTime
+            format: date-time
             description: created time stamp, set server-side, read only
           createdBy:
             type: string
             description: assigned user, set server-side, read only
           lastModified:
             type: string
-            format: dateTime
+            format: date-time
             description: last modified time stamp, set server-side, read only
           lastModifiedBy:
             type: string
@@ -1989,14 +1989,14 @@ definitions:
         description: Approximate volume of the Part (in meters^3), calculated when the part is processed, use 0 for initial post
       created:
         type: string
-        format: dateTime
+        format: date-time
         description: created time stamp, set server-side, read only
       createdBy:
         type: string
         description: assigned user, set server-side, read only
       lastModified:
         type: string
-        format: dateTime
+        format: date-time
         description: last modified time stamp, set server-side, read only
       lastModifiedBy:
         type: string
@@ -2082,14 +2082,14 @@ definitions:
           $ref: '#/definitions/MaterialConfiguration'
       created:
         type: string
-        format: dateTime
+        format: date-time
         description: created time stamp, set server-side, read only field
       createdBy:
         type: string
         description: creating user, set server-side, read only field
       lastModified:
         type: string
-        format: dateTime
+        format: date-time
         description: last modified time stamp, set server-side, read only field
       lastModifiedBy:
         type: string
@@ -2145,7 +2145,7 @@ definitions:
         maxLength: 16
       created:
         type: string
-        format: dateTime
+        format: date-time
         description: created time stamp, set server-side, read only field
       createdBy:
         type: string
@@ -2270,7 +2270,7 @@ definitions:
         maxLength: 16
       created:
         type: string
-        format: dateTime
+        format: date-time
         description: created time stamp, set server-side, read only field
       createdBy:
         type: string
@@ -2419,14 +2419,14 @@ definitions:
         $ref: "#/definitions/MachineConfiguration"
       created:
         type: string
-        format: dateTime
+        format: date-time
         description: created time stamp, set server-side, read only field
       createdBy:
         type: string
         description: creating user, set server-side, read only field
       lastModified:
         type: string
-        format: dateTime
+        format: date-time
         description: last modified time stamp, set server-side, read only field
       lastModifiedBy:
         type: string
