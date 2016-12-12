@@ -237,7 +237,7 @@ paths:
         in: body
         required: true
         schema:
-          $ref: '#/definitions/MachinePost'
+          $ref: '#/definitions/Machine'
       responses:
         "200":
           description: Machine was successfully added.
@@ -379,6 +379,7 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+
   /parts:
     get:
       description: Get list of parts
@@ -2184,7 +2185,6 @@ definitions:
     type: object
     required:
       - machineId
-      - version
       - created
       - createdBy
       - hatchSpacing
@@ -2203,10 +2203,6 @@ definitions:
       machineId:
         type: integer
         description: machine identifier for this machine configuration
-      version:
-        type: string
-        description: version label for the machine configuration
-        maxLength: 16
       created:
         type: string
         format: dateTime
@@ -2269,44 +2265,6 @@ definitions:
         maximum: 1000
         format: double
 
-  MachinePost:
-    type: object
-    required:
-      - isCore
-      - organizationId
-      - name
-      - key
-      - version
-      - machineConfiguration
-    properties:
-      isCore:
-        type: boolean
-        description: flag whether it is a core machine or a custom machine
-      organizationId:
-        type: integer
-        description: organization identifier
-      name:
-        type: string
-        description: machine name
-        maxLength: 128
-      description:
-        type: string
-        description: machine description
-        maxLength: 2048
-      archived:
-        type: boolean
-        description: false if machine can be used for simlation, true if machine has been archived
-      key:
-        type: string
-        description: key associated with this machine
-        maxLength: 16
-      version:
-        type: string
-        description: version label number of this machine
-        maxLength: 16
-      machineConfiguration:
-        $ref: "#/definitions/MachineConfiguration"
-
   Machine:
     type: object
     required:
@@ -2316,7 +2274,6 @@ definitions:
       - name
       - archived
       - key
-      - version
       - machineConfigurationId
       - created
       - createdBy
@@ -2346,10 +2303,6 @@ definitions:
       key:
         type: string
         description: key associated with this machine
-        maxLength: 16
-      version:
-        type: string
-        description: version label number of this machine
         maxLength: 16
       machineConfigurationId:
         type: integer
