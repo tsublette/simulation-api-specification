@@ -687,12 +687,12 @@ paths:
       description: Posts a new porosity simulation
       operationId: postPorositySimulation
       parameters:
-        - name: PorositySimulationRequest
+        - name: PorositySimulation
           in: body
           description: PorositySimulation fields required to add the simulation
           required: true
           schema:
-            $ref: '#/definitions/PorositySimulationRequest'
+            $ref: '#/definitions/PorositySimulation'
       responses:
         "200":
           description: Successfully added a simulation
@@ -736,6 +736,38 @@ paths:
             $ref: '#/definitions/Error'
         "404":
           description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Puts an updated porosity simulation
+      operationId: putPorositySimulation
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+        - name: PorositySimulation
+          in: body
+          description: PorositySimulation fields required to update a simulation
+          required: true
+          schema:
+            $ref: '#/definitions/PorositySimulation'
+      responses:
+        "200":
+          description: Successfully updated a simulation
+          schema:
+            $ref: '#/definitions/PorositySimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -855,12 +887,12 @@ paths:
       description: Posts a new single bead simulation
       operationId: postSingleBeadSimulation
       parameters:
-        - name: SingleBeadSimulationRequest
+        - name: SingleBeadSimulation
           in: body
-          description: SingleBeadSimulationRequest fields required to add the simulation
+          description: SingleBeadSimulation fields required to add the simulation
           required: true
           schema:
-            $ref: '#/definitions/SingleBeadSimulationRequest'
+            $ref: '#/definitions/SingleBeadSimulation'
       responses:
         "200":
           description: Successfully added a simulation
@@ -904,6 +936,38 @@ paths:
             $ref: '#/definitions/Error'
         "404":
           description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Puts an updated single bead simulation
+      operationId: putSingleBeadSimulation
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+        - name: SingleBeadSimulation
+          in: body
+          description: SingleBeadSimulation fields required to update a simulation
+          required: true
+          schema:
+            $ref: '#/definitions/SingleBeadSimulation'
+      responses:
+        "200":
+          description: Successfully updated a simulation
+          schema:
+            $ref: '#/definitions/SingleBeadSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -1024,12 +1088,12 @@ paths:
       description: Posts a new thermal simulation
       operationId: postThermalSimulation
       parameters:
-        - name: ThermalSimulationRequest
+        - name: ThermalSimulation
           in: body
-          description: ThermalSimulationRequest fields required to add a simulation
+          description: ThermalSimulation fields required to add a simulation
           required: true
           schema:
-            $ref: '#/definitions/ThermalSimulationRequest'
+            $ref: '#/definitions/ThermalSimulation'
       responses:
         "200":
           description: Successfully added a simulation
@@ -1053,11 +1117,11 @@ paths:
       description: Get a thermal simulation
       operationId: getThermalSimulation
       parameters:
-      - name: id
-        in: path
-        description: simulation identifier
-        required: true
-        type: integer
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
       responses:
         "200":
           description: Successfully retrieved simulation
@@ -1073,6 +1137,38 @@ paths:
             $ref: '#/definitions/Error'
         "404":
           description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Puts an updated thermal simulation
+      operationId: putThermalSimulation
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+        - name: ThermalSimulation
+          in: body
+          description: ThermalSimulation fields required to update a simulation
+          required: true
+          schema:
+            $ref: '#/definitions/ThermalSimulation'
+      responses:
+        "200":
+          description: Successfully updated a simulation
+          schema:
+            $ref: '#/definitions/ThermalSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -1193,12 +1289,12 @@ paths:
       description: Posts a new assumed strain simulation
       operationId: postAssumedStrainSimulation
       parameters:
-        - name: AssumedStrainSimulationRequest
+        - name: AssumedStrainSimulation
           in: body
-          description: AssumedStrainSimulationRequest fields required to add a simulation
+          description: AssumedStrainSimulation fields required to add a simulation
           required: true
           schema:
-            $ref: '#/definitions/AssumedStrainSimulationRequest'
+            $ref: '#/definitions/AssumedStrainSimulation'
       responses:
         "200":
           description: Successfully added a simulation
@@ -1242,6 +1338,38 @@ paths:
             $ref: '#/definitions/Error'
         "404":
           description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Puts an updated assumed strain simulation
+      operationId: putAssumedStrainSimulation
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+        - name: AssumedStrainSimulation
+          in: body
+          description: AssumedStrainSimulation fields required to update a simulation
+          required: true
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulation'
+      responses:
+        "200":
+          description: Successfully updated a simulation
+          schema:
+            $ref: '#/definitions/AssumedStrainSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -1323,25 +1451,14 @@ definitions:
       message:
         type: string
 
-  SimulationCoreFields:
-    required:
-      - title
-    properties:
-      title:
-        type: string
-      description:
-        type: string
-      tags:
-        type: array
-        items:
-          type: string
-
   Simulation:
     discriminator: simulationType
     allOf:
-      - $ref: "#/definitions/SimulationCoreFields"
       - required:
         - simulationType
+        - title
+        - organizationId
+        - status
         properties:
           simulationType:
             type: string
@@ -1354,6 +1471,14 @@ definitions:
             type: integer
           organizationId:
             type: integer
+          title:
+            type: string
+          description:
+            type: string
+          tags:
+            type: array
+            items:
+              type: string
           status:
             type: string
             enum:
@@ -1366,13 +1491,17 @@ definitions:
           started:
             type: string
             format: dateTime
+            description: time stamp, set server-side, read only
           startedBy:
             type: string
+            description: set server-side, read only
           completed:
             type: string
             format: dateTime
+            description: time stamp, set server-side, read only
           percentComplete:
             type: number
+            description: set server-side, read only
           created:
             type: string
             format: dateTime
@@ -1505,11 +1634,6 @@ definitions:
       usePeriodicAnalysis:
         type: boolean
 
-  PorositySimulationRequest:
-    allOf:
-      - $ref: "#/definitions/SimulationCoreFields"
-      - $ref: "#/definitions/PorositySimulationParameters"
-
   PorositySimulation:
     allOf:
       - $ref: "#/definitions/Simulation"
@@ -1626,11 +1750,6 @@ definitions:
         type: array
         items:
           type: number
-
-  SingleBeadSimulationRequest:
-    allOf:
-      - $ref: "#/definitions/SimulationCoreFields"
-      - $ref: "#/definitions/SingleBeadSimulationParameters"
 
   SingleBeadSimulation:
     allOf:
@@ -1770,11 +1889,6 @@ definitions:
       relaxationFactor:
         type: number
 
-  AssumedStrainSimulationRequest:
-    allOf:
-      - $ref: "#/definitions/SimulationCoreFields"
-      - $ref: "#/definitions/AssumedStrainSimulationParameters"
-
   AssumedStrainSimulation:
     allOf:
       - $ref: "#/definitions/Simulation"
@@ -1912,11 +2026,6 @@ definitions:
         type: number
       relaxationFactor:
         type: number
-
-  ThermalSimulationRequest:
-    allOf:
-      - $ref: "#/definitions/SimulationCoreFields"
-      - $ref: "#/definitions/ThermalSimulationParameters"
 
   ThermalSimulation:
     allOf:
