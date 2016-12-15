@@ -40,15 +40,21 @@ paths:
       description: Get list of materials
       operationId: getMaterials
       parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
+            belonging to their organization.
+          required: true
+          type: string
         - name: offset
           in: query
-          description: starting paging count; ex. 60 will skip the first 60 materials in the list
+          description: starting paging count; ex. 60 will skip the first 60 items in the list
           required: false
           type: integer
           format: int32
         - name: limit
           in: query
-          description: number of materials to return within the query
+          description: number of items to return within the query
           required: false
           type: integer
           format: int32
@@ -60,14 +66,15 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: filter
+        - name: archived
           in: query
-          description: free text search on name and description
+          description: If true, will only return archived items.  If false, will only return unarchived items.  If not
+            provided, will return both archived and unarchived items.
           required: false
-          type: string
+          type: boolean
       responses:
         "200":
-          description: Successfully found a list of materials available to the requestor
+          description: Successfully retrieved list
           schema:
             type: array
             items:
@@ -1490,28 +1497,28 @@ definitions:
               - cancelled
           started:
             type: string
-            format: dateTime
+            format: date-time
             description: time stamp, set server-side, read only
           startedBy:
             type: string
             description: set server-side, read only
           completed:
             type: string
-            format: dateTime
+            format: date-time
             description: time stamp, set server-side, read only
           percentComplete:
             type: number
             description: set server-side, read only
           created:
             type: string
-            format: dateTime
+            format: date-time
             description: created time stamp, set server-side, read only
           createdBy:
             type: string
             description: assigned user, set server-side, read only
           lastModified:
             type: string
-            format: dateTime
+            format: date-time
             description: last modified time stamp, set server-side, read only
           lastModifiedBy:
             type: string
@@ -2032,166 +2039,6 @@ definitions:
       - $ref: "#/definitions/Simulation"
       - $ref: "#/definitions/ThermalSimulationParameters"
 
-  Material:
-    type: object
-    required:
-      - id
-      - name
-      - organizationId
-      - active
-      - scientificProperties
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-      key:
-        type: string
-      description:
-        type: string
-      organizationId:
-        type: integer
-      active:
-        type: boolean
-      scientificProperties:
-        type: object
-        required:
-          - meanFreePathOfLaserInPowder
-          - meanFreePathOfLaserInBulk
-          - powderToSolidThermalConductivityRatio
-          - powderToSolidSpecificHeatRatio
-          - powderToSolidDensityRatio
-          - solidThermalConductivityAtRoomTemperature
-          - solidDensityAtRoomTemperature
-          - solidSpecificHeatAtRoomTemperature
-          - vaporizationLatentHeat
-          - fusionLatentHeat
-          - purgingGasConvectionCoefficient
-          - solidusTemperature
-          - liquidusTemperature
-          - vaporizationTemperature
-          - vaporizationStartTemperature
-          - solidStateTransitionTemperature
-          - energyAbsorbingRateByPowder
-          - energyAbsorbingRateBySolid
-          - thermalExpansionCoefficient
-          - elasticModulus
-          - elasticModulusOfBase
-          - poissonRatio
-          - materialYieldStrength
-          - supportYieldStrengthRatio
-          - materialStrainSensitivity
-          - surfaceTension
-          - atomicWeight
-          - assumedStrain
-          - strainPlasticityRelaxationFactor
-          - anisotropicStrainCoefficients
-        properties:
-          meanFreePathOfLaserInPowder:
-            type: number
-            format: double
-          meanFreePathOfLaserInBulk:
-            type: number
-            format: double
-          powderToSolidThermalConductivityRatio:
-            type: number
-            format: double
-          powderToSolidSpecificHeatRatio:
-            type: number
-            format: double
-          powderToSolidDensityRatio:
-            type: number
-            format: double
-          solidThermalConductivityAtRoomTemperature:
-            type: number
-            format: double
-          solidDensityAtRoomTemperature:
-            type: number
-            format: double
-          solidSpecificHeatAtRoomTemperature:
-            type: number
-            format: double
-          vaporizationLatentHeat:
-            type: number
-            format: double
-          fusionLatentHeat:
-            type: number
-            format: double
-          purgingGasConvectionCoefficient:
-            type: number
-            format: double
-          solidusTemperature:
-            type: number
-            format: double
-          liquidusTemperature:
-            type: number
-            format: double
-          vaporizationTemperature:
-            type: number
-            format: double
-          vaporizationStartTemperature:
-            type: number
-            format: double
-          solidStateTransitionTemperature:
-            type: number
-            format: double
-          energyAbsorbingRateByPowder:
-            type: number
-            format: double
-          energyAbsorbingRateBySolid:
-            type: number
-            format: double
-          thermalExpansionCoefficient:
-            type: number
-            format: double
-          elasticModulus:
-            type: number
-            format: double
-          elasticModulusOfBase:
-            type: number
-            format: double
-          poissonRatio:
-            type: number
-            format: double
-          materialYieldStrength:
-            type: number
-            format: double
-          supportYieldStrengthRatio:
-            type: number
-            format: double
-          materialStrainSensitivity:
-            type: number
-            format: double
-          surfaceTension:
-            type: number
-            format: double
-          atomicWeight:
-            type: number
-            format: double
-          assumedStrain:
-            type: number
-            format: double
-          strainPlasticityRelaxationFactor:
-            type: number
-            format: double
-          anisotropicStrainCoefficients:
-            type: number
-            format: double
-      created:
-        type: string
-        format: dateTime
-        description: created time stamp, set server-side, read only
-      createdBy:
-        type: string
-        description: assigned user, set server-side, read only
-      lastModified:
-        type: string
-        format: dateTime
-        description: last modified time stamp, set server-side, read only
-      lastModifiedBy:
-        type: string
-        description: assigned user, set server-side, read only
-
   Part:
     type: object
     required:
@@ -2252,14 +2099,14 @@ definitions:
         description: Approximate volume of the Part (in meters^3), calculated when the part is processed, use 0 for initial post
       created:
         type: string
-        format: dateTime
+        format: date-time
         description: created time stamp, set server-side, read only
       createdBy:
         type: string
         description: assigned user, set server-side, read only
       lastModified:
         type: string
-        format: dateTime
+        format: date-time
         description: last modified time stamp, set server-side, read only
       lastModifiedBy:
         type: string
@@ -2290,6 +2137,220 @@ definitions:
         type: string
         description: Remote s3 key of a newly uploaded stl file.  Use parts/geometryurl endpoint to upload the part before calling POST.  Max length 256 characters.
 
+  Material:
+    type: object
+    required:
+      - id
+      - isCore
+      - organizationId
+      - name
+      - archived
+      - key
+      - version
+      - materialConfigurationId
+      - created
+      - createdBy
+      - lastModified
+      - lastModifiedBy
+    properties:
+      id:
+        type: integer
+        description: item identifier
+      isCore:
+        type: boolean
+        description: flag whether it is a core material or a custom material
+      organizationId:
+        type: integer
+        description: organization identifier
+      name:
+        type: string
+        description: material name
+        maxLength: 128
+      description:
+        type: string
+        description: material description
+        maxLength: 2048
+      archived:
+        type: boolean
+        description: false if not archived, true if archived
+      key:
+        type: string
+        description: key associated with this material.  e.g. Ti64
+        maxLength: 16
+      version:
+        type: string
+        description: version label
+        maxLength: 16
+      materialConfigurationId:
+        type: integer
+        description: identifier for the active configuration for this material
+      configuration:
+        $ref: "#/definitions/MaterialConfiguration"
+      configurationHistory:
+        type: array
+        items:
+          $ref: '#/definitions/MaterialConfiguration'
+      created:
+        type: string
+        format: date-time
+        description: created time stamp, set server-side, read only field
+      createdBy:
+        type: string
+        description: creating user, set server-side, read only field
+      lastModified:
+        type: string
+        format: date-time
+        description: last modified time stamp, set server-side, read only field
+      lastModifiedBy:
+        type: string
+        description: modifying user, set server-side, read only field
+
+  MaterialConfiguration:
+    type: object
+    required:
+      - materialId
+      - version
+      - created
+      - createdBy
+      - meanFreePathOfLaserInPowder
+      - meanFreePathOfLaserInBulk
+      - powderToSolidThermalConductivityRatio
+      - powderToSolidSpecificHeatRatio
+      - powderToSolidDensityRatio
+      - solidThermalConductivityAtRoomTemperature
+      - solidDensityAtRoomTemperature
+      - solidSpecificHeatAtRoomTemperature
+      - vaporizationLatentHeat
+      - fusionLatentHeat
+      - purgingGasConvectionCoefficient
+      - solidusTemperature
+      - liquidusTemperature
+      - vaporizationTemperature
+      - vaporizationStartTemperature
+      - solidStateTransitionTemperature
+      - energyAbsorbingRateByPowder
+      - energyAbsorbingRateBySolid
+      - thermalExpansionCoefficient
+      - elasticModulus
+      - elasticModulusOfBase
+      - poissonRatio
+      - materialYieldStrength
+      - supportYieldStrengthRatio
+      - materialStrainSensitivity
+      - surfaceTension
+      - atomicWeight
+      - assumedStrain
+      - strainPlasticityRelaxationFactor
+      - anisotropicStrainCoefficients
+    properties:
+      id:
+        type: integer
+        description: material configuration identifier
+      materialId:
+        type: integer
+        description: material identifier for this material configuration
+      version:
+        type: string
+        description: version label for the material configuration
+        maxLength: 16
+      created:
+        type: string
+        format: date-time
+        description: created time stamp, set server-side, read only field
+      createdBy:
+        type: string
+        description: creating user, set server-side, read only field
+      meanFreePathOfLaserInPowder:
+        type: number
+        format: double
+      meanFreePathOfLaserInBulk:
+        type: number
+        format: double
+      powderToSolidThermalConductivityRatio:
+        type: number
+        format: double
+      powderToSolidSpecificHeatRatio:
+        type: number
+        format: double
+      powderToSolidDensityRatio:
+        type: number
+        format: double
+      solidThermalConductivityAtRoomTemperature:
+        type: number
+        format: double
+      solidDensityAtRoomTemperature:
+        type: number
+        format: double
+      solidSpecificHeatAtRoomTemperature:
+        type: number
+        format: double
+      vaporizationLatentHeat:
+        type: number
+        format: double
+      fusionLatentHeat:
+        type: number
+        format: double
+      purgingGasConvectionCoefficient:
+        type: number
+        format: double
+      solidusTemperature:
+        type: number
+        format: double
+      liquidusTemperature:
+        type: number
+        format: double
+      vaporizationTemperature:
+        type: number
+        format: double
+      vaporizationStartTemperature:
+        type: number
+        format: double
+      solidStateTransitionTemperature:
+        type: number
+        format: double
+      energyAbsorbingRateByPowder:
+        type: number
+        format: double
+      energyAbsorbingRateBySolid:
+        type: number
+        format: double
+      thermalExpansionCoefficient:
+        type: number
+        format: double
+      elasticModulus:
+        type: number
+        format: double
+      elasticModulusOfBase:
+        type: number
+        format: double
+      poissonRatio:
+        type: number
+        format: double
+      materialYieldStrength:
+        type: number
+        format: double
+      supportYieldStrengthRatio:
+        type: number
+        format: double
+      materialStrainSensitivity:
+        type: number
+        format: double
+      surfaceTension:
+        type: number
+        format: double
+      atomicWeight:
+        type: number
+        format: double
+      assumedStrain:
+        type: number
+        format: double
+      strainPlasticityRelaxationFactor:
+        type: number
+        format: double
+      anisotropicStrainCoefficients:
+        type: number
+        format: double
+
   MachineConfiguration:
     type: object
     required:
@@ -2314,7 +2375,7 @@ definitions:
         description: machine identifier for this machine configuration
       created:
         type: string
-        format: dateTime
+        format: date-time
         description: created time stamp, set server-side, read only field
       createdBy:
         type: string
@@ -2408,7 +2469,7 @@ definitions:
         maxLength: 2048
       archived:
         type: boolean
-        description: false if machine can be used for simlation, true if machine has been archived
+        description: false if not archived, true if archived
       key:
         type: string
         description: key associated with this machine
@@ -2420,14 +2481,14 @@ definitions:
         $ref: "#/definitions/MachineConfiguration"
       created:
         type: string
-        format: dateTime
+        format: date-time
         description: created time stamp, set server-side, read only field
       createdBy:
         type: string
         description: creating user, set server-side, read only field
       lastModified:
         type: string
-        format: dateTime
+        format: date-time
         description: last modified time stamp, set server-side, read only field
       lastModifiedBy:
         type: string
