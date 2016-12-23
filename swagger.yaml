@@ -1462,18 +1462,9 @@ definitions:
     discriminator: simulationType
     allOf:
       - required:
-        - simulationType
         - title
         - organizationId
-        - status
         properties:
-          simulationType:
-            type: string
-            enum:
-              - SingleBeadSimulation
-              - PorositySimulation
-              - ThermalSimulation
-              - AssumedStrainSimulation
           id:
             type: integer
           organizationId:
@@ -1489,12 +1480,18 @@ definitions:
           status:
             type: string
             enum:
-              - draft
-              - requested
-              - simulating
-              - completed
-              - error
-              - cancelled
+              - Draft
+              - Requested
+              - InProgress
+              - Cancelled
+              - Error
+              - Success
+          materialId:
+            type: integer
+            description: ID of the material to use in the simulation
+          materialConfigurationId:
+            type: integer
+            description: ID of the material configuration that was used in the simulation, set server-side, read only
           started:
             type: string
             format: date-time
@@ -1793,6 +1790,7 @@ definitions:
       - elasticModulus
       - poissonRatio
       - relaxationFactor
+      - stressMode
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -1895,6 +1893,11 @@ definitions:
         type: number
       relaxationFactor:
         type: number
+      stressMode:
+        type: string
+        enum:
+          - LinearElastic
+          - J2Plasticity
 
   AssumedStrainSimulation:
     allOf:
