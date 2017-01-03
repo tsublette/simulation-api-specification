@@ -91,6 +91,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:materials
     post:
       description: Creates a new material for the organizationId specified
       operationId: addMaterial
@@ -118,6 +121,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:materials
 
   /materials/{id}:
     get:
@@ -149,6 +155,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:materials
 
   /materials/{id}/archive:
     put:
@@ -178,6 +187,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:materials
 
   /machines:
     get:
@@ -235,6 +247,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:machines
 
     post:
       description: Add a machine
@@ -262,6 +277,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:machines
 
   /machines/{id}:
     get:
@@ -292,6 +310,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:machines
 
     put:
       description: Update a machine
@@ -326,6 +347,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:machines
 
   /machines/{id}/archive:
     put:
@@ -356,6 +380,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:machines
 
   /machines/{id}/unarchive:
     put:
@@ -386,6 +413,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:machines
 
   /parts:
     get:
@@ -451,6 +481,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:parts
     post:
       description: Adds a part and starts processing the part.  When processing is finished, the "availability" field
         for the part will change to "Available".  See GET /parts.
@@ -477,6 +510,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
     put:
       description: Updates a Part
       operationId: UpdatePart
@@ -500,6 +536,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
 
   /parts/geometryuploadurl:
     get:
@@ -518,6 +557,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
 
   /parts/{id}:
     get:
@@ -545,6 +587,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:parts
 
   /parts/{id}/archive:
     put:
@@ -576,6 +621,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
 
   /parts/{id}/geometryurl:
     get:
@@ -607,6 +655,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:parts
 
   /parts/{id}/geometry:
     get:
@@ -640,6 +691,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:parts
 
   /porositysimulations:
     get:
@@ -690,6 +744,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     post:
       description: Posts a new porosity simulation
       operationId: postPorositySimulation
@@ -717,6 +774,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /porositysimulations/{id}:
     get:
@@ -749,6 +809,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     put:
       description: Puts an updated porosity simulation
       operationId: putPorositySimulation
@@ -781,6 +844,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /porositysimulations/{id}/cancel:
     put:
@@ -811,6 +877,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
   /porositysimulations/{id}/start:
     put:
       description: Starts a porosity simulation.  If the simulation has been started before, start requests have no effect.
@@ -840,6 +909,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /singlebeadsimulations:
     get:
@@ -890,6 +962,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     post:
       description: Posts a new single bead simulation
       operationId: postSingleBeadSimulation
@@ -917,6 +992,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /singlebeadsimulations/{id}:
     get:
@@ -949,6 +1027,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     put:
       description: Puts an updated single bead simulation
       operationId: putSingleBeadSimulation
@@ -981,6 +1062,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /singlebeadsimulations/{id}/cancel:
     put:
@@ -1011,6 +1095,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /singlebeadsimulations/{id}/start:
     put:
@@ -1041,6 +1128,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /thermalsimulations:
     get:
@@ -1091,6 +1181,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     post:
       description: Posts a new thermal simulation
       operationId: postThermalSimulation
@@ -1118,6 +1211,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /thermalsimulations/{id}:
     get:
@@ -1150,6 +1246,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     put:
       description: Puts an updated thermal simulation
       operationId: putThermalSimulation
@@ -1182,6 +1281,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /thermalsimulations/{id}/cancel:
     put:
@@ -1212,6 +1314,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /thermalsimulations/{id}/start:
     put:
@@ -1242,6 +1347,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /assumedstrainsimulations:
     get:
@@ -1292,6 +1400,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     post:
       description: Posts a new assumed strain simulation
       operationId: postAssumedStrainSimulation
@@ -1319,6 +1430,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /assumedstrainsimulations/{id}:
     get:
@@ -1351,6 +1465,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     put:
       description: Puts an updated assumed strain simulation
       operationId: putAssumedStrainSimulation
@@ -1383,6 +1500,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /assumedstrainsimulations/{id}/cancel:
     put:
@@ -1413,6 +1533,9 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /assumedstrainsimulations/{id}/start:
     put:
@@ -1443,6 +1566,24 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+securityDefinitions:
+  simulationSecurity:
+    type: oauth2
+    authorizationUrl: https://3dsim.auth0.com/authorize
+    flow: implicit
+    scopes:
+      write:simulations: create and update simulations
+      read:simulations: read simulations
+      write:parts: create and update parts
+      read:parts: read parts
+      write:machines: create and update machines
+      read:machines: read machines
+      write:materials: create and update materials
+      read:materials: read materials
 
 definitions:
   Status:
