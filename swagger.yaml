@@ -698,6 +698,141 @@ paths:
         - simulationSecurity:
           - read:parts
 
+  /simulations:
+    get:
+      description: Gets a list of all simulations
+      operationId: getSimulations
+      parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
+            belonging to their organization.
+          required: true
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retreived. Multiple status values may be specified
+            e.g. "status=completed&status=error&status=cancelled"
+          required: false
+          type: string
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Simulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+
+  /simulations/{id}:
+    get:
+      description: Get a simulation
+      operationId: getSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation
+          schema:
+            $ref: '#/definitions/Simulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+    patch:
+      description: Patch a simulation
+      operationId: patchSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      - name: Simulation
+        in: body
+        description: Simulation fields to update
+        required: true
+        schema:
+          $ref: '#/definitions/Simulation'
+      responses:
+        "200":
+          description: Successfully patched simulation
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+
+
   /porositysimulations:
     get:
       description: Gets a list of all porosity simulation
