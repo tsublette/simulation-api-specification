@@ -736,11 +736,6 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: filter
-          in: query
-          description: Filter objects based on fields in the object.  E.g. filter=name:my-simulation,state:running
-          required: false
-          type: string
       responses:
         "200":
           description: Successfully found the list of items
@@ -967,11 +962,6 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: filter
-          in: query
-          description: filter against available fields for the model
-          required: false
-          type: string
       responses:
         "200":
           description: Successfully found the list of items
@@ -1199,11 +1189,6 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: filter
-          in: query
-          description: filter against available fields for the model
-          required: false
-          type: string
       responses:
         "200":
           description: Successfully found the list of items
@@ -1431,11 +1416,6 @@ paths:
           collectionFormat: csv
           items:
             type: string
-        - name: filter
-          in: query
-          description: filter against available fields for the model
-          required: false
-          type: string
       responses:
         "200":
           description: Successfully found the list of items
