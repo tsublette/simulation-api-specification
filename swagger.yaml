@@ -45,7 +45,8 @@ paths:
           description: the organization id to get items for.  Must be provided as API callers only have access to items
             belonging to their organization.
           required: true
-          type: string
+          type: integer
+          format: int32
         - name: offset
           in: query
           description: starting paging count; ex. 60 will skip the first 60 items in the list
@@ -198,10 +199,11 @@ paths:
       parameters:
         - name: organizationId
           in: query
-          description: the organization id to get parts for.  Must be provided as API callers only have access to parts
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
             belonging to their organization.
           required: true
-          type: string
+          type: integer
+          format: int32
         - name: offset
           in: query
           description: starting paging count; ex. 60 will skip the first 60 items in the list
@@ -424,10 +426,11 @@ paths:
       parameters:
         - name: organizationId
           in: query
-          description: the organization id to get parts for.  Must be provided as API callers only have access to parts
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
             belonging to their organization.
           required: true
-          type: string
+          type: integer
+          format: int32
         - name: offset
           in: query
           description: starting paging count; ex. 60 will skip the first 60 items in the list
@@ -700,6 +703,19 @@ paths:
       description: Gets a list of all porosity simulation
       operationId: getPorositySimulations
       parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
+            belonging to their organization.
+          required: true
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retreived. Multiple status values may be specified
+            e.g. "status=completed&status=error&status=cancelled"
+          required: false
+          type: string
         - name: offset
           in: query
           description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
@@ -918,6 +934,19 @@ paths:
       description: Gets a list of all single bead simulations for the active user
       operationId: getSingleBeadSimulations
       parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
+            belonging to their organization.
+          required: true
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retreived. Multiple status values may be specified
+            e.g. "status=completed&status=error&status=cancelled"
+          required: false
+          type: string
         - name: offset
           in: query
           description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
@@ -1137,6 +1166,19 @@ paths:
       description: Gets a list of all thermal simulations for the active user
       operationId: getThermalSimulations
       parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
+            belonging to their organization.
+          required: true
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retreived. Multiple status values may be specified
+            e.g. "status=completed&status=error&status=cancelled"
+          required: false
+          type: string
         - name: offset
           in: query
           description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
@@ -1356,6 +1398,19 @@ paths:
       description: Gets a list of all assumed strain simulations for the active user
       operationId: getAssumedStrainSimulations
       parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
+            belonging to their organization.
+          required: true
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retreived. Multiple status values may be specified
+            e.g. "status=completed&status=error&status=cancelled"
+          required: false
+          type: string
         - name: offset
           in: query
           description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
