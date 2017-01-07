@@ -1770,67 +1770,66 @@ definitions:
         type: string
 
   Simulation:
-    discriminator: simulationType
-    allOf:
-      - required:
-        - title
-        - organizationId
-        properties:
-          id:
-            type: integer
-          organizationId:
-            type: integer
-          title:
-            type: string
-          description:
-            type: string
-          tags:
-            type: array
-            items:
-              type: string
-          status:
-            type: string
-            enum:
-              - Draft
-              - Requested
-              - InProgress
-              - Cancelled
-              - Error
-              - Success
-          materialId:
-            type: integer
-            description: ID of the material to use in the simulation
-          materialConfigurationId:
-            type: integer
-            description: ID of the material configuration that was used in the simulation, set server-side, read only
-          started:
-            type: string
-            format: date-time
-            description: time stamp, set server-side, read only
-          startedBy:
-            type: string
-            description: set server-side, read only
-          completed:
-            type: string
-            format: date-time
-            description: time stamp, set server-side, read only
-          percentComplete:
-            type: number
-            description: set server-side, read only
-          created:
-            type: string
-            format: date-time
-            description: created time stamp, set server-side, read only
-          createdBy:
-            type: string
-            description: assigned user, set server-side, read only
-          lastModified:
-            type: string
-            format: date-time
-            description: last modified time stamp, set server-side, read only
-          lastModifiedBy:
-            type: string
-            description: assigned user, set server-side, read only
+    type: object
+    required:
+      - title
+      - organizationId
+    properties:
+      id:
+        type: integer
+      organizationId:
+        type: integer
+      title:
+        type: string
+      description:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      status:
+        type: string
+        enum:
+          - Draft
+          - Requested
+          - InProgress
+          - Cancelled
+          - Error
+          - Success
+      materialId:
+        type: integer
+        description: ID of the material to use in the simulation
+      materialConfigurationId:
+        type: integer
+        description: ID of the material configuration that was used in the simulation, set server-side, read only
+      started:
+        type: string
+        format: date-time
+        description: time stamp, set server-side, read only
+      startedBy:
+        type: string
+        description: set server-side, read only
+      completed:
+        type: string
+        format: date-time
+        description: time stamp, set server-side, read only
+      percentComplete:
+        type: number
+        description: set server-side, read only
+      created:
+        type: string
+        format: date-time
+        description: created time stamp, set server-side, read only
+      createdBy:
+        type: string
+        description: assigned user, set server-side, read only
+      lastModified:
+        type: string
+        format: date-time
+        description: last modified time stamp, set server-side, read only
+      lastModifiedBy:
+        type: string
+        description: assigned user, set server-side, read only
 
   PorositySimulationParameters:
     required:
@@ -2149,10 +2148,10 @@ definitions:
         minimum: 0
         maximum: 0.0003
       maximumWallDistance:
-        description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
+        description: Must be between 0 to 0.003 meters, Must be greater than minimumWallDistance
         type: number
         minimum: 0
-        maximum: 0.005
+        maximum: 0.003
       minimumSupportHeight:
         description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
         type: number
@@ -2831,7 +2830,7 @@ definitions:
           x:
             type: number
             format: double
-          y:
+          'y':
             type: number
             format: double
           z:
@@ -2847,7 +2846,7 @@ definitions:
       x:
         type: number
         format: double
-      y:
+      'y':
         type: number
         format: double
       z:
