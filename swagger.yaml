@@ -802,12 +802,14 @@ paths:
         description: simulation identifier
         required: true
         type: integer
-      - name: Simulation
+      - name: simulationPatch
         in: body
-        description: Simulation fields to update
+        description: This endpoint uses JSON Patch, RFC 6092.
         required: true
         schema:
-          $ref: '#/definitions/Simulation'
+            type: array
+            items:
+              $ref: '#/definitions/PatchDocument'
       responses:
         "200":
           description: Successfully patched simulation
@@ -2863,3 +2865,29 @@ definitions:
         format: int32
       message:
         type: string
+
+  PatchDocument:
+    description: A JSONPatch document as defined by RFC 6902
+    required:
+     - "op"
+     - "path"
+    properties:
+     op:
+      type: string
+      description: The operation to be performed
+      enum:
+       - "add"
+       - "remove"
+       - "replace"
+       - "move"
+       - "copy"
+       - "test"
+     path:
+      type: string
+      description: A JSON-Pointer
+     value:
+      type: object
+      description: The value to be used within the operations.
+     from:
+      type: string
+      description: A string containing a JSON Pointer value.
