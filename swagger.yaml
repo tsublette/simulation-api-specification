@@ -712,10 +712,19 @@ paths:
           format: int32
         - name: status
           in: query
-          description: simulation status for items retreived. Multiple status values may be specified
-            e.g. "status=completed&status=error&status=cancelled"
+          description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
+            e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
           required: false
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+              - Draft
+              - Requested
+              - InProgress
+              - Cancelled
+              - Error
+              - Success
         - name: offset
           in: query
           description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
