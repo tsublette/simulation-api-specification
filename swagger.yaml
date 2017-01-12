@@ -2462,7 +2462,7 @@ definitions:
       - archived
       - key
       - version
-      - materialConfigurationId
+      - configurationId
       - created
       - createdBy
       - lastModified
@@ -2496,7 +2496,7 @@ definitions:
         type: string
         description: version label
         maxLength: 16
-      materialConfigurationId:
+      configurationId:
         type: integer
         description: identifier for the active configuration for this material
       configuration:
@@ -2556,7 +2556,9 @@ definitions:
       - atomicWeight
       - assumedStrain
       - strainPlasticityRelaxationFactor
-      - anisotropicStrainCoefficients
+      - anisotropicStrainCoefficientParallel
+      - anisotropicStrainCoefficientPerpendicular
+      - anisotropicStrainCoefficientZ
     properties:
       id:
         type: integer
@@ -2662,7 +2664,13 @@ definitions:
       strainPlasticityRelaxationFactor:
         type: number
         format: double
-      anisotropicStrainCoefficients:
+      anisotropicStrainCoefficientParallel:
+        type: number
+        format: double
+      anisotropicStrainCoefficientPerpendicular:
+        type: number
+        format: double
+      anisotropicStrainCoefficientZ:
         type: number
         format: double
 
@@ -2759,7 +2767,7 @@ definitions:
       - name
       - archived
       - key
-      - machineConfigurationId
+      - configurationId
       - created
       - createdBy
       - lastModified
@@ -2789,11 +2797,15 @@ definitions:
         type: string
         description: key associated with this machine
         maxLength: 16
-      machineConfigurationId:
+      configurationId:
         type: integer
-        description: identifier for the active MachineConfiguration for the machine
-      machineConfiguration:
+        description: identifier for the active configuration for the machine
+      configuration:
         $ref: "#/definitions/MachineConfiguration"
+      configurationHistory:
+        type: array
+        items:
+          $ref: '#/definitions/MachineConfiguration'
       created:
         type: string
         format: date-time
