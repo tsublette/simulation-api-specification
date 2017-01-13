@@ -129,7 +129,7 @@ paths:
   /materials/{id}:
     get:
       description: Returns a material based on a single ID
-      operationId: findMaterialById
+      operationId: getMaterial
       parameters:
         - name: id
           in: path
@@ -195,7 +195,7 @@ paths:
   /machines:
     get:
       description: Get list of machines
-      operationId: getMachineList
+      operationId: getMachines
       parameters:
         - name: organizationId
           in: query
@@ -293,6 +293,7 @@ paths:
         description: machine identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Successfully retrieved the requested machine
@@ -325,6 +326,7 @@ paths:
           description: machine identifier
           required: true
           type: integer
+          format: int32
         - name: machine
           in: body
           required: true
@@ -363,6 +365,7 @@ paths:
         description: machine identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Machine was successfully archived.
@@ -396,6 +399,7 @@ paths:
         description: machine identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Machine was successfully unarchived.
@@ -778,6 +782,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Successfully retrieved simulation
@@ -811,6 +816,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       - name: simulationPatch
         in: body
         description: This endpoint uses JSON Patch, RFC 6092.
@@ -954,6 +960,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Successfully retrieved simulation
@@ -987,6 +994,7 @@ paths:
           description: simulation identifier
           required: true
           type: integer
+          format: int32
         - name: PorositySimulation
           in: body
           description: PorositySimulation fields required to update a simulation
@@ -1024,6 +1032,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully cancelled.
@@ -1056,6 +1065,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully started.
@@ -1189,6 +1199,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Successfully retrieved simulation
@@ -1222,6 +1233,7 @@ paths:
           description: simulation identifier
           required: true
           type: integer
+          format: int32
         - name: SingleBeadSimulation
           in: body
           description: SingleBeadSimulation fields required to update a simulation
@@ -1259,6 +1271,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully cancelled.
@@ -1292,6 +1305,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully started.
@@ -1425,6 +1439,7 @@ paths:
           description: simulation identifier
           required: true
           type: integer
+          format: int32
       responses:
         "200":
           description: Successfully retrieved simulation
@@ -1458,6 +1473,7 @@ paths:
           description: simulation identifier
           required: true
           type: integer
+          format: int32
         - name: ThermalSimulation
           in: body
           description: ThermalSimulation fields required to update a simulation
@@ -1495,6 +1511,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully cancelled.
@@ -1528,6 +1545,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully started.
@@ -1661,6 +1679,7 @@ paths:
           description: simulation identifier
           required: true
           type: integer
+          format: int32
       responses:
         "200":
           description: Successfully retrieved simulation
@@ -1694,6 +1713,7 @@ paths:
           description: simulation identifier
           required: true
           type: integer
+          format: int32
         - name: ScanPatternSimulation
           in: body
           description: ScanPatternSimulation fields required to update a simulation
@@ -1731,6 +1751,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully cancelled.
@@ -1764,6 +1785,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully started.
@@ -1897,6 +1919,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Successfully retrieved simulation
@@ -1930,6 +1953,7 @@ paths:
           description: simulation identifier
           required: true
           type: integer
+          format: int32
         - name: AssumedStrainSimulation
           in: body
           description: AssumedStrainSimulation fields required to update a simulation
@@ -1967,6 +1991,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully cancelled.
@@ -2000,6 +2025,7 @@ paths:
         description: simulation identifier
         required: true
         type: integer
+        format: int32
       responses:
         "200":
           description: Simulation was successfully started.
@@ -2060,8 +2086,10 @@ definitions:
     properties:
       id:
         type: integer
+        format: int32
       organizationId:
         type: integer
+        format: int32
       title:
         type: string
       description:
@@ -2081,9 +2109,11 @@ definitions:
           - Success
       materialId:
         type: integer
+        format: int32
         description: ID of the material to use in the simulation
       materialConfigurationId:
         type: integer
+        format: int32
         description: ID of the material configuration that was used in the simulation, set server-side, read only
       started:
         type: string
@@ -2661,9 +2691,11 @@ definitions:
     properties:
       id:
         type: integer
+        format: int32
         description: Id of the part
       organizationId:
         type: integer
+        format: int32
         description: Id of the organization that owns this part record
       name:
         type: string
@@ -2706,6 +2738,7 @@ definitions:
         description: Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
       numberOfTriangles:
         type: integer
+        format: int32
         description: Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
       volume:
         type: number
@@ -2851,9 +2884,11 @@ definitions:
     properties:
       id:
         type: integer
+        format: int32
         description: Id of the part
       organizationId:
         type: integer
+        format: int32
         description: Id of the organization that owns this part record
       name:
         type: string
@@ -2896,6 +2931,7 @@ definitions:
         description: Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
       numberOfTriangles:
         type: integer
+        format: int32
         description: Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
       volume:
         type: number
@@ -2924,6 +2960,7 @@ definitions:
     properties:
       organizationId:
         type: integer
+        format: int32
         description: Id of the organization that owns this part record
       name:
         description: Name of the part, max 50 characters
@@ -2958,12 +2995,14 @@ definitions:
     properties:
       id:
         type: integer
+        format: int32
         description: item identifier
       isCore:
         type: boolean
         description: flag whether it is a core material or a custom material
       organizationId:
         type: integer
+        format: int32
         description: organization identifier
       name:
         type: string
@@ -2986,6 +3025,7 @@ definitions:
         maxLength: 16
       configurationId:
         type: integer
+        format: int32
         description: identifier for the active configuration for this material
       configuration:
         $ref: "#/definitions/MaterialConfiguration"
@@ -3050,9 +3090,11 @@ definitions:
     properties:
       id:
         type: integer
+        format: int32
         description: material configuration identifier
       materialId:
         type: integer
+        format: int32
         description: material identifier for this material configuration
       version:
         type: string
@@ -3180,9 +3222,11 @@ definitions:
     properties:
       id:
         type: integer
+        format: int32
         description: machine configuration identifier
       machineId:
         type: integer
+        format: int32
         description: machine identifier for this machine configuration
       created:
         type: string
@@ -3263,12 +3307,14 @@ definitions:
     properties:
       id:
         type: integer
+        format: int32
         description: machine identifier
       isCore:
         type: boolean
         description: flag whether it is a core machine or a custom machine
       organizationId:
         type: integer
+        format: int32
         description: organization identifier
       name:
         type: string
@@ -3287,6 +3333,7 @@ definitions:
         maxLength: 16
       configurationId:
         type: integer
+        format: int32
         description: identifier for the active configuration for the machine
       configuration:
         $ref: "#/definitions/MachineConfiguration"
