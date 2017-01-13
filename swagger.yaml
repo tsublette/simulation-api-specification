@@ -1524,6 +1524,233 @@ paths:
         - simulationSecurity:
           - write:simulations
 
+  /scanpatternsimulations:
+    get:
+      description: Gets a list of all scan pattern simulations for the active user
+      operationId: getScanPatternSimulations
+      parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
+            belonging to their organization.
+          required: true
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retreived. Multiple status values may be specified
+            e.g. "status=completed&status=error&status=cancelled"
+          required: false
+          type: string
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ScanPatternSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+    post:
+      description: Posts a new scan pattern simulation
+      operationId: postScanPatternSimulation
+      parameters:
+        - name: ScanPatternSimulation
+          in: body
+          description: ScanPatternSimulation fields required to add a simulation
+          required: true
+          schema:
+            $ref: '#/definitions/ScanPatternSimulation'
+      responses:
+        "200":
+          description: Successfully added a simulation
+          schema:
+            $ref: '#/definitions/ScanPatternSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+  /scanpatternsimulations/{id}:
+    get:
+      description: Get a Scan Pattern simulation
+      operationId: getScanPatternSimulation
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Successfully retrieved simulation
+          schema:
+            $ref: '#/definitions/ScanPatternSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+    put:
+      description: Puts an updated scan pattern simulation
+      operationId: putScanPatternSimulation
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+        - name: ScanPatternSimulation
+          in: body
+          description: ScanPatternSimulation fields required to update a simulation
+          required: true
+          schema:
+            $ref: '#/definitions/ScanPatternSimulation'
+      responses:
+        "200":
+          description: Successfully updated a simulation
+          schema:
+            $ref: '#/definitions/ScanPatternSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+  /scanpatternsimulations/{id}/cancel:
+    put:
+      description: Cancels a Scan Pattern simulation
+      operationId: cancelScanPatternSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully cancelled.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+  /scanpatternsimulations/{id}/start:
+    put:
+      description: Starts a Scan Pattern simulation.  If the simulation has been started before, start requests have no effect.
+      operationId: startScanPatternSimulation
+      parameters:
+      - name: id
+        in: path
+        description: simulation identifier
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Simulation was successfully started.
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
   /assumedstrainsimulations:
     get:
       description: Gets a list of all assumed strain simulations for the active user
@@ -2110,7 +2337,7 @@ definitions:
       - supportYieldStrengthRatio
       - elasticModulus
       - poissonRatio
-      - relaxationFactor
+      - StrainScalingFactor
       - stressMode
       - outputDisplacementAfterCutoff
     properties:
@@ -2213,7 +2440,7 @@ definitions:
         type: number
       poissonRatio:
         type: number
-      relaxationFactor:
+      StrainScalingFactor:
         type: number
       stressMode:
         type: string
@@ -2257,8 +2484,10 @@ definitions:
       - supportYieldStrengthRatio
       - elasticModulus
       - poissonRatio
-      - relaxationFactor
+      - StrainScalingFactor
       - outputDisplacementAfterCutoff
+      - stressMode
+      - outputThermalVtk
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -2359,14 +2588,214 @@ definitions:
         type: number
       poissonRatio:
         type: number
-      relaxationFactor:
+      StrainScalingFactor:
         type: number
       outputDisplacementAfterCutoff:
         type: boolean
+      stressMode:
+        type: string
+        enum:
+          - LinearElastic
+          - J2Plasticity
+      outputThermalVtk :
+        type: boolean
+      outputThermalVtkLayers :
+        type: string
+
   ThermalSimulation:
     allOf:
       - $ref: "#/definitions/Simulation"
       - $ref: "#/definitions/ThermalSimulationParameters"
+
+  Part:
+    type: object
+    required:
+      - id
+      - organizationId
+      - name
+    properties:
+      id:
+        type: integer
+        description: Id of the part
+      organizationId:
+        type: integer
+        description: Id of the organization that owns this part record
+      name:
+        type: string
+      description:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      fileLocation:
+        type: string
+        description:  Remote path (s3 key) of part. (read only).
+      availability:
+        description: Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part
+          is being processed.  Available - the part was processed successfully and can be used in simulations.  Error -
+          an error occurred, contact support@3dsim.com.
+        type: string
+        enum:
+          - Uploaded
+          - Processing
+          - Available
+          - Error
+      archived:
+        description: Designates whether this entity has been archived.
+        type: boolean
+      locationX:
+        type: number
+        description: x location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+      locationY:
+        type: number
+        description: y location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+      sizeX:
+        type: number
+        description: Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+      sizeY:
+        type: number
+        description: Length of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+      sizeZ:
+        type: number
+        description: Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+      numberOfTriangles:
+        type: integer
+        description: Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
+      volume:
+        type: number
+        description: Approximate volume of the Part (in meters^3), calculated when the part is processed, use 0 for initial post
+      created:
+        type: string
+        format: date-time
+        description: created time stamp, set server-side, read only
+      createdBy:
+        type: string
+        description: assigned user, set server-side, read only
+      lastModified:
+        type: string
+        format: date-time
+        description: last modified time stamp, set server-side, read only
+      lastModifiedBy:
+        type: string
+        description: assigned user, set server-side, read only
+
+  ScanPatternSimulationParameters:
+    required:
+      - layerThickness
+      - supportAngle
+      - supportFactorOfSafety
+      - minimumWallThickness
+      - maximumWallThickness
+      - minimumWallDistance
+      - maximumWallDistance
+      - minimumSupportHeight
+      - voxelSize
+      - startingLayerAngle
+      - layerRotationAngle
+      - outputShrinkage
+      - anisotropicStrainCoefficientsParallel
+      - anisotropicStrainCoefficientsPerpendicular
+      - anisotropicStrainCoefficientsZ
+      - supportYieldStrength
+      - supportYieldStrengthRatio
+      - elasticModulus
+      - poissonRatio
+      - StrainScalingFactor
+      - outputDisplacementAfterCutoff
+      - performSupportOptimization
+      - generateSupportVoxels
+      - stressMode
+    properties:
+      layerThickness:
+        description: Must be between 0.00001 to 0.0001 meters
+        type: number
+        minimum: 0.00001
+        maximum: 0.0001
+      supportAngle:
+        description: Must be between 1 to 89 degrees
+        type: number
+        minimum: 1
+        maximum: 89
+      supportFactorOfSafety:
+        description: Multiplier for support calculations, Must be between 0.1 to 10
+        type: number
+        minimum: 0.1
+        maximum: 10
+      minimumWallThickness:
+        description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
+        type: number
+        minimum: 0.00005
+        maximum: 0.0003
+      maximumWallThickness:
+        description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
+        type: number
+        minimum: 0.00015
+        maximum: 0.002
+      minimumWallDistance:
+        description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
+        type: number
+        minimum: 0
+        maximum: 0.0003
+      maximumWallDistance:
+        description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
+        type: number
+        minimum: 0
+        maximum: 0.005
+      minimumSupportHeight:
+        description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
+        type: number
+        minimum: 0
+        maximum: 0.005
+      voxelSize:
+        description: Must be between 0.00002 to 0.002 meters
+        type: number
+        minimum: 0.00002
+        maximum: 0.002
+      startingLayerAngle:
+        description: Must be between 0 to 180 degrees
+        type: number
+        minimum: 0
+        maximum: 180
+      layerRotationAngle:
+        description: Must be between 0 to 180 degrees
+        type: number
+        minimum: 0
+        maximum: 180
+      outputShrinkage:
+        type: boolean
+      anisotropicStrainCoefficientsParallel:
+        type: number
+      anisotropicStrainCoefficientsPerpendicular:
+        type: number
+      anisotropicStrainCoefficientsZ:
+        type: number
+      supportYieldStrength:
+        type: number
+      supportYieldStrengthRatio:
+        type: number
+      elasticModulus:
+        type: number
+      poissonRatio:
+        type: number
+      StrainScalingFactor:
+        type: number
+      outputDisplacementAfterCutoff:
+        type: boolean
+      stressMode:
+        type: string
+        enum:
+          - LinearElastic
+          - J2Plasticity
+      performSupportOptimization:
+        type: boolean
+      generateSupportVoxels:
+        type: boolean
+
+  ScanPatternSimulation:
+    allOf:
+      - $ref: "#/definitions/Simulation"
+      - $ref: "#/definitions/ScanPatternSimulationParameters"
 
   Part:
     type: object
