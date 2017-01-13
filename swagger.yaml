@@ -2112,6 +2112,7 @@ definitions:
       - poissonRatio
       - relaxationFactor
       - stressMode
+      - outputDisplacementAfterCutoff
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -2219,6 +2220,8 @@ definitions:
         enum:
           - LinearElastic
           - J2Plasticity
+      outputDisplacementAfterCutoff:
+        type: boolean
 
   AssumedStrainSimulation:
     allOf:
@@ -2255,6 +2258,7 @@ definitions:
       - elasticModulus
       - poissonRatio
       - relaxationFactor
+      - outputDisplacementAfterCutoff
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -2357,7 +2361,8 @@ definitions:
         type: number
       relaxationFactor:
         type: number
-
+      outputDisplacementAfterCutoff:
+        type: boolean
   ThermalSimulation:
     allOf:
       - $ref: "#/definitions/Simulation"
