@@ -2087,6 +2087,14 @@ definitions:
       id:
         type: integer
         format: int32
+      type:
+        type: string
+        enum:
+          - SingleBeadSimulation
+          - ThermalSimulation
+          - PorositySimulation
+          - AssumedStrainSimulation
+          - ScanPatternSimulation
       organizationId:
         type: integer
         format: int32
