@@ -2567,10 +2567,6 @@ definitions:
       - supportOptimization
       - outputStateMap
       - outputShrinkage
-      - assumedStrain
-      - anisotropicStrainCoefficientsParallel
-      - anisotropicStrainCoefficientsPerpendicular
-      - anisotropicStrainCoefficientsZ
       - supportYieldStrength
       - supportYieldStrengthRatio
       - elasticModulus
@@ -2663,14 +2659,6 @@ definitions:
         type: boolean
       outputShrinkage:
         type: boolean
-      assumedStrain:
-        type: number
-      anisotropicStrainCoefficientsParallel:
-        type: number
-      anisotropicStrainCoefficientsPerpendicular:
-        type: number
-      anisotropicStrainCoefficientsZ:
-        type: number
       supportYieldStrength:
         type: number
       supportYieldStrengthRatio:
