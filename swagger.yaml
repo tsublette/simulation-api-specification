@@ -2418,7 +2418,6 @@ definitions:
       - layerRotationAngle
       - usePeriodicAnalysis
       - supportOptimization
-      - outputStateMap
       - outputShrinkage
       - assumedStrain
       - anisotropicStrainCoefficientsParallel
@@ -2510,8 +2509,6 @@ definitions:
       usePeriodicAnalysis:
         type: boolean
       supportOptimization:
-        type: boolean
-      outputStateMap:
         type: boolean
       outputShrinkage:
         type: boolean
@@ -3207,6 +3204,9 @@ definitions:
       anisotropicStrainCoefficientZ:
         type: number
         format: double
+      lookupFileLocation:
+        type: string
+        description: Location where the lookup file is stored in S3.  Set server side.  Only used internally within 3DSIM.
 
   MachineConfiguration:
     type: object
