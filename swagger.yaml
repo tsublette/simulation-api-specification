@@ -848,7 +848,355 @@ paths:
         - simulationSecurity:
           - write:simulations
 
+  /simulations/{id}/logs:
+    get:
+      description: Gets a list of all logs for a simulation
+      operationId: getSimulationLogs
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SimulationLog'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+    post:
+      description: Creates a new log entry in the simulation
+      operationId: postSimulationLog
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: SimulationLog
+          in: body
+          description: A log for a simulation
+          required: true
+          schema:
+            $ref: '#/definitions/SimulationLog'
+      responses:
+        "200":
+          description: Successfully added the item
+          schema:
+            $ref: '#/definitions/SimulationLog'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
+  /simulations/{id}/outputs:
+    get:
+      description: Gets a list of all outputs for a simulation
+      operationId: getSimulationOutputs
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SimulationOutput'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+    post:
+      description: Creates a new output for the simulation
+      operationId: postSimulationOutput
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: SimulationOutput
+          in: body
+          description: An output for a simulation
+          required: true
+          schema:
+            $ref: '#/definitions/SimulationOutput'
+      responses:
+        "200":
+          description: Successfully added the item
+          schema:
+            $ref: '#/definitions/SimulationOutput'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+  /simulations/{id}/activities:
+    get:
+      description: Gets a list of all activities for a simulation
+      operationId: getSimulationActivities
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SimulationActivity'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+    post:
+      description: Creates a new activity for the simulation
+      operationId: postSimulationActivity
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: SimulationActivity
+          in: body
+          description: An activity for a simulation.  An activity represents the execution of a worker in the simulation pipeline.
+          required: true
+          schema:
+            $ref: '#/definitions/SimulationActivity'
+      responses:
+        "200":
+          description: Successfully added the item
+          schema:
+            $ref: '#/definitions/SimulationActivity'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+  /simulations/{id}/activities/{activityId}:
+    get:
+      description: Gets an activity for a simulation
+      operationId: getSimulationActivity
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: activityId
+          in: path
+          description: activity identifier
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully found the item
+          schema:
+            $ref: '#/definitions/SimulationActivity'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+    put:
+      description: Updates an activity for a simulation
+      operationId: putSimulationActivity
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: activityId
+          in: path
+          description: activity identifier
+          required: true
+          type: integer
+          format: int32
+        - name: SimulationActivity
+          in: body
+          description: An activity for a simulation.  An activity represents the execution of a worker in the simulation pipeline.
+          required: true
+          schema:
+            $ref: '#/definitions/SimulationActivity'
+      responses:
+        "200":
+          description: Successfully updated the item
+          schema:
+            $ref: '#/definitions/SimulationActivity'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /porositysimulations:
     get:
@@ -2065,6 +2413,82 @@ securityDefinitions:
       read:materials: read materials
 
 definitions:
+  SimulationActivity:
+    type: object
+    required:
+      - simulationId
+      - activityId
+      - activityName
+      - workerVersion
+    properties:
+      id:
+        type: integer
+        format: int32
+      simulationId:
+        type: integer
+        format: int32
+        description: id of associated simulation, set server-side, read-only
+      activityId:
+        type: string
+        description: the Amazon SWF activity id
+      activityName:
+        type: string
+        description: the name of the Amazon SWF activity
+      workerVersion:
+        type: string
+        description: the version of the worker, e.g. 1.9.0
+      startedAt:
+        type: string
+        format: date-time
+        description: started time stamp
+      completedAt:
+        type: string
+        format: date-time
+        description: completed time stamp
+
+  SimulationOutput:
+    type: object
+    required:
+     - label
+     - fileLocation
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id of associated simulation, set server-side, read-only
+      simulationId:
+        type: integer
+        format: int32
+      createdAt:
+        type: string
+        format: date-time
+        description: created time stamp, if not set, will be set server-side to the current time
+      label:
+        type: string
+        description: User readable label of what the output contains
+      fileLocation:
+        type: string
+        description: Location of file, usually an S3 location
+
+  SimulationLog:
+    type: object
+    required:
+      - message
+    properties:
+      id:
+        type: integer
+        format: int32
+      simulationId:
+        type: integer
+        format: int32
+        description: id of associated simulation, set server-side, read-only
+      loggedAt:
+        type: string
+        format: date-time
+        description: time stamp of log, if not set, will be set server-side to the current time
+      message:
+        type: string
+
   Status:
     required:
       - status
