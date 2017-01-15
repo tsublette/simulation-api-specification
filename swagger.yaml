@@ -2418,7 +2418,7 @@ definitions:
       createdAt:
         type: string
         format: date-time
-        description: created time stamp, set server-side, read-only
+        description: created time stamp, if not set, will be set server-side to the current time
       label:
         type: string
         description: User readable label of what the output contains
