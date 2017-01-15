@@ -1117,6 +1117,44 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+
+  /simulations/{id}/activities/{activityId}:
+    get:
+      description: Gets an activity for a simulation
+      operationId: getSimulationActivity
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: activityId
+          in: path
+          description: activity identifier
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully found the item
+          schema:
+            $ref: '#/definitions/SimulationActivity'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
     put:
       description: Updates an activity for a simulation
       operationId: putSimulationActivity
@@ -1124,6 +1162,12 @@ paths:
         - name: id
           in: path
           description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: activityId
+          in: path
+          description: activity identifier
           required: true
           type: integer
           format: int32
