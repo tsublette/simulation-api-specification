@@ -2451,6 +2451,7 @@ definitions:
     required:
      - label
      - fileLocation
+     - createdAt
     properties:
       id:
         type: integer
@@ -2462,7 +2463,7 @@ definitions:
       createdAt:
         type: string
         format: date-time
-        description: created time stamp, if not set, will be set server-side to the current time
+        description: created time stamp
       label:
         type: string
         description: User readable label of what the output contains
@@ -2474,6 +2475,7 @@ definitions:
     type: object
     required:
       - message
+      - loggedAt
     properties:
       id:
         type: integer
@@ -2485,7 +2487,7 @@ definitions:
       loggedAt:
         type: string
         format: date-time
-        description: time stamp of log, if not set, will be set server-side to the current time
+        description: time stamp of log
       message:
         type: string
 
