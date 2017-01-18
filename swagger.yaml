@@ -2445,6 +2445,7 @@ definitions:
         type: string
         format: date-time
         description: completed time stamp
+        x-nullable: true
 
   SimulationOutput:
     type: object
