@@ -2960,8 +2960,8 @@ definitions:
       stressMode:
         type: string
         enum:
-          - LinearElastic
-          - J2Plasticity
+          - linearElastic
+          - j2Plasticity
       outputDisplacementAfterCutoff:
         type: boolean
 
