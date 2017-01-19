@@ -2601,7 +2601,6 @@ definitions:
       - slicingStripeWidthValues
       - originXValues
       - originYValues
-      - usePeriodicAnalysis
     properties:
       geometryWidth:
         description: Must be between 0.001 to 0.01 meters
@@ -2701,8 +2700,6 @@ definitions:
           maximum: 0.2
           exclusiveMinimum: false
           exclusiveMaximum: false
-      usePeriodicAnalysis:
-        type: boolean
 
   PorositySimulation:
     allOf:
@@ -2843,7 +2840,6 @@ definitions:
       - voxelSize
       - startingLayerAngle
       - layerRotationAngle
-      - usePeriodicAnalysis
       - supportOptimization
       - outputShrinkage
       - assumedStrain
@@ -2933,8 +2929,6 @@ definitions:
         type: number
         minimum: 0
         maximum: 180
-      usePeriodicAnalysis:
-        type: boolean
       supportOptimization:
         type: boolean
       outputShrinkage:
@@ -2987,7 +2981,6 @@ definitions:
       - voxelSize
       - startingLayerAngle
       - layerRotationAngle
-      - usePeriodicAnalysis
       - supportOptimization
       - outputStateMap
       - outputShrinkage
@@ -3075,8 +3068,6 @@ definitions:
         type: number
         minimum: 0
         maximum: 180
-      usePeriodicAnalysis:
-        type: boolean
       supportOptimization:
         type: boolean
       outputStateMap:
