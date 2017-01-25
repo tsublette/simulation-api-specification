@@ -2595,7 +2595,7 @@ definitions:
       - startingLayerAngle
       - layerRotationAngle
       - layerThicknessValues
-      - laserPowerValues
+      - laserWattageValues
       - scanSpeedValues
       - hatchSpacingValues
       - slicingStripeWidthValues
@@ -2646,7 +2646,7 @@ definitions:
           maximum: 0.0001
           exclusiveMinimum: false
           exclusiveMaximum: false
-      laserPowerValues:
+      laserWattageValues:
         description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
         type: array
         items:
@@ -2710,7 +2710,7 @@ definitions:
     required:
       - beadLength
       - layerThickness
-      - laserPowerValues
+      - laserWattageValues
       - scanSpeedValues
       - powderThermalConductivityValues
       - powderPackingDensityValues
@@ -2735,7 +2735,7 @@ definitions:
         maximum: 0.0001
         exclusiveMinimum: false
         exclusiveMaximum: false
-      laserPowerValues:
+      laserWattageValues:
         description: Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
         type: array
         items:
