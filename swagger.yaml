@@ -848,6 +848,74 @@ paths:
         - simulationSecurity:
           - write:simulations
 
+  /simulations/{id}/cancel:
+    put:
+      description: Request a cancellation of a simulation.
+      operationId: RequestCancellation
+      parameters:
+        - name: id
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully requested cancellation
+          schema:
+            $ref: '#/definitions/Part'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+  /simulations/{id}/cancelled:
+    put:
+      description: Confirms full cancellation of an active simulation.
+      operationId: ConfirmCancellation
+      parameters:
+        - name: id
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully set status to cancelled
+          schema:
+            $ref: '#/definitions/Part'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
   /simulations/{id}/logs:
     get:
       description: Gets a list of all logs for a simulation
