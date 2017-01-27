@@ -2966,7 +2966,6 @@ definitions:
       - strainScalingFactor
       - stressMode
       - outputDisplacementAfterCutoff
-      - simulationParts
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3111,7 +3110,6 @@ definitions:
       - outputDisplacementAfterCutoff
       - stressMode
       - outputThermalVtk
-      - simulationParts
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3252,7 +3250,6 @@ definitions:
       - performSupportOptimization
       - generateSupportVoxels
       - stressMode
-      - simulationParts
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
