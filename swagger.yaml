@@ -2540,6 +2540,51 @@ definitions:
         type: string
         description: Location of file, usually an S3 location
 
+  SimulationPart:
+    type: object
+    description: "As-run part related parameters used for a simulation. If the part field is included in a Simulation PUT or POST, it will not be updated."
+    required:
+      - partId
+      - simulationId
+      - xMin
+      - yMin
+      - zMin
+    properties:
+      id:
+        type: integer
+        format: int32
+      partId:
+        description: "ID of the associated part"
+        type: integer
+        format: int32
+      part:
+        $ref: "#/definitions/Part"
+      simulationId:
+        description: "ID of the associated simulation"
+        type: integer
+        format: int32
+      xMin:
+        description: "Smallest x coordinate of the part location on the powder bed in millimeters. The center of the powder bed in the x dimension is assumed to be 0"
+        type: number
+        minimum: -125
+        maximum: 125
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      yMin:
+        description: "Smallest y coordinate of the part location on the powder bed in millimeters. The center of the powder bed in the y dimension is assumed to be 0"
+        type: number
+        minimum: -125
+        maximum: 125
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      zMin:
+        description: "Not used at present. This must be set to 0"
+        type: number
+        minimum: 0
+        maximum: 0
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+
   SimulationLog:
     type: object
     required:
@@ -3026,6 +3071,11 @@ definitions:
           - j2Plasticity
       outputDisplacementAfterCutoff:
         type: boolean
+      simulationParts:
+        description: List of parts to simulate (current limit is one part, imposed by server)
+        type: array
+        items:
+          $ref: "#/definitions/SimulationPart"
 
   AssumedStrainSimulation:
     allOf:
@@ -3163,87 +3213,16 @@ definitions:
         type: boolean
       outputThermalVtkLayers:
         type: string
+      simulationParts:
+        description: List of parts to simulate (current limit is one part, imposed by server)
+        type: array
+        items:
+          $ref: "#/definitions/SimulationPart"
 
   ThermalSimulation:
     allOf:
       - $ref: "#/definitions/Simulation"
       - $ref: "#/definitions/ThermalSimulationParameters"
-
-  Part:
-    type: object
-    required:
-      - id
-      - organizationId
-      - name
-    properties:
-      id:
-        type: integer
-        format: int32
-        description: Id of the part
-      organizationId:
-        type: integer
-        format: int32
-        description: Id of the organization that owns this part record
-      name:
-        type: string
-      description:
-        type: string
-      tags:
-        type: array
-        items:
-          type: string
-      fileLocation:
-        type: string
-        description:  Remote path (s3 key) of part. (read only).
-      availability:
-        description: Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part
-          is being processed.  Available - the part was processed successfully and can be used in simulations.  Error -
-          an error occurred, contact support@3dsim.com.
-        type: string
-        enum:
-          - Uploaded
-          - Processing
-          - Available
-          - Error
-      archived:
-        description: Designates whether this entity has been archived.
-        type: boolean
-      locationX:
-        type: number
-        description: x location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
-      locationY:
-        type: number
-        description: y location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
-      sizeX:
-        type: number
-        description: Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
-      sizeY:
-        type: number
-        description: Length of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
-      sizeZ:
-        type: number
-        description: Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
-      numberOfTriangles:
-        type: integer
-        format: int32
-        description: Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
-      volume:
-        type: number
-        description: Approximate volume of the Part (in meters^3), calculated when the part is processed, use 0 for initial post
-      created:
-        type: string
-        format: date-time
-        description: created time stamp, set server-side, read only
-      createdBy:
-        type: string
-        description: assigned user, set server-side, read only
-      lastModified:
-        type: string
-        format: date-time
-        description: last modified time stamp, set server-side, read only
-      lastModifiedBy:
-        type: string
-        description: assigned user, set server-side, read only
 
   ScanPatternSimulationParameters:
     required:
@@ -3352,6 +3331,11 @@ definitions:
         enum:
           - LinearElastic
           - J2Plasticity
+      simulationParts:
+        description: List of parts to simulate (current limit is one part, imposed by server)
+        type: array
+        items:
+          $ref: "#/definitions/SimulationPart"
       performSupportOptimization:
         type: boolean
       generateSupportVoxels:
