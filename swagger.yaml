@@ -2655,6 +2655,9 @@ definitions:
           - Cancelled
           - Error
           - Success
+      archived:
+        type: boolean
+        description: True if simulation has been archived, false otherwise
       materialId:
         type: integer
         format: int32
