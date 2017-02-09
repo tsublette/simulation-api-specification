@@ -3557,7 +3557,7 @@ definitions:
       - surfaceTension
       - atomicWeight
       - assumedStrain
-      - strainPlasticityRelaxationFactor
+      - strainScalingFactor
       - anisotropicStrainCoefficientParallel
       - anisotropicStrainCoefficientPerpendicular
       - anisotropicStrainCoefficientZ
@@ -3665,7 +3665,7 @@ definitions:
       assumedStrain:
         type: number
         format: double
-      strainPlasticityRelaxationFactor:
+      strainScalingFactor:
         type: number
         format: double
       anisotropicStrainCoefficientParallel:
