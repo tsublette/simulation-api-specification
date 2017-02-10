@@ -3665,7 +3665,7 @@ definitions:
       assumedStrain:
         type: number
         format: double
-      strainScalingFactor:
+      strainPlasticityRelaxationFactor:
         type: number
         format: double
       anisotropicStrainCoefficientParallel:
