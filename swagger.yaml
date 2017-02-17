@@ -715,7 +715,7 @@ paths:
           format: int32
         - name: voxelSize
           in: path
-          description: size of voxel
+          description: size of voxels in mm
           required: true
           type: number
       responses:
