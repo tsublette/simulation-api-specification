@@ -2464,6 +2464,39 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+  /assumedstrainsimulations/{id}/estimate:
+    get:
+      description: Get an estimate, in minutes, for running an assumed strain simulation for the selected part and specified voxel size.
+      operationId: AssumedStrainEstimate
+      parameters:
+        - name: id
+          in: path
+          description: ID of simulation
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully estimated time for assumed strain simulation
+          schema:
+            $ref: '#/definitions/SimulationEstimate'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
 
 securityDefinitions:
   simulationSecurity:
@@ -3915,3 +3948,20 @@ definitions:
      from:
       type: string
       description: A string containing a JSON Pointer value.
+
+  SimulationEstimate:
+    description: contains an estimate (in minutes) for running an assumed strain simulation
+    required:
+      - partId
+      - estimate
+      - type
+    properties:
+      partId:
+        type: number
+      estimate:
+        type: number
+      type:
+        type: string
+      description:
+        type: string
+        description: If the estimate is 0, the description field will contain information on why an estimate could not be calculated
