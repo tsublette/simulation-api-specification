@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.0.0
+  version: 1.0.1
   title: Simulation API
   description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
@@ -3002,6 +3002,7 @@ definitions:
       - strainScalingFactor
       - stressMode
       - outputDisplacementAfterCutoff
+      - detectBladeCrash
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3107,6 +3108,11 @@ definitions:
           - j2Plasticity
       outputDisplacementAfterCutoff:
         type: boolean
+      detectBladeCrash:
+        type: boolean
+      bladeCrashThreshold:
+        type: number
+        description: should be a number between 0.5 and 1.5
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
@@ -3146,6 +3152,7 @@ definitions:
       - outputDisplacementAfterCutoff
       - stressMode
       - outputThermalVtk
+      - detectBladeCrash
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3249,6 +3256,11 @@ definitions:
         type: boolean
       outputThermalVtkLayers:
         type: string
+      detectBladeCrash:
+        type: boolean
+      bladeCrashThreshold:
+        type: number
+        description: should be a number between 0.5 and 1.5
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
@@ -3286,6 +3298,7 @@ definitions:
       - performSupportOptimization
       - generateSupportVoxels
       - stressMode
+      - detectBladeCrash
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3362,6 +3375,11 @@ definitions:
         type: number
       outputDisplacementAfterCutoff:
         type: boolean
+      detectBladeCrash:
+        type: boolean
+      bladeCrashThreshold:
+        type: number
+        description: should be a number between 0.5 and 1.5
       stressMode:
         type: string
         enum:
