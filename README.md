@@ -1,5 +1,5 @@
 # simulation-api-specification
-Repo for storing the specification for the 3DSIM simulation api.  
+Repo for storing the specification for the 3DSIM simulation api.
 
 ## Writing specifications
 We are following the swagger 2.0 specification.  Below are some resources to learn how to write swagger 2.0:
@@ -9,3 +9,41 @@ We are following the swagger 2.0 specification.  Below are some resources to lea
 
 To actually write the source, you can use any editor, but usually works best to use an online swagger 2.0 compliant editor such as:
 http://editor.swagger.io
+
+## Getting an Aurhorization Token for API Calls
+In order to get an authorize token to access the API given a user name password, issue a POST request to the following URL:
+```
+http://<domain url>/oauth/ro
+```
+
+The header should include
+```
+content-type    application/json
+```
+
+And the body of the post should include the following json
+```
+{
+  "client_id": "<Client Id>",
+  "username": "<your username>",
+  "password": "<your password>",
+  "connection": "<connection>",
+  "scope": "openid email user_metadata app_metadata picture"
+}
+```
+Values in <> are either login information known to the caller or envrionment settings listed below.
+
+### QA Settings
+Domain URL: 3dsim-qa.auth0.com
+Client ID: 6xrK3dpRFpnOytcVkN2QsX5iDwfXC7k3
+Connection: end-users
+
+### Production Settings
+Domian URL: 3dsim.auth0.com
+Client ID: OJ4kxgckhpEie9PLpWoAoLFPdCBPNAZA
+Connection: product-users
+
+### GovCloud Settings
+Domain URL: 3dsim.auth0.com
+Client ID: kPXdfrC7G2RJUh7hPsGqrdqHsHQc3AoV
+Connection: product-gov-users
