@@ -3153,6 +3153,8 @@ definitions:
       - stressMode
       - outputThermalVtk
       - detectBladeCrash
+      - outputPointThermalHistory
+      - outputVirtualSensorData
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3261,6 +3263,13 @@ definitions:
       bladeCrashThreshold:
         type: number
         description: should be a number between 0.5 and 1.5
+      outputPointThermalHistory:
+        type: boolean
+      outputVirtualSensorData:
+        type: boolean
+      virtualSensorRadius:
+        type: number
+        description: should be a number between 0.5 and 1.5 mm
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
