@@ -3155,7 +3155,7 @@ definitions:
       - detectBladeCrash
       - outputPointThermalHistory
       - outputVirtualSensorData
-      - thermalSimulationOrigin
+      - includeStressAnalysis
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3268,19 +3268,25 @@ definitions:
         type: boolean
       outputVirtualSensorData:
         type: boolean
-      virtualSensorRadius:
+      staticVirtualSensorRadius:
+        type: number
+        description: should be a number between 0.05 and 5.0 mm
+      dynamicVirtualSensorRadius:
         type: number
         description: should be a number between 0.5 and 1.5 mm
-      thermalSimulationOrigin:
-        type: string
-        enum:
-          - exaSIM
-          - FLEX
+      includeStressAnalysis:
+        type: boolean
+        description: false indicates that only the thermal solver will run, while true indicates that the mechanics solver will run after the thermal solver
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
         items:
           $ref: "#/definitions/SimulationPart"
+      selectedPoints:
+        description: List of points where the thermal solver will collect thermal history - limit 10
+        type: array
+        items:
+          $ref: "#/definitions/SelectedPoint"
 
   ThermalSimulation:
     allOf:
@@ -3998,3 +4004,25 @@ definitions:
       description:
         type: string
         description: If the estimate is 0, the description field will contain information on why an estimate could not be calculated
+
+  SelectedPoint:
+    description: describes a point
+    required:
+      - label
+      - simulationId
+      - x
+      - y
+      - z
+    properties:
+      id:
+        type: number
+      simulationId:
+        type: number
+      label:
+        type: string
+      x:
+        type: number
+      y:
+        type: number
+      z:
+        type: number
