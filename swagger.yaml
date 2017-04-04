@@ -3003,6 +3003,7 @@ definitions:
       - stressMode
       - outputDisplacementAfterCutoff
       - detectBladeCrash
+      - outputLayerVTK
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3159,6 +3160,7 @@ definitions:
       - outputPointThermalHistory
       - outputVirtualSensorData
       - includeStressAnalysis
+      - outputLayerVTK
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3328,6 +3330,7 @@ definitions:
       - generateSupportVoxels
       - stressMode
       - detectBladeCrash
+      - outputLayerVTK
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
