@@ -4013,7 +4013,7 @@ definitions:
       - label
       - simulationId
       - x
-      - y
+      - 'y'
       - z
     properties:
       id:
@@ -4024,7 +4024,7 @@ definitions:
         type: string
       x:
         type: number
-      y:
+      'y':
         type: number
       z:
         type: number
