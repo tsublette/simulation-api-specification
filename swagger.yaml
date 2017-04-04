@@ -3113,6 +3113,9 @@ definitions:
       bladeCrashThreshold:
         type: number
         description: should be a number between 0.5 and 1.5
+      outputLayerVTK:
+        type: boolean
+        description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
@@ -3279,6 +3282,9 @@ definitions:
       includeStressAnalysis:
         type: boolean
         description: false indicates that only the thermal solver will run, while true indicates that the mechanics solver will run after the thermal solver
+      outputLayerVTK:
+        type: boolean
+        description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
@@ -3417,6 +3423,9 @@ definitions:
         type: boolean
       generateSupportVoxels:
         type: boolean
+      outputLayerVTK:
+        type: boolean
+        description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
 
   ScanPatternSimulation:
     allOf:
