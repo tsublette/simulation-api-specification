@@ -3266,8 +3266,10 @@ definitions:
         description: should be a number between 0.5 and 1.5
       outputPointThermalHistory:
         type: boolean
+        description: for each slectedPoint, a series of vtk files will output thermal history around that point with a radius of staticVirtualSensorRadius.
       outputVirtualSensorData:
         type: boolean
+        description: Outputs meltpool dimensions and thermal history within a VTK file. Thermal history is output as the average temperature within the user-specified dynamicVirtualSensorRadius, centered at the middle of the laser beam.
       staticVirtualSensorRadius:
         type: number
         description: should be a number between 0.05 and 5.0 mm
