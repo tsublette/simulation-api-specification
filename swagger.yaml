@@ -61,7 +61,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -218,7 +218,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -449,7 +449,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -743,7 +743,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -941,7 +941,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -1031,7 +1031,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -1121,7 +1121,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -1307,7 +1307,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -1546,7 +1546,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -1786,7 +1786,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -2026,7 +2026,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
@@ -2266,7 +2266,7 @@ paths:
           format: int32
         - name: sort
           in: query
-          description: key:direction pairs for one or multiple field sort orders
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
           required: false
           type: array
           collectionFormat: csv
