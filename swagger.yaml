@@ -3003,7 +3003,7 @@ definitions:
       - stressMode
       - outputDisplacementAfterCutoff
       - detectBladeCrash
-      - outputLayerVTK
+      - outputLayerVtk
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3114,7 +3114,7 @@ definitions:
       bladeCrashThreshold:
         type: number
         description: should be a number between 0.5 and 1.5
-      outputLayerVTK:
+      outputLayerVtk:
         type: boolean
         description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
       simulationParts:
@@ -3160,7 +3160,7 @@ definitions:
       - outputPointThermalHistory
       - outputVirtualSensorData
       - includeStressAnalysis
-      - outputLayerVTK
+      - outputLayerVtk
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3284,7 +3284,7 @@ definitions:
       includeStressAnalysis:
         type: boolean
         description: false indicates that only the thermal solver will run, while true indicates that the mechanics solver will run after the thermal solver
-      outputLayerVTK:
+      outputLayerVtk:
         type: boolean
         description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
       simulationParts:
@@ -3330,7 +3330,7 @@ definitions:
       - generateSupportVoxels
       - stressMode
       - detectBladeCrash
-      - outputLayerVTK
+      - outputLayerVtk
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3426,7 +3426,7 @@ definitions:
         type: boolean
       generateSupportVoxels:
         type: boolean
-      outputLayerVTK:
+      outputLayerVtk:
         type: boolean
         description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
 
