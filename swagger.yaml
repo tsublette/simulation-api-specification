@@ -3117,6 +3117,20 @@ definitions:
       outputLayerVtk:
         type: boolean
         description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
+      performDistortionCompensation:
+        type: boolean
+        description: if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
+      distortionScaleFactor:
+        type: number
+        description: a value that is used to scale the simulated distortion value
+      outputSupportsVtk:
+        type: boolean
+        description: if true, a VTK file of the support structure will be created
+      detectSupportFailure:
+        type: boolean
+      supportFailureThreshold:
+        type: number
+        description: should be a number between 0.5 and 1.5
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
@@ -3161,6 +3175,10 @@ definitions:
       - outputVirtualSensorData
       - includeStressAnalysis
       - outputLayerVtk
+      - anisotropicStrainCoefficientsParallel
+      - anisotropicStrainCoefficientsPerpendicular
+      - anisotropicStrainCoefficientsZ
+
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3287,6 +3305,26 @@ definitions:
       outputLayerVtk:
         type: boolean
         description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
+      anisotropicStrainCoefficientsParallel:
+        type: number
+      anisotropicStrainCoefficientsPerpendicular:
+        type: number
+      anisotropicStrainCoefficientsZ:
+        type: number
+      performDistortionCompensation:
+        type: boolean
+        description: if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
+      distortionScaleFactor:
+        type: number
+        description: a value that is used to scale the simulated distortion value
+      outputSupportsVtk:
+        type: boolean
+        description: if true, a VTK file of the support structure will be created
+      detectSupportFailure:
+        type: boolean
+      supportFailureThreshold:
+        type: number
+        description: should be a number between 0.5 and 1.5
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
@@ -3429,6 +3467,20 @@ definitions:
       outputLayerVtk:
         type: boolean
         description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
+      performDistortionCompensation:
+        type: boolean
+        description: if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
+      distortionScaleFactor:
+        type: number
+        description: a value that is used to scale the simulated distortion value
+      outputSupportsVtk:
+        type: boolean
+        description: if true, a VTK file of the support structure will be created
+      detectSupportFailure:
+        type: boolean
+      supportFailureThreshold:
+        type: number
+        description: should be a number between 0.5 and 1.5
 
   ScanPatternSimulation:
     allOf:
