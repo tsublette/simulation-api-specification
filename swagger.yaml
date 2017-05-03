@@ -3004,7 +3004,10 @@ definitions:
       - outputDisplacementAfterCutoff
       - detectBladeCrash
       - outputLayerVtk
+      - performSupportOptimization
     properties:
+      performSupportOptimization:
+        type: boolean
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
         type: number
@@ -3178,8 +3181,11 @@ definitions:
       - anisotropicStrainCoefficientsParallel
       - anisotropicStrainCoefficientsPerpendicular
       - anisotropicStrainCoefficientsZ
+      - performSupportOptimization
 
     properties:
+      performSupportOptimization:
+        type: boolean
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
         type: number
@@ -3973,14 +3979,14 @@ definitions:
 
   PartUploadRequest:
     properties:
-      signedURL:
+      signedUrl:
         type: string
       s3Key:
         type: string
 
   PartGeometryUrl:
     properties:
-      signedURL:
+      signedUrl:
         type: string
 
   Triangle:
