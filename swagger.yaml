@@ -2547,6 +2547,9 @@ definitions:
         format: date-time
         description: completed time stamp
         x-nullable: true
+      status:
+        type: string
+        description: status of the activity
 
   SimulationOutput:
     type: object
@@ -2637,6 +2640,17 @@ definitions:
         description: time stamp of log
       message:
         type: string
+      level:
+        type: string
+        description: level of the log
+        enum:
+          - Info
+          - Trace
+          - Error
+          - Warn
+      activityId:
+        type: string
+        description: the Amazon SWF activity id 
 
   Status:
     required:
