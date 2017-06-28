@@ -2550,6 +2550,12 @@ definitions:
       status:
         type: string
         description: status of the activity
+        enum:
+          - Waiting
+          - Running
+          - Cancelled
+          - Error
+          - Finished
 
   SimulationOutput:
     type: object
