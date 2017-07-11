@@ -3588,6 +3588,18 @@ definitions:
       lastModifiedBy:
         type: string
         description: assigned user, set server-side, read only
+      estimatedMemory:
+        type: integer
+        description: Estimated memory usage for mechanics solver using estimateVoxelSize
+      maxMemory:
+        type: integer
+        description: Estimated max memory usage for mechanics solver using estimateVoxelSize
+      estimatedWork:
+        type: integer
+        description: Estimated work using estimateVoxelSize
+      estimateVoxelSize:
+        type: number
+        description: Voxel size used for estimatedMemory, maxMemory, estimatedWork
 
   PartPost:
     type: object
