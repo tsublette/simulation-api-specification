@@ -3590,12 +3590,15 @@ definitions:
         description: assigned user, set server-side, read only
       estimatedMemory:
         type: integer
+        format: int32
         description: Estimated memory usage for mechanics solver using estimateVoxelSize
       maxMemory:
         type: integer
+        format: int32
         description: Estimated max memory usage for mechanics solver using estimateVoxelSize
       estimatedWork:
         type: integer
+        format: int32
         description: Estimated work using estimateVoxelSize
       estimateVoxelSize:
         type: number
