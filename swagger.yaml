@@ -3606,9 +3606,11 @@ definitions:
       supportVolume:
         type: number
       elements:
-        type: int32
+        type: integer
+        format: int32
       nodes:
-        type: int32
+        type: integer
+        format: int32
       collapseCost:
         type: number
       surfaceArea:
