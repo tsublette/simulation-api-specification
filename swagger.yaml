@@ -3530,6 +3530,9 @@ definitions:
         description: Id of the organization that owns this part record
       name:
         type: string
+      originalFileName:
+        type: string
+        description: The original file name from the user
       description:
         type: string
       tags:
@@ -3552,12 +3555,15 @@ definitions:
       archived:
         description: Designates whether this entity has been archived.
         type: boolean
-      locationX:
+      xMin:
         type: number
         description: x location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
-      locationY:
+      yMin:
         type: number
         description: y location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+      zMin:
+        type: number
+        description: z location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
       sizeX:
         type: number
         description: Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
@@ -3567,7 +3573,16 @@ definitions:
       sizeZ:
         type: number
         description: Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
-      numberOfTriangles:
+      originalX:
+        type: number
+        description: The smallest x location before transformation
+      originalY:
+        type: number
+        description: The smallest y location before transformation
+      originalZ:
+        type: number
+        description: The smallest z location before transformation
+      triangleCount:
         type: integer
         format: int32
         description: Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
@@ -3588,6 +3603,16 @@ definitions:
       lastModifiedBy:
         type: string
         description: assigned user, set server-side, read only
+      supportVolume:
+        type: number
+      elements:
+        type: int32
+      nodes:
+        type: int32
+      collapseCost:
+        type: number
+      surfaceArea:
+        type: number
       estimatedMemory:
         type: integer
         format: int32
@@ -3603,6 +3628,7 @@ definitions:
       estimateVoxelSize:
         type: number
         description: Voxel size used for estimatedMemory, maxMemory, estimatedWork
+
 
   PartPost:
     type: object
