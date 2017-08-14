@@ -167,7 +167,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: ID of material to archived
+          description: ID of material to archive
           required: true
           type: integer
           format: int32
@@ -2498,6 +2498,373 @@ paths:
         - simulationSecurity:
           - read:simulations
 
+  /buildfiles:
+    get:
+      description: Get list of build files
+      operationId: getBuildFiles
+      parameters:
+        - name: organizationId
+          in: query
+          description: the organization id to get items for.  Must be provided as API callers only have access to items
+            belonging to their organization.
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of items to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+        - name: archived
+          in: query
+          description: If true, will only return archived items.  If false, will only return unarchived items.  If not
+            provided, will return both archived and unarchived items.
+          required: false
+          type: boolean
+        - name: availability
+          in: query
+          description: 'availability value of build files to return, valid values: Uploaded, Processing, Available, Error'
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Successfully retrieved list of build files
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BuildFile'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:buildFiles
+    post:
+      description: Creates a new build file
+      operationId: addBuildFile
+      parameters:
+        - name: buildFilePost
+          in: body
+          description: build file to add
+          required: true
+          schema:
+            $ref: '#/definitions/BuildFilePost'
+      responses:
+        "200":
+          description: Build file that was successfully added
+          schema:
+            $ref: '#/definitions/BuildFile'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:buildFiles
+
+  /buildfiles/buildfileuploadurl:
+    get:
+      description: Returns a url used to upload a ZIP file containing build file components. The returned url is used in a post to buildfiles/.
+      operationId: getBuildFileUploadUrl
+      responses:
+        "200":
+          description: URL to use for uploading a ZIP file containing build file components
+          schema:
+            type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /buildfiles/{id}:
+    get:
+      description: Retrieve a single build file
+      operationId: getBuildFile
+      parameters:
+        - name: id
+          in: path
+          description: ID of build file to retrieve
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Retrieved build file
+          schema:
+            $ref: '#/definitions/BuildFile'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: build file not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:buildFiles
+    put:
+      description: Update a single build file
+      operationId: updateBuildFile
+      parameters:
+        - name: id
+          in: path
+          description: ID of build file to update
+          required: true
+          type: integer
+          format: int32
+        - name: buildFile
+          in: body
+          description: build file to update
+          required: true
+          schema:
+            $ref: '#/definitions/BuildFile'
+      responses:
+        "200":
+          description: Updated build file
+          schema:
+            $ref: '#/definitions/BuildFile'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: build file not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:buildFiles
+    patch:
+      description: Update fields within a build file
+      operationId: patchBuildFile
+      parameters:
+        - name: id
+          in: path
+          description: ID of build file to update
+          required: true
+          type: integer
+          format: int32
+        - name: buildFilePatch
+          in: body
+          description: This endpoint uses JSON Patch, RFC 6092.
+          required: true
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/PatchDocument'
+      responses:
+        "200":
+          description: Patched build file
+          schema:
+            $ref: '#/definitions/BuildFile'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:buildFiles
+
+  /buildfiles/{id}/process:
+    put:
+      description: Process a ZIP file containing build file elements. This should be called after a POST to /buildfiles.
+      operationId: processBuildFile
+      parameters:
+        - name: id
+          in: path
+          description: identifier
+          required: true
+          type: integer
+        - name: buildFile
+          in: body
+          description: build file to process
+          required: true
+          schema:
+            $ref: '#/definitions/BuildFile'
+      responses:
+        "200":
+          description: Build file after it has been processed
+          schema:
+            $ref: '#/definitions/BuildFile'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: build file not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:buildFiles
+
+  /buildfiles/{id}/archive:
+    put:
+      description: archives a single build file based on an ID
+      operationId: archiveBuildFile
+      parameters:
+        - name: id
+          in: path
+          description: ID of build file to archive
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Build file that was archived
+          schema:
+            $ref: '#/definitions/BuildFile'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: build file not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:buildFiles
+
+  /buildfiles/{id}/geometry:
+    get:
+      description: Retrieve the part geometry associated with a specific build file as a list of triangles
+      operationId: getBuildFileGeometry
+      parameters:
+        - name: id
+          in: path
+          description: ID of build file to retrieve geometry of
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Part geometry as an array of triangles
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Triangle'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: build file not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:buildFiles
+
+  /buildfiles/{id}/geometryurl:
+    get:
+      description: Get a url to the part geometry STL file associated with a specific build file
+      operationId: getBuildFileGeometryUrl
+      parameters:
+        - name: id
+          in: path
+          description: ID of build file to retrieve geometry of
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: URL to the part STL file
+          schema:
+            type: string
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: build file not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:buildFiles
+
 securityDefinitions:
   simulationSecurity:
     type: oauth2
@@ -2512,6 +2879,8 @@ securityDefinitions:
       read:machines: read machines
       write:materials: create and update materials
       read:materials: read materials
+      write:buildFiles: write build files
+      read:buildFiles: read build files
 
 definitions:
   SimulationActivity:
@@ -2656,7 +3025,7 @@ definitions:
           - Warn
       activityId:
         type: string
-        description: the Amazon SWF activity id 
+        description: the Amazon SWF activity id
 
   Status:
     required:
@@ -4161,3 +4530,140 @@ definitions:
         type: number
       z:
         type: number
+
+  BuildFile:
+    description: parameters associated with a build file used by machine manufacturers
+    required:
+      - name
+      - buildFileLocation
+      - archived
+      - availability
+      - sizeX
+      - sizeY
+      - sizeZ
+      - machineType
+    properties:
+      id:
+        type: number
+        format: int
+        description: internally assigned identifier for this build file
+      organizationId:
+        type: number
+        format: int
+        description: identifier for organization this build file belongs to
+      name:
+        type: string
+        description: a name given to this build file
+      description:
+        type: string
+        description: a description of this build file
+      tags:
+        type: array
+        items:
+          type: string
+        description: a comma delimited list of tags assigned to this build file
+      buildFileLocation:
+        type: string
+        description: folder containing build file contents, multiple files may be contained within the folder
+      stlFileLocation:
+        type: string
+        description: path to STL file describing the part geometry
+      sliceZipFileLocation:
+        type: string
+        description: path to ZIP file containing scan pattern information for each powder deposition layer
+      archived:
+        type: boolean
+        description: true if this build file has been archived, false otherwise
+      availability:
+        type: string
+        description: 'indicates availability of this build file, valid values: Uploaded, Processing, Available, Error'
+      sizeX:
+        type: number
+        format: double
+        description: maximum part dimension in X direction
+      sizeY:
+        type: number
+        format: double
+        description: maximum part dimension in Y direction
+      sizeZ:
+        type: number
+        format: double
+        description: maximum part dimension in Z direction
+      createdAt:
+        type: string
+        format: date-time
+        description: time stamp assigned when this build file is created
+      createdBy:
+        type: string
+        description: name of user or entity that created this build file
+      lastModifiedAt:
+        type: string
+        format: date-time
+        description: time stamp of last change made to this build file
+      lastModifiedBy:
+        type: string
+        description: name of user or entity that last changed this build file
+      fileVersion:
+        type: string
+        description: version of this build file
+      fileCreatedDate:
+        type: string
+        format: date-time
+        description: creation time stamp from original build file
+      errorReason:
+        type: string
+        description: reason build file failed to be processed, if any
+      machineType:
+        type: string
+        description: 'type of machine associated with this build file, valid values: AdditiveIndustries, Renishaw, SLM, ThreeDSystems'
+      materialType:
+        type: string
+        description: material to use when performing simulation
+      jobId:
+        type: string
+        description: job number associated with this build file
+      jobName:
+        type: string
+        description: job name associated with this build file
+      numberOfLayers:
+        type: number
+        format: int
+        description: number of powder deposition layers
+      totalScanDistance:
+        type: number
+        format: double
+        description: total distance laser travels when building the part
+      layerThickness:
+        type: number
+        format: double
+        description: thickness of powder deposition layer in meters
+
+  BuildFilePost:
+    description: container for parameters used when posting a new build file
+    required:
+      - organizationId
+      - name
+      - fileUploadLocation
+      - machineType
+    properties:
+      organizationId:
+        type: number
+        format: int
+        description: identifier for organization this build file belongs to
+      name:
+        type: string
+        description: a name given to this build file
+      description:
+        type: string
+        description: a description of this build file
+      tags:
+        type: array
+        items:
+          type: string
+        description: a list of tags assigned to this build file
+      fileUploadLocation:
+        type: string
+        description: path of ZIP file containing build file elements
+      machineType:
+        type: string
+        description: type of machine associated with this build file, see BuildFile definition for valid values
