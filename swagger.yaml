@@ -4536,8 +4536,15 @@ definitions:
         type: boolean
         description: true if this build file has been archived, false otherwise
       availability:
+        description: Describes the availabity of the build file. Uploaded - the build file has been uploaded.
+          Processing - the build file is being processed.  Available - the build file was processed successfully
+          and can be used in simulations.  Error - an error occurred and the build file is not available for simulations.
         type: string
-        description: 'indicates availability of this build file, valid values: Uploaded, Processing, Available, Error'
+        enum:
+          - Uploaded
+          - Processing
+          - Available
+          - Error
       sizeX:
         type: number
         format: double
@@ -4575,8 +4582,13 @@ definitions:
         type: string
         description: reason build file failed to be processed, if any
       machineType:
+        description: type of machine associated with this build file
         type: string
-        description: 'type of machine associated with this build file, valid values: AdditiveIndustries, Renishaw, SLM, ThreeDSystems'
+        enum:
+          - AdditiveIndustries
+          - Renishaw
+          - SLM
+          - ThreeDSystems
       materialType:
         type: string
         description: material to use when performing simulation
