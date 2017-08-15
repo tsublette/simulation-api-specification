@@ -2722,45 +2722,6 @@ paths:
         - simulationSecurity:
           - write:buildFiles
 
-  /buildfiles/{id}/process:
-    put:
-      description: Process a ZIP file containing build file elements. This should be called after a POST to /buildfiles.
-      operationId: processBuildFile
-      parameters:
-        - name: id
-          in: path
-          description: identifier
-          required: true
-          type: integer
-        - name: buildFile
-          in: body
-          description: build file to process
-          required: true
-          schema:
-            $ref: '#/definitions/BuildFile'
-      responses:
-        "200":
-          description: Build file after it has been processed
-          schema:
-            $ref: '#/definitions/BuildFile'
-        "401":
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-        "404":
-          description: build file not found
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-        - simulationSecurity:
-          - write:buildFiles
-
   /buildfiles/{id}/archive:
     put:
       description: archives a single build file based on an ID
