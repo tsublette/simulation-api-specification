@@ -2571,8 +2571,8 @@ paths:
         - simulationSecurity:
           - read:buildFiles
     post:
-      description: Creates a new build file
-      operationId: addBuildFile
+      description: Add a new build file
+      operationId: postBuildFile
       parameters:
         - name: buildFilePost
           in: body
