@@ -2540,7 +2540,14 @@ paths:
           in: query
           description: 'availability value of build files to return, valid values: Uploaded, Processing, Available, Error'
           required: false
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+              - Uploaded
+              - Processing
+              - Available
+              - Error
       responses:
         "200":
           description: Successfully retrieved list of build files
