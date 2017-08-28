@@ -3373,7 +3373,6 @@ definitions:
 
   AssumedStrainSimulationParameters:
     required:
-      - layerThickness
       - hatchSpacing
       - laserWattage
       - scanSpeed
@@ -3390,7 +3389,6 @@ definitions:
       - layerRotationAngle
       - supportOptimization
       - outputShrinkage
-      - assumedStrain
       - anisotropicStrainCoefficientsParallel
       - anisotropicStrainCoefficientsPerpendicular
       - anisotropicStrainCoefficientsZ
@@ -3486,8 +3484,6 @@ definitions:
         type: boolean
       outputShrinkage:
         type: boolean
-      assumedStrain:
-        type: number
       anisotropicStrainCoefficientsParallel:
         type: number
       anisotropicStrainCoefficientsPerpendicular:
