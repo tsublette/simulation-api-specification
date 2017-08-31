@@ -10,6 +10,18 @@ We are following the swagger 2.0 specification.  Below are some resources to lea
 To actually write the source, you can use any editor, but usually works best to use an online swagger 2.0 compliant editor such as:
 http://editor.swagger.io
 
+### Gotchas
+If a date is nullable, annotate the field in the swagger spec with `x-nullable: true`.  See https://github.com/go-swagger/go-swagger/issues/746.
+
+e.g.
+```
+completedAt:
+  type: string
+  format: date-time
+  description: completed time stamp
+  x-nullable: true
+```
+
 ## Getting an Aurhorization Token for API Calls
 In order to get an authorize token to access the API given a user name password, issue a POST request to the following URL:
 ```
