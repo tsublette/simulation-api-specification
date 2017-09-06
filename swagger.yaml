@@ -3528,7 +3528,10 @@ definitions:
         type: boolean
       supportFailureThreshold:
         type: number
-        description: should be a number between 0.5 and 1.5
+        description: should be a number between 0.01 and 1.0
+      partFailureThreshold:
+        type: number
+        description: should be a number between 0.01 and 1.0
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
@@ -3725,7 +3728,10 @@ definitions:
         type: boolean
       supportFailureThreshold:
         type: number
-        description: should be a number between 0.5 and 1.5
+        description: should be a number between 0.01 and 1.0
+      partFailureThreshold:
+        type: number
+        description: should be a number between 0.01 and 1.0
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
         type: array
@@ -3881,7 +3887,10 @@ definitions:
         type: boolean
       supportFailureThreshold:
         type: number
-        description: should be a number between 0.5 and 1.5
+        description: should be a number between 0.01 and 1.0
+      partFailureThreshold:
+        type: number
+        description: should be a number between 0.01 and 1.0
 
   ScanPatternSimulation:
     allOf:
