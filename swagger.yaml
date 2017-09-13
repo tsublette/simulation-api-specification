@@ -4023,7 +4023,9 @@ definitions:
       estimateVoxelSize:
         type: number
         description: Voxel size used for estimatedMemory, maxMemory, estimatedWork
-
+      errorReason:
+        type: string
+        description: If an error ocurrs uploading a part, a string will be populated in this field.
 
   PartPost:
     type: object
