@@ -4123,6 +4123,9 @@ definitions:
       lastModifiedBy:
         type: string
         description: modifying user, set server-side, read only field
+      thermalSimulationApproved :
+        type: boolean
+        description: true if the material properites have been tuned for thermal simulations
 
   MaterialConfiguration:
     type: object
