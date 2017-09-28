@@ -4679,6 +4679,21 @@ definitions:
         type: number
         format: double
         description: thickness of powder deposition layer in meters
+      originalX:
+        type: number
+        format: double
+        description: x position of original part location in millimeters
+      originalY:
+        type: number
+        format: double
+        description: y position of original part location in millimeters
+      originalZ:
+        type: number
+        format: double
+        description: z position of original part location in millimeters
+      supportModelFileLocation:
+        type: string
+        description: path to support model file relative to buildFileLocation
 
   BuildFilePost:
     description: container for parameters used when posting a new build file
