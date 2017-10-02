@@ -4563,6 +4563,7 @@ definitions:
   BuildFile:
     description: parameters associated with a build file used by machine manufacturers
     required:
+      - id
       - name
       - buildFileLocation
       - archived
