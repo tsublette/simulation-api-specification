@@ -3149,6 +3149,7 @@ definitions:
       - slicingStripeWidthValues
       - originXValues
       - originYValues
+      - solidusTemperatureValues
     properties:
       geometryWidth:
         description: Must be between 0.001 to 0.01 meters
@@ -3248,6 +3249,11 @@ definitions:
           maximum: 0.2
           exclusiveMinimum: false
           exclusiveMaximum: false
+      solidusTemperatureValues:
+        description: Array of solidus temperature values to simulate across
+        type: array
+        items:
+          type: number
 
   PorositySimulation:
     allOf:
@@ -3256,6 +3262,7 @@ definitions:
 
   SingleBeadSimulationParameters:
     required:
+      - beadType
       - beadLength
       - layerThickness
       - laserWattageValues
@@ -3268,7 +3275,14 @@ definitions:
       - laserAbsorptivityInSolidValues
       - solidusTemperatureValues
       - liquidusTemperatureValues
+      - capTemperatureValues
     properties:
+      beadType:
+        description: Type of single bead simulation - either bead on plate or bead on powder.
+        type: string
+        enum:
+          - OnPlate
+          - OnPowder
       beadLength:
         description: Must be between 0.001 to 0.01 meters
         type: number
@@ -3365,6 +3379,15 @@ definitions:
         type: array
         items:
           type: number
+      capTemperatureValues:
+        description: Array of cap temperature Values to simulate across, Each value must be between 0 and 10000 kelvin
+        type: array
+        items:
+          type: number
+          minimum: 0
+          maximum: 10000
+          exclusiveMinimum: false
+          exclusiveMaximum: false
 
   SingleBeadSimulation:
     allOf:
@@ -3583,6 +3606,7 @@ definitions:
       - anisotropicStrainCoefficientsPerpendicular
       - anisotropicStrainCoefficientsZ
       - performSupportOptimization
+      - heaterTemperature
 
     properties:
       performSupportOptimization:
@@ -3748,6 +3772,12 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/SelectedPoint"
+      heaterTemperature:
+        description: heater temperature in degrees kelvin
+        type: number
+        minimum: 0
+        maximum: 1000
+        format: double
 
   ThermalSimulation:
     allOf:
@@ -4166,6 +4196,7 @@ definitions:
       - anisotropicStrainCoefficientParallel
       - anisotropicStrainCoefficientPerpendicular
       - anisotropicStrainCoefficientZ
+      - capTemperature
     properties:
       id:
         type: integer
@@ -4285,6 +4316,11 @@ definitions:
       lookupFileLocation:
         type: string
         description: Location where the lookup file is stored in S3.  Set server side.  Only used internally within 3DSIM.
+      capTemperature:
+        description: Must be between 0 to 10000 kelvin
+        type: number
+        minimum: 0
+        maximum: 10000
 
   MachineConfiguration:
     type: object
@@ -4301,6 +4337,8 @@ definitions:
       - coolingToScanningTimeIncrementRatio
       - totalCoolingTime
       - heaterTemperature
+      - layerDelay
+      - scanLineDelay
     properties:
       id:
         type: integer
@@ -4370,6 +4408,18 @@ definitions:
         type: number
         minimum: 0
         maximum: 1000
+        format: double
+      layerDelay:
+        description: delay time between layers, stored in seconds
+        type: number
+        minimum: 0
+        maximum: 60
+        format: double
+      scanLineDelay:
+        description: delay time between scan lines, stored in miliseconds
+        type: number
+        minimum: 0
+        maximum: 100
         format: double
 
   Machine:
