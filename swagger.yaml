@@ -4615,7 +4615,7 @@ definitions:
     required:
       - id
       - name
-      - buildFileLocation
+      - uploadFileLocation
       - archived
       - availability
       - sizeX
