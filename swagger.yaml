@@ -4745,6 +4745,9 @@ definitions:
       supportModelFileLocation:
         type: string
         description: path to support model file relative to buildFileLocation
+      uploadFileLocation:
+        type: string
+        description: path to uploaded zip file containing build file components, relative to s3 part bucket
 
   BuildFilePost:
     description: container for parameters used when posting a new build file
