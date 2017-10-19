@@ -1,6 +1,11 @@
 # simulation-api-specification
 Repo for storing the specification for the 3DSIM simulation api.
 
+## Technical Specifications
+
+### Platforms Supported
+MacOS, Windows, and Linux
+
 ## Writing specifications
 We are following the swagger 2.0 specification.  Below are some resources to learn how to write swagger 2.0:
 
@@ -59,3 +64,13 @@ Connection: product-users
 Domain URL: 3dsim.auth0.com
 Client ID: kPXdfrC7G2RJUh7hPsGqrdqHsHQc3AoV
 Connection: product-gov-users
+
+## Team
+* Tim Sublette
+* Ryan Walls
+* Chad Queen
+* Pete Krull
+* Alex Drinkwater
+
+## Original release
+November 2016
