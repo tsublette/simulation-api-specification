@@ -3526,6 +3526,10 @@ definitions:
         type: number
       strainScalingFactor:
         type: number
+      buildFileId:
+        description: Id of build file being simulated, mutually exclusive with simulationParts
+        type: integer
+        format: int32
       stressMode:
         type: string
         enum:
@@ -3705,6 +3709,10 @@ definitions:
         type: number
       strainScalingFactor:
         type: number
+      buildFileId:
+        description: Id of build file being simulated, mutually exclusive with simulationParts
+        type: integer
+        format: int32
       outputDisplacementAfterCutoff:
         type: boolean
       stressMode:
@@ -3889,6 +3897,10 @@ definitions:
         type: number
       strainScalingFactor:
         type: number
+      buildFileId:
+        description: Id of build file being simulated, mutually exclusive with simulationParts
+        type: integer
+        format: int32
       outputDisplacementAfterCutoff:
         type: boolean
       detectBladeCrash:
