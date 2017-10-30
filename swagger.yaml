@@ -3580,6 +3580,11 @@ definitions:
       - anisotropicStrainCoefficientsPerpendicular
       - anisotropicStrainCoefficientsZ
       - heaterTemperature
+      - outputInstantDynamicSensor
+      - outputPyroVirtualSensor
+      - outputInstantStaticSensor
+      - outputPointProbe
+
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -3656,6 +3661,44 @@ definitions:
         minimum: 0
         maximum: 1000
         format: double
+      outputInstantDynamicSensor:
+        type: boolean
+        description: if true, dyanmic sensor data will be collected for each layer specified in the instantDynamicSensorLayers property
+      instantDynamicSensorRadius:
+        description: radius for instant dynamic sensor data collection in mm
+        type: number
+        minimum: 0.05
+        maximum: 1.5
+        format: double
+      instantDynamicSensorLayers:
+        description: Array of integer layer numbers where instant dynamic sensor data will be collected
+        type: array
+        items:
+          type: number
+      outputPyroVirtualSensor:
+        type: boolean
+        description: if true, pyrometer sensor data will be collected for each selectedPoint property          
+      pyroVirtualSensorRadius:
+        description: radius for pyro sensor data collection in mm
+        type: number
+        minimum: 0.05
+        maximum: 1.5
+        format: double
+      pyroVirtualSensorOutputAllLayers:
+        type: boolean
+        description: if true, pyrometer sensor data will be collected for every layer          
+      outputInstantStaticSensor:
+        type: boolean
+        description: if true, instant static sensor data will be collected for each selectedPoint property          
+      instantStaticSensorRadius:
+        description: radius for instant static sensor data collection in mm
+        type: number
+        minimum: 0.05
+        maximum: 1.5
+        format: double
+      outputPointProbe:
+        type: boolean
+        description: if true, probe sensor data will be collected for each selectedPoint property          
 
   ThermalSimulation:
     allOf:
