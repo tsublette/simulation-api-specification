@@ -3674,7 +3674,8 @@ definitions:
         description: Array of integer layer numbers where instant dynamic sensor data will be collected
         type: array
         items:
-          type: number
+          type: integer
+          format: int32
       outputPyroVirtualSensor:
         type: boolean
         description: if true, pyrometer sensor data will be collected for each selectedPoint property          
