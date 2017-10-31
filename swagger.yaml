@@ -3404,12 +3404,6 @@ definitions:
       - maximumWallDistance
       - minimumSupportHeight
       - voxelSize
-      - startingLayerAngle
-      - layerRotationAngle
-      - outputShrinkage
-      - anisotropicStrainCoefficientsParallel
-      - anisotropicStrainCoefficientsPerpendicular
-      - anisotropicStrainCoefficientsZ
       - supportYieldStrength
       - supportYieldStrengthRatio
       - elasticModulus
@@ -3422,68 +3416,15 @@ definitions:
       - detectBladeCrash
       - outputLayerVtk
     properties:
+      simulationParts:
+        description: List of parts to simulate (current limit is one part, imposed by server)
+        type: array
+        items:
+          $ref: "#/definitions/SimulationPart"
       supportFileLocation:
         type: string
       partFileLocation:
         type: string
-      supportAngle:
-        description: Must be between 1 to 89 degrees
-        type: number
-        minimum: 1
-        maximum: 89
-      supportFactorOfSafety:
-        description: Multiplier for support calculations, Must be between 0.1 to 10
-        type: number
-        minimum: 0.1
-        maximum: 10
-      minimumWallThickness:
-        description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
-        type: number
-        minimum: 0.00005
-        maximum: 0.0003
-      maximumWallThickness:
-        description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
-        type: number
-        minimum: 0.00015
-        maximum: 0.002
-      minimumWallDistance:
-        description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
-        type: number
-        minimum: 0
-        maximum: 0.0003
-      maximumWallDistance:
-        description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
-        type: number
-        minimum: 0
-        maximum: 0.005
-      minimumSupportHeight:
-        description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
-        type: number
-        minimum: 0
-        maximum: 0.005
-      voxelSize:
-        description: Must be between 0.00002 to 0.002 meters
-        type: number
-        minimum: 0.00002
-        maximum: 0.002
-      startingLayerAngle:
-        description: Must be between 0 to 180 degrees
-        type: number
-        minimum: 0
-        maximum: 180
-      layerRotationAngle:
-        description: Must be between 0 to 180 degrees
-        type: number
-        minimum: 0
-        maximum: 180
-      outputShrinkage:
-        type: boolean
-      anisotropicStrainCoefficientsParallel:
-        type: number
-      anisotropicStrainCoefficientsPerpendicular:
-        type: number
-      anisotropicStrainCoefficientsZ:
-        type: number
       supportYieldStrength:
         type: number
       supportYieldStrengthRatio:
@@ -3494,30 +3435,69 @@ definitions:
         type: number
       strainScalingFactor:
         type: number
+      buildFileId:
+        description: Id of build file being simulated, mutually exclusive with simulationParts
+        type: integer
+        format: int32
+      performSupportOptimization:
+        type: boolean
+      voxelSize:
+        description: Must be between 0.00002 to 0.002 meters
+        type: number
+        minimum: 0.00002
+        maximum: 0.002
+      minimumWallThickness:
+        description: Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
+        type: number
+        minimum: 0.00005
+        maximum: 0.0003
+      maximumWallThickness:
+       description: Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
+       type: number
+       minimum: 0.00015
+       maximum: 0.002
+      minimumWallDistance:
+       description: Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
+       type: number
+       minimum: 0
+       maximum: 0.0003
+      maximumWallDistance:
+       description: Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
+       type: number
+       minimum: 0
+       maximum: 0.005
+      minimumSupportHeight:
+       description: Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
+       type: number
+       minimum: 0
+       maximum: 0.005
+      generateSupportVoxels:
+        type: boolean
       outputDisplacementAfterCutoff:
         type: boolean
-      detectBladeCrash:
-        type: boolean
-      bladeCrashThreshold:
-        type: number
-        description: should be a number between 0.5 and 1.5
       stressMode:
         type: string
         enum:
           - LinearElastic
           - J2Plasticity
-      simulationParts:
-        description: List of parts to simulate (current limit is one part, imposed by server)
-        type: array
-        items:
-          $ref: "#/definitions/SimulationPart"
-      performSupportOptimization:
-        type: boolean
-      generateSupportVoxels:
-        type: boolean
+      supportAngle:
+        description: Must be between 1 to 89 degrees
+        type: number
+        minimum: 1
+        maximum: 89
+      supportFactorOfSafety:
+        description: Multiplier for support calculations, Must be between 0.1 to 10
+        type: number
+        minimum: 0.1
+        maximum: 10
       outputLayerVtk:
         type: boolean
         description: if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
+      detectBladeCrash:
+        type: boolean
+      bladeCrashThreshold:
+        type: number
+        description: should be a number between 0.5 and 1.5
       performDistortionCompensation:
         type: boolean
         description: if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
@@ -3538,11 +3518,6 @@ definitions:
       strainWarningThreshold:
         type: number
         description: should be a number between 0.01 and 1.0
-      buildFileId:
-        description: Id of build file being simulated, mutually exclusive with simulationParts
-        type: integer
-        format: int32
-
 
   SingleBeadSimulation:
     allOf:
