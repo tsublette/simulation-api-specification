@@ -3945,7 +3945,6 @@ definitions:
     type: object
     required:
       - materialId
-      - version
       - created
       - createdBy
       - meanFreePathOfLaserInPowder
@@ -3990,10 +3989,6 @@ definitions:
         type: integer
         format: int32
         description: material identifier for this material configuration
-      version:
-        type: string
-        description: version label for the material configuration
-        maxLength: 16
       created:
         type: string
         format: date-time
