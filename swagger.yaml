@@ -3876,7 +3876,6 @@ definitions:
       - name
       - archived
       - key
-      - version
       - configurationId
       - created
       - createdBy
@@ -3908,10 +3907,6 @@ definitions:
       key:
         type: string
         description: key associated with this material.  e.g. Ti64
-        maxLength: 16
-      version:
-        type: string
-        description: version label
         maxLength: 16
       configurationId:
         type: integer
