@@ -870,6 +870,8 @@ paths:
       responses:
         "200":
           description: Successfully patched simulation
+          schema:
+            $ref: '#/definitions/Simulation'
         "401":
           description: Not authorized
           schema:
