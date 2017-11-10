@@ -4374,9 +4374,11 @@ definitions:
       - z
     properties:
       id:
-        type: number
+        type: integer
+        format: int32
       simulationId:
-        type: number
+        type: integer
+        format: int32
       label:
         type: string
       x:
