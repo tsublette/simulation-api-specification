@@ -27,7 +27,7 @@ completedAt:
   x-nullable: true
 ```
 
-## Getting an Aurhorization Token for API Calls
+## Getting an Authorization Token for API Calls
 In order to get an authorize token to access the API given a user name password, issue a POST request to the following URL:
 ```
 http://<domain url>/oauth/ro

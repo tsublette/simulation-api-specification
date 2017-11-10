@@ -3655,7 +3655,7 @@ definitions:
           format: int32
       outputPyroVirtualSensor:
         type: boolean
-        description: if true, pyrometer sensor data will be collected for each selectedPoint property          
+        description: if true, pyrometer sensor data will be collected for each selectedPoint property
       pyroVirtualSensorRadius:
         description: radius for pyro sensor data collection in mm
         type: number
@@ -3664,10 +3664,10 @@ definitions:
         format: double
       pyroVirtualSensorOutputAllLayers:
         type: boolean
-        description: if true, pyrometer sensor data will be collected for every layer          
+        description: if true, pyrometer sensor data will be collected for every layer
       outputInstantStaticSensor:
         type: boolean
-        description: if true, instant static sensor data will be collected for each selectedPoint property          
+        description: if true, instant static sensor data will be collected for each selectedPoint property
       instantStaticSensorRadius:
         description: radius for instant static sensor data collection in mm
         type: number
@@ -3676,7 +3676,7 @@ definitions:
         format: double
       outputPointProbe:
         type: boolean
-        description: if true, probe sensor data will be collected for each selectedPoint property          
+        description: if true, probe sensor data will be collected for each selectedPoint property
 
   ThermalSimulation:
     allOf:
@@ -4400,12 +4400,12 @@ definitions:
       - machineType
     properties:
       id:
-        type: number
-        format: int
+        type: integer
+        format: int32
         description: internally assigned identifier for this build file
       organizationId:
-        type: number
-        format: int
+        type: integer
+        format: int32
         description: identifier for organization this build file belongs to
       name:
         type: string
@@ -4495,8 +4495,8 @@ definitions:
         type: string
         description: job name associated with this build file
       numberOfLayers:
-        type: number
-        format: int
+        type: integer
+        format: int32
         description: number of powder deposition layers
       totalScanDistance:
         type: number
@@ -4534,8 +4534,8 @@ definitions:
       - machineType
     properties:
       organizationId:
-        type: number
-        format: int
+        type: integer
+        format: int32
         description: identifier for organization this build file belongs to
       name:
         type: string
