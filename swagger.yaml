@@ -3944,12 +3944,12 @@ definitions:
       - materialId
       - created
       - createdBy
-      - extictionCoefOfPowderLaserSpeedCoef
-      - extictionCoefOfPowderLaserPowerCoef
-      - extictionCoefOfPowderOffset
-      - extictionCoefOfSolidLaserSpeedCoef
-      - extictionCoefOfSolidLaserPowerCoef
-      - extictionCoefOfSolidOffset
+      - extinctionCoefOfPowderLaserSpeedCoef
+      - extinctionCoefOfPowderLaserPowerCoef
+      - extinctionCoefOfPowderOffset
+      - extinctionCoefOfSolidLaserSpeedCoef
+      - extinctionCoefOfSolidLaserPowerCoef
+      - extinctionCoefOfSolidOffset
       - powderToSolidThermalConductivityRatio
       - powderToSolidSpecificHeatRatio
       - powderToSolidDensityRatio
@@ -3999,22 +3999,22 @@ definitions:
       createdBy:
         type: string
         description: creating user, set server-side, read only field
-      extictionCoefOfPowderLaserSpeedCoef:
+      extinctionCoefOfPowderLaserSpeedCoef:
         type: number
         format: double
-      extictionCoefOfPowderLaserPowerCoef:
+      extinctionCoefOfPowderLaserPowerCoef:
         type: number
         format: double
-      extictionCoefOfPowderOffset:
+      extinctionCoefOfPowderOffset:
         type: number
         format: double
-      extictionCoefOfSolidLaserSpeedCoef:
+      extinctionCoefOfSolidLaserSpeedCoef:
         type: number
         format: double
-      extictionCoefOfSolidLaserPowerCoef:
+      extinctionCoefOfSolidLaserPowerCoef:
         type: number
         format: double
-      extictionCoefOfSolidOffset:
+      extinctionCoefOfSolidOffset:
         type: number
         format: double
       powderToSolidThermalConductivityRatio:
