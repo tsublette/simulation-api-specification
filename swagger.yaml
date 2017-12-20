@@ -3944,8 +3944,12 @@ definitions:
       - materialId
       - created
       - createdBy
-      - meanFreePathOfLaserInPowder
-      - meanFreePathOfLaserInBulk
+      - extictionCoefOfPowderLaserSpeedCoef
+      - extictionCoefOfPowderLaserPowerCoef
+      - extictionCoefOfPowderOffset
+      - extictionCoefOfSolidLaserSpeedCoef
+      - extictionCoefOfSolidLaserPowerCoef
+      - extictionCoefOfSolidOffset
       - powderToSolidThermalConductivityRatio
       - powderToSolidSpecificHeatRatio
       - powderToSolidDensityRatio
@@ -3960,12 +3964,8 @@ definitions:
       - vaporizationTemperature
       - vaporizationStartTemperature
       - solidStateTransitionTemperature
-      - energyAbsorbingRateByPowderLaserSpeedCoef
-      - energyAbsorbingRateByPowderLaserPowerCoef
-      - energyAbsorbingRateByPowderOffset
-      - energyAbsorbingRateBySolidLaserSpeedCoef
-      - energyAbsorbingRateBySolidLaserPowerCoef
-      - energyAbsorbingRateBySolidOffset
+      - energyAbsorbingRateByPowder
+      - energyAbsorbingRateBySolid
       - thermalExpansionCoefficient
       - elasticModulus
       - elasticModulusOfBase
@@ -3999,10 +3999,22 @@ definitions:
       createdBy:
         type: string
         description: creating user, set server-side, read only field
-      meanFreePathOfLaserInPowder:
+      extictionCoefOfPowderLaserSpeedCoef:
         type: number
         format: double
-      meanFreePathOfLaserInBulk:
+      extictionCoefOfPowderLaserPowerCoef:
+        type: number
+        format: double
+      extictionCoefOfPowderOffset:
+        type: number
+        format: double
+      extictionCoefOfSolidLaserSpeedCoef:
+        type: number
+        format: double
+      extictionCoefOfSolidLaserPowerCoef:
+        type: number
+        format: double
+      extictionCoefOfSolidOffset:
         type: number
         format: double
       powderToSolidThermalConductivityRatio:
@@ -4047,22 +4059,10 @@ definitions:
       solidStateTransitionTemperature:
         type: number
         format: double
-      energyAbsorbingRateByPowderLaserSpeedCoef:
+      energyAbsorbingRateByPowder:
         type: number
         format: double
-      energyAbsorbingRateByPowderLaserPowerCoef:
-        type: number
-        format: double
-      energyAbsorbingRateByPowderOffset:
-        type: number
-        format: double
-      energyAbsorbingRateBySolidLaserSpeedCoef:
-        type: number
-        format: double
-      energyAbsorbingRateBySolidLaserPowerCoef:
-        type: number
-        format: double
-      energyAbsorbingRateBySolidOffset:
+      energyAbsorbingRateBySolid:
         type: number
         format: double
       thermalExpansionCoefficient:
