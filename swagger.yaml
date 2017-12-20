@@ -3934,7 +3934,7 @@ definitions:
       lastModifiedBy:
         type: string
         description: modifying user, set server-side, read only field
-      thermalSimulationApproved :
+      thermalSimulationApproved:
         type: boolean
         description: true if the material properites have been tuned for thermal simulations
 
@@ -3960,8 +3960,12 @@ definitions:
       - vaporizationTemperature
       - vaporizationStartTemperature
       - solidStateTransitionTemperature
-      - energyAbsorbingRateByPowder
-      - energyAbsorbingRateBySolid
+      - energyAbsorbingRateByPowderLaserSpeedCoef
+      - energyAbsorbingRateByPowderLaserPowerCoef
+      - energyAbsorbingRateByPowderOffset
+      - energyAbsorbingRateBySolidLaserSpeedCoef
+      - energyAbsorbingRateBySolidLaserPowerCoef
+      - energyAbsorbingRateBySolidOffset
       - thermalExpansionCoefficient
       - elasticModulus
       - elasticModulusOfBase
@@ -3976,7 +3980,9 @@ definitions:
       - anisotropicStrainCoefficientParallel
       - anisotropicStrainCoefficientPerpendicular
       - anisotropicStrainCoefficientZ
-      - capTemperature
+      - capTemperatureLaserSpeedCoef
+      - capTemperatureLaserPowerCoef
+      - capTemperatureOffset
     properties:
       id:
         type: integer
@@ -4041,10 +4047,22 @@ definitions:
       solidStateTransitionTemperature:
         type: number
         format: double
-      energyAbsorbingRateByPowder:
+      energyAbsorbingRateByPowderLaserSpeedCoef:
         type: number
         format: double
-      energyAbsorbingRateBySolid:
+      energyAbsorbingRateByPowderLaserPowerCoef:
+        type: number
+        format: double
+      energyAbsorbingRateByPowderOffset:
+        type: number
+        format: double
+      energyAbsorbingRateBySolidLaserSpeedCoef:
+        type: number
+        format: double
+      energyAbsorbingRateBySolidLaserPowerCoef:
+        type: number
+        format: double
+      energyAbsorbingRateBySolidOffset:
         type: number
         format: double
       thermalExpansionCoefficient:
@@ -4092,11 +4110,15 @@ definitions:
       lookupFileLocation:
         type: string
         description: Location where the lookup file is stored in S3.  Set server side.  Only used internally within 3DSIM.
-      capTemperature:
-        description: Must be between 0 to 10000 kelvin
+      capTemperatureLaserSpeedCoef:
         type: number
-        minimum: 0
-        maximum: 10000
+        format: double
+      capTemperatureLaserPowerCoef:
+        type: number
+        format: double
+      capTemperatureOffset:
+        type: number
+        format: double
 
   MachineConfiguration:
     type: object
