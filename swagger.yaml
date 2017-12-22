@@ -160,6 +160,44 @@ paths:
         - simulationSecurity:
           - read:materials
 
+    put:
+      description: Update a material
+      operationId: updateMaterial
+      parameters:
+        - name: id
+          in: path
+          description: material identifier
+          required: true
+          type: integer
+          format: int32
+        - name: material
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Material'
+      responses:
+        "200":
+          description: Material was successfully updated.
+          schema:
+            $ref: '#/definitions/Material'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Material not found (id invalid)
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:materials
+
   /materials/{id}/archive:
     put:
       description: archives a single material based on the ID supplied
