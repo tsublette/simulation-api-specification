@@ -3177,6 +3177,9 @@ definitions:
       lastModifiedBy:
         type: string
         description: assigned user, set server-side, read only
+      simulationFolder:
+        type: string
+        description: s3 folder used to store input and output files for the simulation
 
   PorositySimulationParameters:
     required:
