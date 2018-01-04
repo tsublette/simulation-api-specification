@@ -3312,13 +3312,10 @@ definitions:
       - scanSpeedValues
       - powderThermalConductivityValues
       - powderPackingDensityValues
-      - meanFreePathInPowderValues
-      - meanFreePathInSolidValues
       - laserAbsorptivityInPowderValues
       - laserAbsorptivityInSolidValues
       - solidusTemperatureValues
       - liquidusTemperatureValues
-      - capTemperatureValues
     properties:
       beadType:
         description: Type of single bead simulation - either bead on plate or bead on powder.
@@ -3376,24 +3373,6 @@ definitions:
           maximum: 1
           exclusiveMinimum: false
           exclusiveMaximum: false
-      meanFreePathInPowderValues:
-        description: Array of Mean Free Path of Laser in Powder Values to simulate across, Each value must be between 0 and 1.25e5
-        type: array
-        items:
-          type: number
-          minimum: 0
-          maximum: 125000
-          exclusiveMinimum: false
-          exclusiveMaximum: false
-      meanFreePathInSolidValues:
-        description: Array of Mean Free Path of Laser in Solid Values to simulate across, Each value must be between 0 and 1.25e5
-        type: array
-        items:
-          type: number
-          minimum: 0
-          maximum: 125000
-          exclusiveMinimum: false
-          exclusiveMaximum: false
       laserAbsorptivityInPowderValues:
         description: Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
         type: array
@@ -3422,15 +3401,6 @@ definitions:
         type: array
         items:
           type: number
-      capTemperatureValues:
-        description: Array of cap temperature Values to simulate across, Each value must be between 0 and 10000 kelvin
-        type: array
-        items:
-          type: number
-          minimum: 0
-          maximum: 10000
-          exclusiveMinimum: false
-          exclusiveMaximum: false
 
   PartBasedSimulationParameters:
     allOf:
