@@ -3406,8 +3406,6 @@ definitions:
           type: number
 
   PartBasedSimulationParameters:
-    allOf:
-      - $ref: "#/definitions/Simulation"
     required:
       - supportAngle
       - supportFactorOfSafety
@@ -3547,6 +3545,7 @@ definitions:
 
   AssumedStrainSimulation:
     allOf:
+      - $ref: "#/definitions/Simulation"
       - $ref: "#/definitions/PartBasedSimulationParameters"
       - $ref: "#/definitions/AssumedStrainSimulationParameters"
 
@@ -3691,6 +3690,7 @@ definitions:
 
   ThermalSimulation:
     allOf:
+      - $ref: "#/definitions/Simulation"
       - $ref: "#/definitions/PartBasedSimulationParameters"
       - $ref: "#/definitions/ThermalSimulationParameters"
 
@@ -3730,6 +3730,7 @@ definitions:
 
   ScanPatternSimulation:
     allOf:
+      - $ref: "#/definitions/Simulation"
       - $ref: "#/definitions/PartBasedSimulationParameters"
       - $ref: "#/definitions/ScanPatternSimulationParameters"
 
