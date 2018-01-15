@@ -3854,6 +3854,12 @@ definitions:
       errorReason:
         type: string
         description: If an error ocurrs uploading a part, a string will be populated in this field.
+      uploadBucket:
+        type: string
+        description: S3 bucket containing user provided part geometry file (stl format)
+      uploadKey:
+        type: string
+        description: S3 file name relative to uploadBucket of user provided part geometry file
 
   PartPost:
     type: object
