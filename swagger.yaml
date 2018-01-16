@@ -3760,9 +3760,12 @@ definitions:
         type: array
         items:
           type: string
+      fileBucket:
+        type: string
+        description: S3 bucket containing part
       fileLocation:
         type: string
-        description:  Remote path (s3 key) of part. (read only).
+        description:  File name of part relative to fileBucket
       availability:
         description: Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part
           is being processed.  Available - the part was processed successfully and can be used in simulations.  Error -
@@ -3854,12 +3857,6 @@ definitions:
       errorReason:
         type: string
         description: If an error ocurrs uploading a part, a string will be populated in this field.
-      uploadBucket:
-        type: string
-        description: S3 bucket containing user provided part geometry file (stl format)
-      uploadFileLocation:
-        type: string
-        description: File name of user provided part geometry relative to uploadBucket
 
   PartPost:
     type: object
