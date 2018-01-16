@@ -3857,9 +3857,9 @@ definitions:
       uploadBucket:
         type: string
         description: S3 bucket containing user provided part geometry file (stl format)
-      uploadKey:
+      uploadFileLocation:
         type: string
-        description: S3 file name relative to uploadBucket of user provided part geometry file
+        description: File name of user provided part geometry relative to uploadBucket
 
   PartPost:
     type: object
