@@ -831,7 +831,7 @@ paths:
             type: string
         - name: archived
           in: query
-          description: True to get archived simulations
+          description: True to get only archived simulations, False to get only unarchived simulations, leave the parameter off to get all simulation types
           required: false
           type: boolean
       responses:
