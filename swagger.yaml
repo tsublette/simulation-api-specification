@@ -829,6 +829,11 @@ paths:
           collectionFormat: csv
           items:
             type: string
+        - name: archived
+          in: query
+          description: True to get archived simulations
+          required: false
+          type: boolean
       responses:
         "200":
           description: Successfully found the list of items
