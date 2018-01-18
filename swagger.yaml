@@ -4003,6 +4003,10 @@ definitions:
       - capTemperatureLaserSpeedCoef
       - capTemperatureLaserPowerCoef
       - capTemperatureOffset
+      - laserSpeedLowerBound
+      - laserSpeedUpperBound
+      - laserPowerLowerBound
+      - laserPowerUpperBound
     properties:
       id:
         type: integer
@@ -4137,6 +4141,18 @@ definitions:
         type: number
         format: double
       capTemperatureOffset:
+        type: number
+        format: double
+      laserSpeedLowerBound:
+        type: number
+        format: double
+      laserSpeedUpperBound:
+        type: number
+        format: double
+      laserPowerLowerBound:
+        type: number
+        format: double
+      laserPowerUpperBound:
         type: number
         format: double
 
