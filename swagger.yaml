@@ -1352,6 +1352,30 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+    patch:
+      description: Update fields within an activity
+      operationId: patchActivity
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: activityId
+          in: path
+          description: activity identifier
+          required: true
+          type: integer
+          format: int32
+        - name: activityPatch
+          in: body
+          description: This endpoint uses JSON Patch, RFC 6092.
+          required: true
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/PatchDocument'
 
   /porositysimulations:
     get:
@@ -2971,6 +2995,10 @@ definitions:
         format: date-time
         description: completed time stamp
         x-nullable: true
+      percentComplete:
+        type: integer
+        format: int32
+        description: number 0 - 100 representing percentage of activity already completed
       status:
         type: string
         description: status of the activity
