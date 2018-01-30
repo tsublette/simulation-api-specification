@@ -1376,6 +1376,30 @@ paths:
               type: array
               items:
                 $ref: '#/definitions/PatchDocument'
+      responses:
+        "200":
+          description: Successfully patched activity
+          schema:
+            $ref: '#/definitions/SimulationActivity'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Simulation activity not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /porositysimulations:
     get:
