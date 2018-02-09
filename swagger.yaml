@@ -3237,6 +3237,9 @@ definitions:
       simulationFolder:
         type: string
         description: s3 folder used to store input and output files for the simulation
+      workflowId:
+        type: string
+        description: workflow identifier - will be provided by the system
 
   PorositySimulationParameters:
     required:
