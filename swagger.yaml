@@ -3240,6 +3240,10 @@ definitions:
       workflowId:
         type: string
         description: workflow identifier - will be provided by the system
+      numberOfCores:
+        type: integer
+        format: int32
+        description: indicate the number of cores with which to run the simulation
 
   PorositySimulationParameters:
     required:
