@@ -3244,6 +3244,14 @@ definitions:
         type: integer
         format: int32
         description: indicate the number of cores with which to run the simulation
+      voxelLayers:
+        type: integer
+        format: int32
+        description: number of voxel layers in the voxelized part + supports
+      sliceLayers:
+        type: integer
+        format: int32
+        description: number of slice layers in the part
 
   PorositySimulationParameters:
     required:
