@@ -1003,9 +1003,9 @@ paths:
         - simulationSecurity:
           - write:simulations
           
-  /delete/{id}:
+  /simulations/{id}:
     delete:
-      description: This will delete a simulation and all its associated data
+      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
       operationId: DeleteSimulation
       parameters:
         - name: id
