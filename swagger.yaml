@@ -1002,6 +1002,38 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+          
+  /delete/{id}:
+    delete:
+      description: This will delete a simulation and all its associated data
+      operationId: DeleteSimulation
+      parameters:
+        - name: id
+          in: path
+          description: ID of simulation
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully deleted a simulation
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /simulations/{id}/logs:
     get:
