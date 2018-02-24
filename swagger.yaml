@@ -1002,38 +1002,6 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
-          
-  /simulations/{id}:
-    delete:
-      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
-      operationId: DeleteSimulation
-      parameters:
-        - name: id
-          in: path
-          description: ID of simulation
-          required: true
-          type: integer
-          format: int32
-      responses:
-        "200":
-          description: Successfully deleted a simulation
-        "401":
-          description: Not authorized
-          schema:
-            $ref: '#/definitions/Error'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-        "404":
-          description: Not Found
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-        - simulationSecurity:
-          - write:simulations
 
   /simulations/{id}/logs:
     get:
@@ -1638,6 +1606,7 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+
   /porositysimulations/{id}/start:
     put:
       description: Starts a porosity simulation.  If the simulation has been started before, start requests have no effect.
@@ -1664,6 +1633,38 @@ paths:
           description: Simulation not found (id invalid)
           schema:
             $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+  /porositysimulations/{id}:
+    delete:
+      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteSimulation
+      parameters:
+        - name: id
+          in: path
+          description: ID of simulation
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully deleted a simulation
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
         default:
           description: unexpected error
           schema:
@@ -1912,6 +1913,38 @@ paths:
         - simulationSecurity:
           - write:simulations
 
+  /singlebeadsimulations/{id}:
+    delete:
+      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteSimulation
+      parameters:
+        - name: id
+          in: path
+          description: ID of simulation
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully deleted a simulation
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
   /thermalsimulations:
     get:
       description: Gets a list of all thermal simulations for the active user
@@ -2144,6 +2177,38 @@ paths:
           description: Simulation not found (id invalid)
           schema:
             $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
+  /thermalsimulations/{id}:
+    delete:
+      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteSimulation
+      parameters:
+        - name: id
+          in: path
+          description: ID of simulation
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully deleted a simulation
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
         default:
           description: unexpected error
           schema:
@@ -2392,6 +2457,38 @@ paths:
         - simulationSecurity:
           - write:simulations
 
+  /scanpatternsimulations/{id}:
+    delete:
+      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteSimulation
+      parameters:
+        - name: id
+          in: path
+          description: ID of simulation
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully deleted a simulation
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
+
   /assumedstrainsimulations:
     get:
       description: Gets a list of all assumed strain simulations for the active user
@@ -2631,6 +2728,7 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+
   /assumedstrainsimulations/{id}/estimate:
     get:
       description: Get an estimate, in minutes, for running an assumed strain simulation for the selected part and specified voxel size.
@@ -2664,6 +2762,38 @@ paths:
       security:
         - simulationSecurity:
           - read:simulations
+
+  /assumedstrainsimulations/{id}:
+    delete:
+      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteSimulation
+      parameters:
+        - name: id
+          in: path
+          description: ID of simulation
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully deleted a simulation
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:simulations
 
   /buildfiles:
     get:
