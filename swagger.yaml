@@ -677,6 +677,36 @@ paths:
       security:
         - simulationSecurity:
           - write:parts
+    delete:
+      description: This will delete a part and all its associated geometry files
+      operationId: DeletePart
+      parameters:
+        - name: id
+          in: path
+          description: ID of a part
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully deleted a part
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
 
   /parts/{id}/archive:
     put:
@@ -834,6 +864,12 @@ paths:
           description: True to get only archived simulations, False to get only unarchived simulations, leave the parameter off to get all simulation types
           required: false
           type: boolean
+        - name: partId
+          in: query
+          description: returns simulations using the specified part id
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Successfully found the list of items
