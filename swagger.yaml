@@ -1609,8 +1609,8 @@ paths:
         - simulationSecurity:
           - write:simulations
     delete:
-      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
-      operationId: DeleteSimulation
+      description: This will delete a porosity simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeletePorositySimulation
       parameters:
         - name: id
           in: path
@@ -1879,8 +1879,8 @@ paths:
         - simulationSecurity:
           - write:simulations
     delete:
-      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
-      operationId: DeleteSimulation
+      description: This will delete a single bead simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteSingleBeadSimulation
       parameters:
         - name: id
           in: path
@@ -2149,8 +2149,8 @@ paths:
         - simulationSecurity:
           - write:simulations
     delete:
-      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
-      operationId: DeleteSimulation
+      description: This will delete a thermal simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteThermalSimulation
       parameters:
         - name: id
           in: path
@@ -2419,8 +2419,8 @@ paths:
         - simulationSecurity:
           - write:simulations
     delete:
-      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
-      operationId: DeleteSimulation
+      description: This will delete a scan pattern simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteScanPatternSimulation
       parameters:
         - name: id
           in: path
@@ -2689,8 +2689,8 @@ paths:
         - simulationSecurity:
           - write:simulations
     delete:
-      description: This will delete a simulation and all its associated data including output, logs, and any results from completed simulations
-      operationId: DeleteSimulation
+      description: This will delete an assumed strain simulation and all its associated data including output, logs, and any results from completed simulations
+      operationId: DeleteAssumedStrainSimulation
       parameters:
         - name: id
           in: path
@@ -3051,23 +3051,19 @@ paths:
       security:
         - simulationSecurity:
           - write:buildFiles
-
-  /buildfiles/{id}/archive:
-    put:
-      description: archives a single build file based on an ID
-      operationId: archiveBuildFile
+    delete:
+      description: This will delete a build file
+      operationId: DeleteBuildFile
       parameters:
         - name: id
           in: path
-          description: ID of build file to archive
+          description: ID of build file
           required: true
           type: integer
           format: int32
       responses:
         "200":
-          description: Build file that was archived
-          schema:
-            $ref: '#/definitions/BuildFile'
+          description: Successfully deleted the build file
         "401":
           description: Not authorized
           schema:
@@ -3077,7 +3073,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         "404":
-          description: build file not found
+          description: Not Found
         default:
           description: unexpected error
           schema:
