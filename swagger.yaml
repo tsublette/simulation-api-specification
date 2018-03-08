@@ -870,6 +870,12 @@ paths:
           required: false
           type: integer
           format: int32
+        - name: buildFileId
+          in: query
+          description: returns simulations using the specified build file id
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Successfully found the list of items
