@@ -1579,7 +1579,7 @@ paths:
         - simulationSecurity:
           - read:simulations
     put:
-      description: Puts an updated porosity simulation
+      description: Puts an updated porosity simulation (Only accepts updates to title, description, and tags once simulation is started)
       operationId: putPorositySimulation
       parameters:
         - name: id
@@ -1849,7 +1849,7 @@ paths:
         - simulationSecurity:
           - read:simulations
     put:
-      description: Puts an updated single bead simulation
+      description: Puts an updated single bead simulation (Only accepts updates to title, description, and tags once simulation is started)
       operationId: putSingleBeadSimulation
       parameters:
         - name: id
@@ -2119,7 +2119,7 @@ paths:
         - simulationSecurity:
           - read:simulations
     put:
-      description: Puts an updated thermal simulation
+      description: Puts an updated thermal simulation (Only accepts updates to title, description, and tags once simulation is started)
       operationId: putThermalSimulation
       parameters:
         - name: id
@@ -2389,7 +2389,7 @@ paths:
         - simulationSecurity:
           - read:simulations
     put:
-      description: Puts an updated scan pattern simulation
+      description: Puts an updated scan pattern simulation (Only accepts updates to title, description, and tags once simulation is started)
       operationId: putScanPatternSimulation
       parameters:
         - name: id
@@ -2659,7 +2659,7 @@ paths:
         - simulationSecurity:
           - read:simulations
     put:
-      description: Puts an updated assumed strain simulation
+      description: Puts an updated assumed strain simulation (Only accepts updates to title, description, and tags once simulation is started)
       operationId: putAssumedStrainSimulation
       parameters:
         - name: id
