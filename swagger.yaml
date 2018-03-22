@@ -3360,6 +3360,9 @@ definitions:
       organizationId:
         type: integer
         format: int32
+      parentId:
+        type: integer
+        format: int32
       title:
         type: string
       description:
