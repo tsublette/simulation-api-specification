@@ -3791,6 +3791,12 @@ definitions:
       strainWarningThreshold:
         type: number
         description: should be a number between 0.01 and 1.0
+      performDistortionCompensationAfterCutoff:
+        type: boolean
+        description: if true, a predistorted STL file will be created using the distortion after cutoff simulated by the mechanics solver
+      distortionAfterCutoffScaleFactor:
+        type: number
+        description: a value that is used to scale the after cutoff simulated distortion values
 
   SingleBeadSimulation:
     allOf:
