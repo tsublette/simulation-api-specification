@@ -876,6 +876,11 @@ paths:
           required: false
           type: integer
           format: int32
+        - name: isParent
+          in: query
+          description: returns either parent (true) or child (false) simulations
+          required: false
+          type: boolean
       responses:
         "200":
           description: Successfully found the list of items
@@ -1044,6 +1049,63 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+
+  /simulations/{id}/children:
+    get:
+      description: Gets a list of all child simulations for a parent simulation
+      operationId: getSimulationChildren
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
+            e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
+          required: false
+          type: array
+          items:
+            type: string
+            enum:
+              - Draft
+              - Requested
+              - InProgress
+              - Cancelled
+              - Error
+              - Success
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Simulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
 
   /simulations/{id}/logs:
     get:
