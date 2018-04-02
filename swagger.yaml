@@ -3896,6 +3896,7 @@ definitions:
       parentId:
         type: integer
         format: int32
+        x-nullable: true
       title:
         type: string
       description:
