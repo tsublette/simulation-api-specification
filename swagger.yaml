@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: 1.0.1
+  version: 1.1.0
   title: Simulation API
   description: An API for managing simulations within 3DSIM.
   termsOfService: https://3dsim.com
@@ -1061,6 +1061,18 @@ paths:
           required: true
           type: integer
           format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
         - name: status
           in: query
           description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
@@ -1707,6 +1719,75 @@ paths:
         - simulationSecurity:
           - write:simulations
 
+  /porositysimulations/{id}/children:
+    get:
+      description: Gets a list of all child simulations for a parent simulation
+      operationId: getPorositySimulationChildren
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
+            e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
+          required: false
+          type: array
+          items:
+            type: string
+            enum:
+              - Draft
+              - Requested
+              - InProgress
+              - Cancelled
+              - Error
+              - Success
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PorositySimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+
   /porositysimulations/{id}/cancel:
     put:
       description: Cancels a porosity simulation
@@ -1976,6 +2057,75 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+
+  /singlebeadsimulations/{id}/children:
+    get:
+      description: Gets a list of all child simulations for a parent simulation
+      operationId: getSingleBeadSimulationChildren
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
+            e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
+          required: false
+          type: array
+          items:
+            type: string
+            enum:
+              - Draft
+              - Requested
+              - InProgress
+              - Cancelled
+              - Error
+              - Success
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SingleBeadSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
 
   /singlebeadsimulations/{id}/cancel:
     put:
@@ -2247,6 +2397,75 @@ paths:
         - simulationSecurity:
           - write:simulations
 
+  /thermalsimulations/{id}/children:
+    get:
+      description: Gets a list of all child simulations for a parent simulation
+      operationId: getThermalSimulationChildren
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
+            e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
+          required: false
+          type: array
+          items:
+            type: string
+            enum:
+              - Draft
+              - Requested
+              - InProgress
+              - Cancelled
+              - Error
+              - Success
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ThermalSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+
   /thermalsimulations/{id}/cancel:
     put:
       description: Cancels a thermal simulation
@@ -2517,6 +2736,75 @@ paths:
         - simulationSecurity:
           - write:simulations
 
+  /scanpatternsimulations/{id}/children:
+    get:
+      description: Gets a list of all child simulations for a parent simulation
+      operationId: getScanPatternSimulationChildren
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
+            e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
+          required: false
+          type: array
+          items:
+            type: string
+            enum:
+              - Draft
+              - Requested
+              - InProgress
+              - Cancelled
+              - Error
+              - Success
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ScanPatternSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
+
   /scanpatternsimulations/{id}/cancel:
     put:
       description: Cancels a Scan Pattern simulation
@@ -2786,6 +3074,75 @@ paths:
       security:
         - simulationSecurity:
           - write:simulations
+
+  /assumedstrainsimulations/{id}/children:
+    get:
+      description: Gets a list of all child simulations for a parent simulation
+      operationId: getAssumedStrainSimulationChildren
+      parameters:
+        - name: id
+          in: path
+          description: simulation identifier
+          required: true
+          type: integer
+          format: int32
+        - name: offset
+          in: query
+          description: starting paging count; ex. offset of 60 will skip the first 60 items in the list
+          required: false
+          type: integer
+          format: int32
+        - name: limit
+          in: query
+          description: number of materials to return within the query
+          required: false
+          type: integer
+          format: int32
+        - name: status
+          in: query
+          description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
+            e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
+          required: false
+          type: array
+          items:
+            type: string
+            enum:
+              - Draft
+              - Requested
+              - InProgress
+              - Cancelled
+              - Error
+              - Success
+        - name: sort
+          in: query
+          description: key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
+          required: false
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successfully found the list of items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AssumedStrainSimulation'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:simulations
 
   /assumedstrainsimulations/{id}/cancel:
     put:
