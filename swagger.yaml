@@ -76,6 +76,10 @@ paths:
       responses:
         "200":
           description: Successfully retrieved list
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -271,6 +275,10 @@ paths:
       responses:
         "200":
           description: Successfully retrieved list of machines
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -514,6 +522,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of parts
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -884,6 +896,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -1099,6 +1115,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -1153,6 +1173,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -1243,6 +1267,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -1333,6 +1361,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -1567,6 +1599,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -1768,6 +1804,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -1906,6 +1946,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -2107,6 +2151,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -2245,6 +2293,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -2446,6 +2498,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -2584,6 +2640,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -2785,6 +2845,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -2923,6 +2987,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -3124,6 +3192,10 @@ paths:
       responses:
         "200":
           description: Successfully found the list of items
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
@@ -3299,6 +3371,10 @@ paths:
       responses:
         "200":
           description: Successfully retrieved list of build files
+          headers:
+            X-Pagination:
+              type: string
+              description: Contains paging information in json format - totalCount, totalPages
           schema:
             type: array
             items:
