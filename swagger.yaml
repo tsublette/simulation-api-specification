@@ -2850,8 +2850,8 @@ paths:
           required: false
           type: integer
           format: int32
-        - name: status
           default: 10
+        - name: status
           in: query
           description: simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations.
             e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
