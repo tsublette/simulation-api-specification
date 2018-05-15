@@ -901,6 +901,11 @@ paths:
           description: returns either parent (true) or child (false) simulations
           required: false
           type: boolean
+        - name: requiresLicense
+          in: query
+          description: returns simulations that require licence
+          required: false
+          type: boolean
       responses:
         "200":
           description: Successfully found the list of items
