@@ -4371,7 +4371,6 @@ definitions:
       - outputStateMap
       - outputShrinkage
       - outputPointThermalHistory
-      - outputVirtualSensorData
       - includeStressAnalysis
       - anisotropicStrainCoefficientsParallel
       - anisotropicStrainCoefficientsPerpendicular
@@ -4381,7 +4380,7 @@ definitions:
       - outputPyroVirtualSensor
       - outputInstantStaticSensor
       - outputPointProbe
-
+      - outputCoaxialAverageSensorData
     properties:
       layerThickness:
         description: Must be between 0.00001 to 0.0001 meters
@@ -4429,15 +4428,9 @@ definitions:
       outputPointThermalHistory:
         type: boolean
         description: for each slectedPoint, a series of vtk files will output thermal history around that point with a radius of staticVirtualSensorRadius.
-      outputVirtualSensorData:
-        type: boolean
-        description: Outputs meltpool dimensions and thermal history within a VTK file. Thermal history is output as the average temperature within the user-specified dynamicVirtualSensorRadius, centered at the middle of the laser beam.
       staticVirtualSensorRadius:
         type: number
         description: should be a number between 0.05 and 5.0 mm
-      dynamicVirtualSensorRadius:
-        type: number
-        description: should be a number between 0.5 and 1.5 mm
       includeStressAnalysis:
         type: boolean
         description: false indicates that only the thermal solver will run, while true indicates that the mechanics solver will run after the thermal solver
@@ -4497,6 +4490,17 @@ definitions:
       outputPointProbe:
         type: boolean
         description: if true, probe sensor data will be collected for each selectedPoint property
+      outputCoaxialAverageSensorData:
+        type: boolean
+        description: if true, coaxial average sensor data will be collected for the deposity layers specified by coaxialAverageSensorZHeights
+      coaxialAverageSensorRadius:
+        type: number
+        description: should be a number between 0.05 and 1.5 mm
+      coaxialAverageSensorZHeights:
+        description: List of z height (mm) ranges within the part where the coaxial average sensor will collect data
+        type: array
+        items:
+          $ref: "#/definitions/ZHeightRange"
 
   ThermalSimulation:
     allOf:
@@ -5419,3 +5423,18 @@ definitions:
       machineType:
         type: string
         description: type of machine associated with this build file, see BuildFile definition for valid values
+
+  ZHeightRange:
+    description: upper and lower bounds for z dimension of an area of interest
+    required:
+      - zHeightLowerBound
+      - zHeightUpperBound
+    properties:
+      zHeightLowerBound:
+        type: number
+        format: float32
+        description: lower bound of area of interest for z dimension in meters
+      zHeightUpperBound:
+        type: number
+        format: float32
+        description: upper bound of area of interest for z dimension in meters
