@@ -576,32 +576,6 @@ paths:
       security:
         - simulationSecurity:
           - write:parts
-    put:
-      description: Updates a Part
-      operationId: UpdatePart
-      parameters:
-        - name: Part
-          in: body
-          description: Part to update.
-          required: true
-          schema:
-            $ref: '#/definitions/Part'
-      responses:
-        "200":
-          description: Successfully updated a part
-          schema:
-            $ref: '#/definitions/Part'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-        - simulationSecurity:
-          - write:parts
 
   /parts/geometryuploadurl:
     get:
@@ -725,6 +699,38 @@ paths:
       security:
         - simulationSecurity:
           - write:parts
+    put:
+      description: Updates a Part
+      operationId: UpdatePart
+      parameters:
+        - name: id
+          in: path
+          description: ID of a part
+          required: true
+          type: integer
+          format: int32
+        - name: Part
+          in: body
+          description: Part to update.
+          required: true
+          schema:
+            $ref: '#/definitions/Part'
+      responses:
+        "200":
+          description: Successfully updated a part
+          schema:
+            $ref: '#/definitions/Part'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
 
   /parts/{id}/archive:
     put:
@@ -830,6 +836,311 @@ paths:
         - simulationSecurity:
           - read:parts
 
+  /parts/{partId}/supports/{supportId}:
+    get:
+      description: Get a single support by Id
+      operationId: "GetPartSupport")]
+      parameters:
+        - name: partId
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+        - name: supportId
+          in: path
+          description: ID of support to get
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully found a support
+          schema:
+            $ref: '#/definitions/PartSupport'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:parts
+    patch:
+      description: Update fields within a support
+      operationId: patchPartSupport
+      parameters:
+        - name: partId
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+        - name: supportId
+          in: path
+          description: ID of support to get
+          required: true
+          type: integer
+          format: int32
+        - name: partSupportPatch
+          in: body
+          description: This endpoint uses JSON Patch, RFC 6092.
+          required: true
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/PatchDocument'
+      responses:
+        "200":
+          description: Patched part support
+          schema:
+            $ref: '#/definitions/PartSupport'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Part not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
+    delete:
+      description: This will delete a support and all its associated geometry files
+      operationId: DeletePartSupport
+      parameters:
+        - name: partId
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+        - name: supportId
+          in: path
+          description: ID of support to get
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully deleted a part support
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
+    put:
+      description: Updates a Support
+      operationId: "UpdatePartSupport")]
+      parameters:
+        - name: partId
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+        - name: supportId
+          in: path
+          description: ID of support to get
+          required: true
+          type: integer
+          format: int32
+        - name: PartSupport
+          in: body
+          description: PartSupport to update.
+          required: true
+          schema:
+            $ref: '#/definitions/PartSupport'
+      responses:
+        "200":
+          description: Successfully updated a part support
+          schema:
+            $ref: '#/definitions/PartSupport'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
+
+  /parts/{partId}/supports:
+    post:
+      description: Adds a support and starts processing the support.  When processing is finished, the "availability" field
+        for the part will change to "Available".
+      operationId: "PostPartSupport")]
+      parameters:
+        - name: partId
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+        - name: PartPost
+          in: body
+          description: Support to add. First, call parts/:partId/supports/geometryurl to get a PartUploadRequest object.
+            PUT the STL file AmazonS3 with the signed URL. Use the s3Key property as the value of fileLocation.
+            A POST with this object will execute the part processing service.
+          required: true
+          schema:
+            $ref: '#/definitions/PartSupportPost'
+      responses:
+        "200":
+          description: Successfully added a part support
+          schema:
+            $ref: '#/definitions/PartSupport'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
+
+  /parts/{partId}/supports/geometryuploadurl:
+    get:
+      description: Gets a time sensitive URL to upload a support geometry file to AmazonS3.
+      operationId: SupportGeometryUploadUrl
+      parameters:
+        - name: partId
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully returns a part support geometry url for a new support upload
+          schema:
+            $ref: '#/definitions/PartUploadRequest'
+        "403":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
+
+  /parts/{partId}/supports/{supportId}/geometryurl:
+    get:
+      description: Gets a time sensitive URL to the geometry file stored in AmazonS3.
+      operationId: PartSupportGeometryUrl
+      parameters:
+        - name: partId
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+        - name: supportId
+          in: path
+          description: ID of support
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully returns a support geometry url
+          schema:
+            $ref: '#/definitions/PartGeometryUrl'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:parts
+
+  /parts/{partId}/supports/{supportId}/geometry:
+    get:
+      description: Gets a list of triangles for the geometry file stored in AmazonS3.
+      operationId: PartSupportGeometry
+      parameters:
+        - name: partId
+          in: path
+          description: ID of part
+          required: true
+          type: integer
+          format: int32
+        - name: supportId
+          in: path
+          description: ID of support
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully returns support geometry triangles
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Triangle'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not Found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:parts
+
   /simulations:
     get:
       description: Gets a list of all simulations
@@ -887,6 +1198,12 @@ paths:
         - name: partId
           in: query
           description: returns simulations using the specified part id
+          required: false
+          type: integer
+          format: int32
+        - name: supportId
+          in: query
+          description: returns simulations using the specified part support id
           required: false
           type: integer
           format: int32
@@ -3830,6 +4147,13 @@ definitions:
         maximum: 0
         exclusiveMinimum: false
         exclusiveMaximum: false
+      partSupportId:
+        type: integer
+        format: int32
+        description: Id of the support to use for the simulation. Can be null
+      support:
+        $ref: "#/definitions/PartSupport"
+        
 
   SimulationLog:
     type: object
@@ -4230,6 +4554,7 @@ definitions:
       - stressMode
       - detectBladeCrash
       - outputLayerVtk
+      - supportType
     properties:
       simulationParts:
         description: List of parts to simulate (current limit is one part, imposed by server)
@@ -4339,6 +4664,12 @@ definitions:
       distortionAfterCutoffScaleFactor:
         type: number
         description: a value that is used to scale the after cutoff simulated distortion values
+      supportType:
+        description: type of support used for simulation.
+        type: string
+        enum:
+          - Generated
+          - UserDefined
 
   SingleBeadSimulation:
     allOf:
@@ -4671,6 +5002,11 @@ definitions:
       errorReason:
         type: string
         description: If an error ocurrs uploading a part, a string will be populated in this field.
+      partSupports:
+        description: List of supports that have been uploaded for this part
+        type: array
+        items:
+          $ref: "#/definitions/PartSupport"
 
   PartPost:
     type: object
@@ -5438,3 +5774,151 @@ definitions:
         type: number
         format: float32
         description: upper bound of area of interest for z dimension in meters
+
+  PartSupportPost:
+    type: object
+    required:
+      - partId
+      - name
+      - fileLocation
+      - originalFileName
+    properties:
+      partId:
+        type: integer
+        format: int32
+        description: Id of the part that owns this support record
+      name:
+        description: Name of the support, max 50 characters
+        type: string
+      description:
+        description: Free form description of the support, max 2048 characters
+        type: string
+      originalFileName:
+        description: Original support file name, max 248 characters
+        type: string        
+      fileLocation:
+        type: string
+        description: Remote s3 key of a newly uploaded stl file.  Use parts/:partId/supports/geometryurl endpoint to upload the support before calling POST.  Max length 256 characters.
+
+  PartSupport:
+    type: object
+    required:
+      - id
+      - partId
+      - name
+      - fileLocation
+      - archived
+      - availability
+      - supportType
+
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: Id of the part
+      partId:
+        type: integer
+        format: int32
+        description: Id of the part that owns this support record
+      part:
+        $ref: "#/definitions/Part"        
+      name:
+        type: string
+      originalFileName:
+        type: string
+        description: The original file name from the user
+      description:
+        type: string
+      fileLocation:
+        type: string
+        description:  File name of part relative to fileBucket
+      archived:
+        description: Designates whether this entity has been archived.
+        type: boolean
+      availability:
+        description: Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part
+          is being processed.  Available - the part was processed successfully and can be used in simulations.  Error -
+          an error occurred, contact support@3dsim.com.
+        type: string
+        enum:
+          - Uploaded
+          - Processing
+          - Available
+          - Error
+      supportType:
+        description: type of geometry. Volumeless - thinwall, closed - watertight
+        type: string
+        enum:
+          - ThinWall
+          - Watertight
+      xMin:
+        type: number
+        description: x location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+      yMin:
+        type: number
+        description: y location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+      zMin:
+        type: number
+        description: z location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+      sizeX:
+        type: number
+        description: Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+      sizeY:
+        type: number
+        description: Length of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+      sizeZ:
+        type: number
+        description: Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+      triangleCount:
+        type: integer
+        format: int32
+        description: Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
+      volume:
+        type: number
+        description: Approximate volume of the Part (in meters^3), calculated when the part is processed, use 0 for initial post
+      created:
+        type: string
+        format: date-time
+        description: created time stamp, set server-side, read only
+      createdBy:
+        type: string
+        description: assigned user, set server-side, read only
+      lastModified:
+        type: string
+        format: date-time
+        description: last modified time stamp, set server-side, read only
+      lastModifiedBy:
+        type: string
+        description: assigned user, set server-side, read only
+      elements:
+        type: integer
+        format: int32
+      nodes:
+        type: integer
+        format: int32
+      collapseCost:
+        type: number
+      surfaceArea:
+        type: number
+      estimatedMemory:
+        type: integer
+        format: int32
+        description: Estimated memory usage for mechanics solver using estimateVoxelSize
+      maxMemory:
+        type: integer
+        format: int32
+        description: Estimated max memory usage for mechanics solver using estimateVoxelSize
+      estimatedWork:
+        type: integer
+        format: int32
+        description: Estimated work using estimateVoxelSize
+      estimateVoxelSize:
+        type: number
+        description: Voxel size used for estimatedMemory, maxMemory, estimatedWork
+      minimumSupportHeight:
+        type: number
+        description: height (mm) that this support will raise the part
+      errorReason:
+        type: string
+        description: If an error ocurrs uploading a part, a string will be populated in this field.
+
