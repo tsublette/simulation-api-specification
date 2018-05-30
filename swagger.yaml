@@ -5575,8 +5575,6 @@ definitions:
       - x
       - 'y'
       - z
-      - zMin
-      - zMax
       - sensorType
     properties:
       id:
