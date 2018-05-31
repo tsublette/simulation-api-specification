@@ -4708,7 +4708,7 @@ definitions:
       - anisotropicStrainCoefficientsZ
       - heaterTemperature
       - outputInstantDynamicSensor
-      - outputPrintRitePCSSensor
+      - outputPrintRitePcsSensor
       - outputInstantStaticSensor
       - outputPointProbe
       - outputCoaxialAverageSensorData
@@ -4797,10 +4797,10 @@ definitions:
         items:
           type: integer
           format: int32
-      outputPrintRitePCSSensor:
+      outputPrintRitePcsSensor:
         type: boolean
         description: if true, PrintRite sensor data will be collected for each selectedPoint property
-      printRitePCSSensorRadius:
+      printRitePcsSensorRadius:
         description: radius for PrintRite sensor data collection in mm
         type: number
         minimum: 0.05
