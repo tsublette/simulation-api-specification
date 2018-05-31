@@ -5575,6 +5575,7 @@ definitions:
       - x
       - 'y'
       - z
+      - sensorType
     properties:
       id:
         type: integer
@@ -5590,6 +5591,15 @@ definitions:
         type: number
       z:
         type: number
+      zMin:
+        type: number
+      zMax:
+        type: number
+      sensorType:
+        description: type of point, usually relates to sensor that will be using this point
+        type: string
+        enum:
+          - PrintRite
 
   BuildFile:
     description: parameters associated with a build file used by machine manufacturers
