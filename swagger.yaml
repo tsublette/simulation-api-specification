@@ -4153,7 +4153,7 @@ definitions:
         description: Id of the support to use for the simulation. Can be null
       support:
         $ref: "#/definitions/PartSupport"
-        
+
 
   SimulationLog:
     type: object
@@ -4708,7 +4708,7 @@ definitions:
       - anisotropicStrainCoefficientsZ
       - heaterTemperature
       - outputInstantDynamicSensor
-      - outputPyroVirtualSensor
+      - outputPrintRitePCSSensor
       - outputInstantStaticSensor
       - outputPointProbe
       - outputCoaxialAverageSensorData
@@ -4797,11 +4797,11 @@ definitions:
         items:
           type: integer
           format: int32
-      outputPyroVirtualSensor:
+      outputPrintRitePCSSensor:
         type: boolean
-        description: if true, pyrometer sensor data will be collected for each selectedPoint property
-      pyroVirtualSensorRadius:
-        description: radius for pyro sensor data collection in mm
+        description: if true, PrintRite sensor data will be collected for each selectedPoint property
+      printRitePCSSensorRadius:
+        description: radius for PrintRite sensor data collection in mm
         type: number
         minimum: 0.05
         maximum: 1.5
@@ -5805,7 +5805,7 @@ definitions:
         type: string
       originalFileName:
         description: Original support file name, max 248 characters
-        type: string        
+        type: string
       fileLocation:
         type: string
         description: Remote s3 key of a newly uploaded stl file.  Use parts/:partId/supports/geometryurl endpoint to upload the support before calling POST.  Max length 256 characters.
@@ -5831,7 +5831,7 @@ definitions:
         format: int32
         description: Id of the part that owns this support record
       part:
-        $ref: "#/definitions/Part"        
+        $ref: "#/definitions/Part"
       name:
         type: string
       originalFileName:
