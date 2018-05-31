@@ -839,7 +839,7 @@ paths:
   /parts/{partId}/supports/{supportId}:
     get:
       description: Get a single support by Id
-      operationId: "GetPartSupport")]
+      operationId: getPartSupport
       parameters:
         - name: partId
           in: path
@@ -957,7 +957,7 @@ paths:
           - write:parts
     put:
       description: Updates a Support
-      operationId: "UpdatePartSupport")]
+      operationId: updatePartSupport
       parameters:
         - name: partId
           in: path
@@ -998,7 +998,7 @@ paths:
     post:
       description: Adds a support and starts processing the support.  When processing is finished, the "availability" field
         for the part will change to "Available".
-      operationId: "PostPartSupport")]
+      operationId: postPartSupport
       parameters:
         - name: partId
           in: path
