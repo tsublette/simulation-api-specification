@@ -1141,6 +1141,36 @@ paths:
         - simulationSecurity:
           - read:parts
 
+  /supports/{id}:
+    get:
+      description: Get a single support by Id
+      operationId: getPartSupportById
+      parameters:
+        - name: id
+          in: path
+          description: ID of support to get
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successfully found a support
+          schema:
+            $ref: '#/definitions/PartSupport'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Not found
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - read:parts
+
   /simulations:
     get:
       description: Gets a list of all simulations
