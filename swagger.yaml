@@ -1170,6 +1170,48 @@ paths:
       security:
         - simulationSecurity:
           - read:parts
+    patch:
+      description: Update fields within a support
+      operationId: patchSupportById
+      parameters:
+        - name: id
+          in: path
+          description: ID of support to update
+          required: true
+          type: integer
+          format: int32
+        - name: supportPatch
+          in: body
+          description: This endpoint uses JSON Patch, RFC 6092.
+          required: true
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/PatchDocument'
+      responses:
+        "200":
+          description: Patched Support
+          schema:
+            $ref: '#/definitions/PartSupport'
+        "401":
+          description: Not authorized
+          schema:
+            $ref: '#/definitions/Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "404":
+          description: Support not found (id invalid)
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - simulationSecurity:
+          - write:parts
 
   /simulations:
     get:
